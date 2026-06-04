@@ -55,8 +55,6 @@
   display: flex;
   position: relative;
   flex-wrap: wrap;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .tab-gap {
@@ -71,8 +69,6 @@
   all: unset;
   cursor: pointer;
   user-select: none;
-  z-index: 1;
-  text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -82,14 +78,11 @@
   border: var(--tab-border-width) solid var(--tab-border-color);
   gap: var(--tab-button-content-gap);
   position: relative;
-  overflow: hidden;
   z-index: 1;
-  transition: background var(--tab-transition-duration) var(--tab-transition-easing),
-              color var(--tab-transition-duration) var(--tab-transition-easing),
-              height var(--tab-transition-duration) var(--tab-transition-easing),
-              box-shadow var(--tab-transition-duration) var(--tab-transition-easing),
+  overflow: hidden;
+  transition: color var(--tab-transition-duration) var(--tab-transition-easing),
               border var(--tab-transition-duration) var(--tab-transition-easing),
-              outline var(--tab-transition-duration) var(--tab-transition-easing);
+              height var(--tab-transition-duration) var(--tab-transition-easing);
 }
 
 .tab-bar-button * {
@@ -115,7 +108,7 @@
 }
 
 .tab-bar-button-icon {
-  min-width: 24px;
+  width: 24px;
   height: 24px;
   background-color: currentColor;
   mask-size: contain;
@@ -169,14 +162,7 @@
   transform: translateX(64px);
 }
 
-@media (max-width: 600px) {
-  .tab-bar-button-icon {
-    min-width: 18px;
-    height: 18px;
-  }
-}
-
-/* Button Style Tabs */
+/* Buttons style — standalone bordered buttons with gap */
 
 .tab-bar.tab-style-buttons {
   gap: var(--tab-button-gap);
@@ -184,29 +170,9 @@
 
 .tab-style-buttons .tab-bar-button {
   padding: 8px 16px;
-  min-width: 120px;
-  min-height: 60px;
-  font-size: 20px;
-  line-height: 110%;
-  letter-spacing: -0.005em;
-  outline: 1px solid transparent;
 }
 
-@media (max-width: 1440px) {
-  .tab-style-buttons .tab-bar-button {
-    font-size: 18px;
-    min-height: 54px;
-  }
-}
-
-@media (max-width: 600px) {
-  .tab-style-buttons .tab-bar-button {
-    font-size: 16px;
-    min-height: 40px;
-  }
-}
-
-/* Tab Style Tabs */
+/* Tabs style — joined file-folder tabs */
 
 .tab-style-tabs {
   --tab-gap: 0px;
@@ -224,10 +190,6 @@
   border-bottom: 0 !important;
   height: 36px;
   padding: 0 16px;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 120%;
-  letter-spacing: 0.05em;
 }
 
 .tab-style-tabs .tab-bar-button:not(:nth-last-child(2)) {
@@ -249,45 +211,13 @@
   padding: 24px;
 }
 
-@media (max-width: 1440px) {
-  .tab-bar.tab-style-tabs {
-    height: 36px;
-  }
-
-  .tab-style-tabs .tab-bar-button {
-    height: 32px;
-    font-size: 15px;
-  }
-
-  .tab-style-tabs .tab-bar-button.active {
-    height: 36px;
-  }
-}
-
-@media (max-width: 600px) {
-  .tab-bar.tab-style-tabs {
-    height: 32px;
-  }
-
-  .tab-style-tabs .tab-bar-button {
-    height: 28px;
-    font-size: 12px;
-  }
-
-  .tab-style-tabs .tab-bar-button.active {
-    height: 32px;
-  }
-}
-
-/* Slide Tab Style Tabs */
+/* Slide tabs style — sliding indicator inside a pill container */
 
 .tab-bar.tab-style-slide-tabs {
   padding: 8px;
   background: var(--tab-background);
   border-radius: var(--tab-border-radius);
-  align-self: flex-start;
   gap: 16px;
-  flex-wrap: wrap;
 }
 
 .tab-style-slide-tabs .tab-bar-active {
@@ -306,17 +236,12 @@
 
 .tab-style-slide-tabs .tab-bar-button {
   padding: 8px;
-  min-height: 40px;
   min-width: min-content;
-  font-weight: 700;
   white-space: nowrap;
   background: initial !important;
   border: none !important;
-  letter-spacing: -0.005em;
-  font-size: 14px;
   flex: 1;
   color: var(--tab-text-color-inactive);
-  line-height: 148%;
 }
 
 .tab-style-slide-tabs .tab-bar-button::before {
@@ -325,14 +250,4 @@
 
 .tab-style-slide-tabs .tab-bar-button.active {
   color: var(--tab-text-color);
-}
-
-@media (max-width: 600px) {
-  .tab-bar.tab-style-slide-tabs {
-    width: 100%;
-  }
-
-  .tab-style-slide-tabs .tab-bar-button {
-    flex: 1;
-  }
 }
