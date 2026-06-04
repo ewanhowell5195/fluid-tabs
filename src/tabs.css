@@ -213,14 +213,14 @@
 
 /* Slide tabs style — sliding indicator inside a pill container */
 
-.tab-bar.tab-style-slide-tabs {
+.tab-bar.tab-style-slide {
   padding: 8px;
   background: var(--tab-background);
   border-radius: var(--tab-border-radius);
   gap: 16px;
 }
 
-.tab-style-slide-tabs .tab-bar-active {
+.tab-style-slide .tab-bar-active {
   position: absolute;
   top: 8px;
   bottom: 8px;
@@ -234,7 +234,7 @@
     bottom var(--tab-transition-duration) var(--tab-transition-easing);
 }
 
-.tab-style-slide-tabs .tab-bar-button {
+.tab-style-slide .tab-bar-button {
   padding: 8px;
   min-width: min-content;
   white-space: nowrap;
@@ -244,10 +244,10 @@
   color: var(--tab-text-color-inactive);
 }
 
-.tab-style-slide-tabs .tab-bar-button::before {
+.tab-style-slide .tab-bar-button::before {
   display: none;
 }
 
-.tab-style-slide-tabs .tab-bar-button.active {
+.tab-style-slide .tab-bar-button.active {
   color: var(--tab-text-color);
 }

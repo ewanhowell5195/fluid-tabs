@@ -40,13 +40,6 @@
         border-radius: 4px;
       }
 
-      .demo-content-body {
-        padding: 16px;
-        background: #f1f1f1;
-        border-radius: 10px;
-        border: 1px solid #d6d6d6;
-      }
-
       .controls {
         display: flex;
         gap: 8px;
@@ -74,9 +67,9 @@
           <button type="button" class="tab-bar-button" data-tab="Reviews">Reviews</button>
         </div>
         <div class="tab-contents">
-          <div class="tab-content active" data-tab="Overview"><div class="demo-content-body">Overview content. Buttons and panels are matched by <code>data-tab</code>.</div></div>
-          <div class="tab-content" data-tab="Details"><div class="demo-content-body">Details content — a different panel for testing the slide/fade transition between siblings.</div></div>
-          <div class="tab-content" data-tab="Reviews"><div class="demo-content-body">Reviews content. The container's height should animate when panels differ in size.</div></div>
+          <div class="tab-content active" data-tab="Overview">Overview content. Buttons and panels are matched by <code>data-tab</code>.</div>
+          <div class="tab-content" data-tab="Details">Details content — a different panel for testing the slide/fade transition between siblings.</div>
+          <div class="tab-content" data-tab="Reviews">Reviews content. The container's height should animate when panels differ in size.</div>
         </div>
       </div>
     </section>
@@ -93,10 +86,10 @@
           <button type="button" class="tab-bar-button" data-tab="d">Four</button>
         </div>
         <div class="tab-contents">
-          <div class="tab-content active" data-tab="a"><div class="demo-content-body">Panel A. <code>data-tab="a"</code> on both button and content.</div></div>
-          <div class="tab-content" data-tab="b"><div class="demo-content-body">Panel B. Tall panel:<br><br><br>Filler line one.<br>Filler line two.<br>Filler line three.</div></div>
-          <div class="tab-content" data-tab="c"><div class="demo-content-body">Panel C.</div></div>
-          <div class="tab-content" data-tab="d"><div class="demo-content-body">Panel D — short.</div></div>
+          <div class="tab-content active" data-tab="a">Panel A. <code>data-tab="a"</code> on both button and content.</div>
+          <div class="tab-content" data-tab="b">Panel B. Tall panel:<br><br><br>Filler line one.<br>Filler line two.<br>Filler line three.</div>
+          <div class="tab-content" data-tab="c">Panel C.</div>
+          <div class="tab-content" data-tab="d">Panel D — short.</div>
         </div>
       </div>
     </section>
@@ -122,21 +115,21 @@
     </section>
 
     <section>
-      <h2><code>tab-style-slide-tabs</code></h2>
+      <h2><code>tab-style-slide</code></h2>
       <p>Pill-style segmented control with a sliding active indicator. The hover-tease/spring effect is most visible here.</p>
 
       <div>
-        <div class="tab-bar tab-style-slide-tabs">
+        <div class="tab-bar tab-style-slide">
           <button type="button" class="tab-bar-button active" data-tab="day">Day</button>
           <button type="button" class="tab-bar-button" data-tab="week">Week</button>
           <button type="button" class="tab-bar-button" data-tab="month">Month</button>
           <button type="button" class="tab-bar-button" data-tab="year">Year</button>
         </div>
         <div class="tab-contents">
-          <div class="tab-content active" data-tab="day"><div class="demo-content-body">Day view.</div></div>
-          <div class="tab-content" data-tab="week"><div class="demo-content-body">Week view.</div></div>
-          <div class="tab-content" data-tab="month"><div class="demo-content-body">Month view.</div></div>
-          <div class="tab-content" data-tab="year"><div class="demo-content-body">Year view.</div></div>
+          <div class="tab-content active" data-tab="day">Day view.</div>
+          <div class="tab-content" data-tab="week">Week view.</div>
+          <div class="tab-content" data-tab="month">Month view.</div>
+          <div class="tab-content" data-tab="year">Year view.</div>
         </div>
       </div>
     </section>
@@ -154,9 +147,9 @@
       <p style="opacity:.6">— unrelated content sitting between the bar and its panels —</p>
 
       <div class="tab-contents" data-tab-bar="detached-bar">
-        <div class="tab-content active" data-tab="Alpha"><div class="demo-content-body">Alpha panel (linked by id).</div></div>
-        <div class="tab-content" data-tab="Beta"><div class="demo-content-body">Beta panel.</div></div>
-        <div class="tab-content" data-tab="Gamma"><div class="demo-content-body">Gamma panel.</div></div>
+        <div class="tab-content active" data-tab="Alpha">Alpha panel (linked by id).</div>
+        <div class="tab-content" data-tab="Beta">Beta panel.</div>
+        <div class="tab-content" data-tab="Gamma">Gamma panel.</div>
       </div>
     </section>
 
@@ -164,7 +157,7 @@
       <h2>Tab bar with no contents</h2>
       <p>A standalone <code>.tab-bar</code> with no following <code>.tab-contents</code>. Only the indicator updates and the <code>tab-changed</code> event fires.</p>
 
-      <div class="tab-bar tab-style-slide-tabs" id="standalone-bar">
+      <div class="tab-bar tab-style-slide" id="standalone-bar">
         <button type="button" class="tab-bar-button active" data-tab="low">Low</button>
         <button type="button" class="tab-bar-button" data-tab="medium">Medium</button>
         <button type="button" class="tab-bar-button" data-tab="high">High</button>
@@ -202,9 +195,9 @@
           <button type="button" class="tab-bar-button" data-tab="right">Right</button>
         </div>
         <div class="tab-contents">
-          <div class="tab-content active" data-tab="left"><div class="demo-content-body">Left.</div></div>
-          <div class="tab-content" data-tab="middle"><div class="demo-content-body">Middle.</div></div>
-          <div class="tab-content" data-tab="right"><div class="demo-content-body">Right.</div></div>
+          <div class="tab-content active" data-tab="left">Left.</div>
+          <div class="tab-content" data-tab="middle">Middle.</div>
+          <div class="tab-content" data-tab="right">Right.</div>
         </div>
       </div>
 
@@ -231,14 +224,14 @@
           <button type="button" class="tab-bar-button" data-tab="Item 8">Item 8</button>
         </div>
         <div class="tab-contents">
-          <div class="tab-content active" data-tab="Item 1"><div class="demo-content-body">Panel 1</div></div>
-          <div class="tab-content" data-tab="Item 2"><div class="demo-content-body">Panel 2</div></div>
-          <div class="tab-content" data-tab="Item 3"><div class="demo-content-body">Panel 3</div></div>
-          <div class="tab-content" data-tab="Item 4"><div class="demo-content-body">Panel 4</div></div>
-          <div class="tab-content" data-tab="Item 5"><div class="demo-content-body">Panel 5</div></div>
-          <div class="tab-content" data-tab="Item 6"><div class="demo-content-body">Panel 6</div></div>
-          <div class="tab-content" data-tab="Item 7"><div class="demo-content-body">Panel 7</div></div>
-          <div class="tab-content" data-tab="Item 8"><div class="demo-content-body">Panel 8</div></div>
+          <div class="tab-content active" data-tab="Item 1">Panel 1</div>
+          <div class="tab-content" data-tab="Item 2">Panel 2</div>
+          <div class="tab-content" data-tab="Item 3">Panel 3</div>
+          <div class="tab-content" data-tab="Item 4">Panel 4</div>
+          <div class="tab-content" data-tab="Item 5">Panel 5</div>
+          <div class="tab-content" data-tab="Item 6">Panel 6</div>
+          <div class="tab-content" data-tab="Item 7">Panel 7</div>
+          <div class="tab-content" data-tab="Item 8">Panel 8</div>
         </div>
       </div>
     </section>
@@ -248,17 +241,17 @@
       <p>Slide-style tabs constrained to 480px. Buttons should flex to fill and the indicator should still track correctly.</p>
 
       <div class="narrow-container">
-        <div class="tab-bar tab-style-slide-tabs">
+        <div class="tab-bar tab-style-slide">
           <button type="button" class="tab-bar-button active" data-tab="Inbox">Inbox</button>
           <button type="button" class="tab-bar-button" data-tab="Sent">Sent</button>
           <button type="button" class="tab-bar-button" data-tab="Drafts">Drafts</button>
           <button type="button" class="tab-bar-button" data-tab="Spam">Spam</button>
         </div>
         <div class="tab-contents">
-          <div class="tab-content active" data-tab="Inbox"><div class="demo-content-body">Inbox.</div></div>
-          <div class="tab-content" data-tab="Sent"><div class="demo-content-body">Sent.</div></div>
-          <div class="tab-content" data-tab="Drafts"><div class="demo-content-body">Drafts.</div></div>
-          <div class="tab-content" data-tab="Spam"><div class="demo-content-body">Spam.</div></div>
+          <div class="tab-content active" data-tab="Inbox">Inbox.</div>
+          <div class="tab-content" data-tab="Sent">Sent.</div>
+          <div class="tab-content" data-tab="Drafts">Drafts.</div>
+          <div class="tab-content" data-tab="Spam">Spam.</div>
         </div>
       </div>
     </section>

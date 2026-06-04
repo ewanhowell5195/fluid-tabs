@@ -7,7 +7,7 @@ const tabBarResizeObserver = new ResizeObserver(entries => {
   }
 })
 
-const TAB_STYLES = ["tab-style-buttons", "tab-style-tabs", "tab-style-slide-tabs"]
+const TAB_STYLES = ["tab-style-buttons", "tab-style-tabs", "tab-style-slide"]
 
 function initTabBars() {
   const tabBars = document.querySelectorAll(".tab-bar:not(.initialised)")
