@@ -1,0 +1,338 @@
+:root {
+  --tab-transition-duration: .25s;
+  --tab-transition-easing: cubic-bezier(.4, 0, .2, 1);
+  --tab-border-width: 1px;
+  --tab-border-radius: 10px;
+  --tab-border-radius-small: 6px;
+  --tab-gap: 24px;
+  --tab-button-gap: 12px;
+  --tab-button-content-gap: 8px;
+}
+
+@property --tab-background {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f1f1f1;
+}
+
+@property --tab-background-active {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #e2e2e2;
+}
+
+@property --tab-text-color {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #1c1c1c;
+}
+
+@property --tab-text-color-inactive {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #6b6b6b;
+}
+
+@property --tab-border-color {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #d6d6d6;
+}
+
+@property --tab-border-color-active {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #1c1c1c;
+}
+
+@property --tab-indicator-background {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+
+.tab-bar {
+  display: flex;
+  position: relative;
+  flex-wrap: wrap;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.tab-gap {
+  margin-bottom: var(--tab-gap);
+}
+
+.tab-bar + .tab-contents {
+  margin-top: var(--tab-gap);
+}
+
+.tab-bar-button {
+  all: unset;
+  cursor: pointer;
+  user-select: none;
+  z-index: 1;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tab-background);
+  color: var(--tab-text-color);
+  font-weight: 500;
+  border: var(--tab-border-width) solid var(--tab-border-color);
+  gap: var(--tab-button-content-gap);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  transition: background var(--tab-transition-duration) var(--tab-transition-easing),
+              color var(--tab-transition-duration) var(--tab-transition-easing),
+              height var(--tab-transition-duration) var(--tab-transition-easing),
+              box-shadow var(--tab-transition-duration) var(--tab-transition-easing),
+              border var(--tab-transition-duration) var(--tab-transition-easing),
+              outline var(--tab-transition-duration) var(--tab-transition-easing);
+}
+
+.tab-bar-button * {
+  font-family: inherit;
+}
+
+.tab-bar-button.active {
+  border: var(--tab-border-width) solid var(--tab-border-color-active);
+}
+
+.tab-bar-button::before {
+  content: "";
+  z-index: -1;
+  background: var(--tab-background-active);
+  opacity: 0;
+  transition: opacity var(--tab-transition-duration) var(--tab-transition-easing);
+  position: absolute;
+  inset: 0;
+}
+
+.tab-bar-button.active::before {
+  opacity: 1;
+}
+
+.tab-bar-button-icon {
+  min-width: 24px;
+  height: 24px;
+  background-color: currentColor;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+.tab-contents {
+  position: relative;
+  transition: height var(--tab-transition-duration) var(--tab-transition-easing);
+  display: flex;
+  interpolate-size: initial;
+}
+
+.tab-contents:not(.transitioning) {
+  height: auto !important;
+}
+
+.tab-contents:not(.transitioning) .tab-content.active {
+  position: initial;
+}
+
+.tab-content {
+  transform: translateX(-64px);
+  opacity: 0;
+  transition: transform var(--tab-transition-duration) var(--tab-transition-easing),
+              opacity var(--tab-transition-duration) var(--tab-transition-easing);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  width: 100%;
+}
+
+.tab-content * {
+  pointer-events: none !important;
+}
+
+.tab-content.active {
+  transform: initial;
+  opacity: 1;
+  pointer-events: initial;
+}
+
+.tab-content.active * {
+  pointer-events: initial !important;
+}
+
+.tab-content.active ~ .tab-content {
+  transform: translateX(64px);
+}
+
+@media (max-width: 600px) {
+  .tab-bar-button-icon {
+    min-width: 18px;
+    height: 18px;
+  }
+}
+
+/* Button Style Tabs */
+
+.tab-bar.tab-style-buttons {
+  gap: var(--tab-button-gap);
+}
+
+.tab-style-buttons .tab-bar-button {
+  padding: 8px 16px;
+  min-width: 120px;
+  min-height: 60px;
+  font-size: 20px;
+  line-height: 110%;
+  letter-spacing: -0.005em;
+  outline: 1px solid transparent;
+}
+
+@media (max-width: 1440px) {
+  .tab-style-buttons .tab-bar-button {
+    font-size: 18px;
+    min-height: 54px;
+  }
+}
+
+@media (max-width: 600px) {
+  .tab-style-buttons .tab-bar-button {
+    font-size: 16px;
+    min-height: 40px;
+  }
+}
+
+/* Tab Style Tabs */
+
+.tab-style-tabs {
+  --tab-gap: 0px;
+}
+
+.tab-bar.tab-style-tabs {
+  align-items: flex-end;
+  height: 40px;
+  width: 100%;
+}
+
+.tab-style-tabs .tab-bar-button {
+  flex: 1 1 auto;
+  border-radius: var(--tab-border-radius) var(--tab-border-radius) 0 0;
+  border-bottom: 0 !important;
+  height: 36px;
+  padding: 0 16px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 120%;
+  letter-spacing: 0.05em;
+}
+
+.tab-style-tabs .tab-bar-button:not(:nth-last-child(2)) {
+  margin-right: calc(var(--tab-border-width) * -1);
+}
+
+.tab-style-tabs .tab-bar-button.active {
+  height: 40px;
+}
+
+.tab-contents.tab-style-tabs {
+  border-radius: 0 0 var(--tab-border-radius) var(--tab-border-radius);
+  background: var(--tab-background);
+  border: var(--tab-border-width) solid var(--tab-border-color);
+  overflow: hidden;
+}
+
+.tab-style-tabs .tab-content {
+  padding: 24px;
+}
+
+@media (max-width: 1440px) {
+  .tab-bar.tab-style-tabs {
+    height: 36px;
+  }
+
+  .tab-style-tabs .tab-bar-button {
+    height: 32px;
+    font-size: 15px;
+  }
+
+  .tab-style-tabs .tab-bar-button.active {
+    height: 36px;
+  }
+}
+
+@media (max-width: 600px) {
+  .tab-bar.tab-style-tabs {
+    height: 32px;
+  }
+
+  .tab-style-tabs .tab-bar-button {
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .tab-style-tabs .tab-bar-button.active {
+    height: 32px;
+  }
+}
+
+/* Slide Tab Style Tabs */
+
+.tab-bar.tab-style-slide-tabs {
+  padding: 8px;
+  background: var(--tab-background);
+  border-radius: var(--tab-border-radius);
+  align-self: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.tab-style-slide-tabs .tab-bar-active {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  background: var(--tab-indicator-background);
+  border-radius: var(--tab-border-radius-small);
+  border: var(--tab-border-width) solid var(--tab-border-color);
+  transition:
+    left var(--tab-transition-duration) var(--tab-transition-easing),
+    right var(--tab-transition-duration) var(--tab-transition-easing),
+    top var(--tab-transition-duration) var(--tab-transition-easing),
+    bottom var(--tab-transition-duration) var(--tab-transition-easing);
+}
+
+.tab-style-slide-tabs .tab-bar-button {
+  padding: 8px;
+  min-height: 40px;
+  min-width: min-content;
+  font-weight: 700;
+  white-space: nowrap;
+  background: initial !important;
+  border: none !important;
+  letter-spacing: -0.005em;
+  font-size: 14px;
+  flex: 1;
+  color: var(--tab-text-color-inactive);
+  line-height: 148%;
+}
+
+.tab-style-slide-tabs .tab-bar-button::before {
+  display: none;
+}
+
+.tab-style-slide-tabs .tab-bar-button.active {
+  color: var(--tab-text-color);
+}
+
+@media (max-width: 600px) {
+  .tab-bar.tab-style-slide-tabs {
+    width: 100%;
+  }
+
+  .tab-style-slide-tabs .tab-bar-button {
+    flex: 1;
+  }
+}

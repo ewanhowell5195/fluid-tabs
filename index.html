@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabs</title>
+
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 32px;
+        padding: 24px;
+        margin: 0;
+        font: 14px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        color: #1c1c1c;
+        background: #ffffff;
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+      }
+
+      section {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      p {
+        margin: 0;
+        opacity: 0.8;
+      }
+
+      code {
+        background: #f1f1f1;
+        padding: 1px 4px;
+        border-radius: 4px;
+      }
+
+      .demo-content-body {
+        padding: 16px;
+        background: #f1f1f1;
+        border-radius: 10px;
+        border: 1px solid #d6d6d6;
+      }
+
+      .controls {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .narrow-container {
+        max-width: 480px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Tabs</h1>
+
+    <section>
+      <h2>Default tab bar (no style class)</h2>
+      <p>Bare <code>.tab-bar</code> + <code>.tab-contents</code> as the next sibling. Click buttons or swipe content on touch to navigate.</p>
+
+      <div>
+        <div class="tab-bar">
+          <button type="button" class="tab-bar-button active" data-tab="Overview">Overview</button>
+          <button type="button" class="tab-bar-button" data-tab="Details">Details</button>
+          <button type="button" class="tab-bar-button" data-tab="Reviews">Reviews</button>
+        </div>
+        <div class="tab-contents">
+          <div class="tab-content active" data-tab="Overview"><div class="demo-content-body">Overview content. Buttons and panels are matched by <code>data-tab</code>.</div></div>
+          <div class="tab-content" data-tab="Details"><div class="demo-content-body">Details content — a different panel for testing the slide/fade transition between siblings.</div></div>
+          <div class="tab-content" data-tab="Reviews"><div class="demo-content-body">Reviews content. The container's height should animate when panels differ in size.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Default style — variable widths</h2>
+      <p>Default <code>.tab-bar</code> with varied tab labels.</p>
+
+      <div>
+        <div class="tab-bar">
+          <button type="button" class="tab-bar-button active" data-tab="a">One</button>
+          <button type="button" class="tab-bar-button" data-tab="b">Two</button>
+          <button type="button" class="tab-bar-button" data-tab="c">Three</button>
+          <button type="button" class="tab-bar-button" data-tab="d">Four</button>
+        </div>
+        <div class="tab-contents">
+          <div class="tab-content active" data-tab="a"><div class="demo-content-body">Panel A. <code>data-tab="a"</code> on both button and content.</div></div>
+          <div class="tab-content" data-tab="b"><div class="demo-content-body">Panel B. Tall panel:<br><br><br>Filler line one.<br>Filler line two.<br>Filler line three.</div></div>
+          <div class="tab-content" data-tab="c"><div class="demo-content-body">Panel C.</div></div>
+          <div class="tab-content" data-tab="d"><div class="demo-content-body">Panel D — short.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2><code>tab-style-tabs</code></h2>
+      <p>Classic file-folder tabs joined to the content container. Tab-content gets built-in padding.</p>
+
+      <div>
+        <div class="tab-bar tab-style-tabs">
+          <button type="button" class="tab-bar-button active" data-tab="Profile">Profile</button>
+          <button type="button" class="tab-bar-button" data-tab="Settings">Settings</button>
+          <button type="button" class="tab-bar-button" data-tab="Notifications">Notifications</button>
+          <button type="button" class="tab-bar-button" data-tab="Billing">Billing</button>
+        </div>
+        <div class="tab-contents tab-style-tabs">
+          <div class="tab-content active" data-tab="Profile">User profile information. Name, avatar, bio, and so on.</div>
+          <div class="tab-content" data-tab="Settings">Account settings: password, language, timezone.</div>
+          <div class="tab-content" data-tab="Notifications">Email and push notification preferences.</div>
+          <div class="tab-content" data-tab="Billing">Plan, payment method, and invoices.</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2><code>tab-style-slide-tabs</code></h2>
+      <p>Pill-style segmented control with a sliding active indicator. The hover-tease/spring effect is most visible here.</p>
+
+      <div>
+        <div class="tab-bar tab-style-slide-tabs">
+          <button type="button" class="tab-bar-button active" data-tab="day">Day</button>
+          <button type="button" class="tab-bar-button" data-tab="week">Week</button>
+          <button type="button" class="tab-bar-button" data-tab="month">Month</button>
+          <button type="button" class="tab-bar-button" data-tab="year">Year</button>
+        </div>
+        <div class="tab-contents">
+          <div class="tab-content active" data-tab="day"><div class="demo-content-body">Day view.</div></div>
+          <div class="tab-content" data-tab="week"><div class="demo-content-body">Week view.</div></div>
+          <div class="tab-content" data-tab="month"><div class="demo-content-body">Month view.</div></div>
+          <div class="tab-content" data-tab="year"><div class="demo-content-body">Year view.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Linked via <code>data-tab-bar</code> (detached)</h2>
+      <p>Tab bar and content are not siblings. The contents container references the tab bar's id with <code>data-tab-bar</code>.</p>
+
+      <div class="tab-bar" id="detached-bar">
+        <button type="button" class="tab-bar-button active" data-tab="Alpha">Alpha</button>
+        <button type="button" class="tab-bar-button" data-tab="Beta">Beta</button>
+        <button type="button" class="tab-bar-button" data-tab="Gamma">Gamma</button>
+      </div>
+
+      <p style="opacity:.6">— unrelated content sitting between the bar and its panels —</p>
+
+      <div class="tab-contents" data-tab-bar="detached-bar">
+        <div class="tab-content active" data-tab="Alpha"><div class="demo-content-body">Alpha panel (linked by id).</div></div>
+        <div class="tab-content" data-tab="Beta"><div class="demo-content-body">Beta panel.</div></div>
+        <div class="tab-content" data-tab="Gamma"><div class="demo-content-body">Gamma panel.</div></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Tab bar with no contents</h2>
+      <p>A standalone <code>.tab-bar</code> with no following <code>.tab-contents</code>. Only the indicator updates and the <code>tab-changed</code> event fires.</p>
+
+      <div class="tab-bar tab-style-slide-tabs" id="standalone-bar">
+        <button type="button" class="tab-bar-button active" data-tab="low">Low</button>
+        <button type="button" class="tab-bar-button" data-tab="medium">Medium</button>
+        <button type="button" class="tab-bar-button" data-tab="high">High</button>
+      </div>
+      <code id="standalone-status">last event: (none)</code>
+    </section>
+
+    <section>
+      <h2>Listening to <code>tab-changed</code></h2>
+      <p>The tab bar fires a <code>tab-changed</code> event with <code>detail</code> set to the button's <code>data-tab</code>.</p>
+
+      <div>
+        <div class="tab-bar tab-style-tabs" id="event-bar">
+          <button type="button" class="tab-bar-button active" data-tab="red">Red</button>
+          <button type="button" class="tab-bar-button" data-tab="green">Green</button>
+          <button type="button" class="tab-bar-button" data-tab="blue">Blue</button>
+        </div>
+        <div class="tab-contents tab-style-tabs">
+          <div class="tab-content active" data-tab="red">Red panel.</div>
+          <div class="tab-content" data-tab="green">Green panel.</div>
+          <div class="tab-content" data-tab="blue">Blue panel.</div>
+        </div>
+      </div>
+      <code id="event-status">tab-changed: (waiting)</code>
+    </section>
+
+    <section>
+      <h2>Programmatic switch</h2>
+      <p>Buttons below call <code>.click()</code> on a specific tab.</p>
+
+      <div>
+        <div class="tab-bar" id="api-bar">
+          <button type="button" class="tab-bar-button active" data-tab="left">Left</button>
+          <button type="button" class="tab-bar-button" data-tab="middle">Middle</button>
+          <button type="button" class="tab-bar-button" data-tab="right">Right</button>
+        </div>
+        <div class="tab-contents">
+          <div class="tab-content active" data-tab="left"><div class="demo-content-body">Left.</div></div>
+          <div class="tab-content" data-tab="middle"><div class="demo-content-body">Middle.</div></div>
+          <div class="tab-content" data-tab="right"><div class="demo-content-body">Right.</div></div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button type="button" data-target="left">Go to Left</button>
+        <button type="button" data-target="middle">Go to Middle</button>
+        <button type="button" data-target="right">Go to Right</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Many tabs (wraps to multiple rows)</h2>
+      <p>The tab bar wraps. The active indicator should follow the active button across rows and the <code>ResizeObserver</code> should re-snap it on resize.</p>
+
+      <div style="max-width: 720px;">
+        <div class="tab-bar">
+          <button type="button" class="tab-bar-button active" data-tab="Item 1">Item 1</button>
+          <button type="button" class="tab-bar-button" data-tab="Item 2">Item 2</button>
+          <button type="button" class="tab-bar-button" data-tab="Item 3">Item 3</button>
+          <button type="button" class="tab-bar-button" data-tab="Item 4">Item 4</button>
+          <button type="button" class="tab-bar-button" data-tab="Item 5">Item 5</button>
+          <button type="button" class="tab-bar-button" data-tab="Item 6">Item 6</button>
+          <button type="button" class="tab-bar-button" data-tab="Item 7">Item 7</button>
+          <button type="button" class="tab-bar-button" data-tab="Item 8">Item 8</button>
+        </div>
+        <div class="tab-contents">
+          <div class="tab-content active" data-tab="Item 1"><div class="demo-content-body">Panel 1</div></div>
+          <div class="tab-content" data-tab="Item 2"><div class="demo-content-body">Panel 2</div></div>
+          <div class="tab-content" data-tab="Item 3"><div class="demo-content-body">Panel 3</div></div>
+          <div class="tab-content" data-tab="Item 4"><div class="demo-content-body">Panel 4</div></div>
+          <div class="tab-content" data-tab="Item 5"><div class="demo-content-body">Panel 5</div></div>
+          <div class="tab-content" data-tab="Item 6"><div class="demo-content-body">Panel 6</div></div>
+          <div class="tab-content" data-tab="Item 7"><div class="demo-content-body">Panel 7</div></div>
+          <div class="tab-content" data-tab="Item 8"><div class="demo-content-body">Panel 8</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Narrow container</h2>
+      <p>Slide-style tabs constrained to 480px. Buttons should flex to fill and the indicator should still track correctly.</p>
+
+      <div class="narrow-container">
+        <div class="tab-bar tab-style-slide-tabs">
+          <button type="button" class="tab-bar-button active" data-tab="Inbox">Inbox</button>
+          <button type="button" class="tab-bar-button" data-tab="Sent">Sent</button>
+          <button type="button" class="tab-bar-button" data-tab="Drafts">Drafts</button>
+          <button type="button" class="tab-bar-button" data-tab="Spam">Spam</button>
+        </div>
+        <div class="tab-contents">
+          <div class="tab-content active" data-tab="Inbox"><div class="demo-content-body">Inbox.</div></div>
+          <div class="tab-content" data-tab="Sent"><div class="demo-content-body">Sent.</div></div>
+          <div class="tab-content" data-tab="Drafts"><div class="demo-content-body">Drafts.</div></div>
+          <div class="tab-content" data-tab="Spam"><div class="demo-content-body">Spam.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <script type="module">
+      const link = document.createElement("link")
+      link.rel = "stylesheet"
+      link.href = `src/tabs.css?rnd=${Math.random()}`
+      document.head.append(link)
+
+      await import(`./src/tabs.js?rnd=${Math.random()}`)
+
+      // standalone tab bar — only event, no contents
+      const standaloneBar = document.getElementById("standalone-bar")
+      const standaloneStatus = document.getElementById("standalone-status")
+      standaloneBar.addEventListener("tab-changed", e => {
+        standaloneStatus.textContent = `last event: ${e.detail}`
+      })
+
+      // tab-changed listener demo
+      const eventBar = document.getElementById("event-bar")
+      const eventStatus = document.getElementById("event-status")
+      eventBar.addEventListener("tab-changed", e => {
+        eventStatus.textContent = `tab-changed: ${e.detail}`
+      })
+
+      // programmatic switch demo
+      const apiBar = document.getElementById("api-bar")
+      for (const btn of document.querySelectorAll("[data-target]")) {
+        btn.addEventListener("click", () => {
+          const target = btn.dataset.target
+          const tab = apiBar.querySelector(`.tab-bar-button[data-tab="${target}"]`)
+          tab?.click()
+        })
+      }
+    </script>
+  </body>
+</html>
