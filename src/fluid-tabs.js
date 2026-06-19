@@ -21,8 +21,8 @@
     lastWheelAt = now
   }, { capture: true, passive: true })
 
-  function initTabBars() {
-    const tabBars = document.querySelectorAll(".tab-bar:not(.initialised)")
+  function initTabBars(root = document) {
+    const tabBars = root.querySelectorAll(".tab-bar:not(.initialised)")
     for (const tabBar of tabBars) {
       tabBar.classList.add("initialised")
 
@@ -380,8 +380,10 @@
     }
   }
 
+  window.FluidTabs = { init: initTabBars }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initTabBars)
+    document.addEventListener("DOMContentLoaded", () => initTabBars())
   } else {
     initTabBars()
   }

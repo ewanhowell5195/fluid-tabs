@@ -1,6 +1,6 @@
 {
   "name": "fluid-tabs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A lightweight, zero-dependency tabs library with smooth animated indicators, swipe support, and multiple visual styles.",
   "author": "Ewan Howell <ewanhowell5195>",
   "license": "MIT",

@@ -152,6 +152,15 @@ Each initialised bar also exposes an `update()` method that re-snaps the indicat
 bar.update()
 ```
 
+### Initialising dynamically-added tabs
+
+Every `.tab-bar` present on load is initialised automatically. If you add tab bars later, call `FluidTabs.init()` to pick up any that aren't initialised yet. It's idempotent - already-initialised bars are skipped. Pass a root element to limit the scan:
+
+```js
+FluidTabs.init()           // scan the whole document
+FluidTabs.init(sectionEl)  // scan within an element
+```
+
 ## Theming
 
 The library ships the structural and default styling it needs. Tweak the look with these CSS variables (shown with their defaults):
