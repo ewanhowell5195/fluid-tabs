@@ -206,11 +206,49 @@
     </section>
 
     <section>
-      <h2>Many tabs (wraps to multiple rows)</h2>
-      <p>The tab bar wraps. The active indicator should follow the active button across rows and the <code>ResizeObserver</code> should re-snap it on resize.</p>
+      <h2>Scroll &amp; wrap — switch tab type</h2>
+      <p>Switch the style applied to both examples below.</p>
+      <div class="controls" id="type-switcher">
+        <label><input type="radio" name="tab-type" value="tab-style-buttons" checked> Buttons</label>
+        <label><input type="radio" name="tab-type" value="tab-style-tabs"> Tabs</label>
+        <label><input type="radio" name="tab-type" value="tab-style-slide"> Slide</label>
+      </div>
+    </section>
+
+    <section>
+      <h2>Many tabs (scrolls)</h2>
+      <p>Default behaviour: too many tabs scroll horizontally. Drag, wheel, or swipe to scroll; selecting a tab scrolls it into view. The indicator tracks the active tab as it scrolls.</p>
 
       <div style="max-width: 290px;">
-        <div class="tab-bar">
+        <div class="tab-bar switchable">
+          <button type="button" class="tab-bar-button active" data-tab="Item 1">Item 1</button>
+          <button type="button" class="tab-bar-button" data-tab="Item 2">Item 2</button>
+          <button type="button" class="tab-bar-button" data-tab="Item 3">Item 3</button>
+          <button type="button" class="tab-bar-button" data-tab="Item 4">Item 4</button>
+          <button type="button" class="tab-bar-button" data-tab="Item 5">Item 5</button>
+          <button type="button" class="tab-bar-button" data-tab="Item 6">Item 6</button>
+          <button type="button" class="tab-bar-button" data-tab="Item 7">Item 7</button>
+          <button type="button" class="tab-bar-button" data-tab="Item 8">Item 8</button>
+        </div>
+        <div class="tab-contents">
+          <div class="tab-content active" data-tab="Item 1">Panel 1</div>
+          <div class="tab-content" data-tab="Item 2">Panel 2</div>
+          <div class="tab-content" data-tab="Item 3">Panel 3</div>
+          <div class="tab-content" data-tab="Item 4">Panel 4</div>
+          <div class="tab-content" data-tab="Item 5">Panel 5</div>
+          <div class="tab-content" data-tab="Item 6">Panel 6</div>
+          <div class="tab-content" data-tab="Item 7">Panel 7</div>
+          <div class="tab-content" data-tab="Item 8">Panel 8</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Many tabs — <code>tab-bar-wrap</code> (wraps to multiple rows)</h2>
+      <p>Opt back into wrapping with <code>tab-bar-wrap</code>. The indicator follows the active button across rows.</p>
+
+      <div style="max-width: 290px;">
+        <div class="tab-bar tab-bar-wrap switchable">
           <button type="button" class="tab-bar-button active" data-tab="Item 1">Item 1</button>
           <button type="button" class="tab-bar-button" data-tab="Item 2">Item 2</button>
           <button type="button" class="tab-bar-button" data-tab="Item 3">Item 3</button>
@@ -262,6 +300,20 @@
           const target = btn.dataset.target
           const tab = apiBar.querySelector(`.tab-bar-button[data-tab="${target}"]`)
           tab?.click()
+        })
+      }
+
+      const TYPE_STYLES = ["tab-style-buttons", "tab-style-tabs", "tab-style-slide"]
+      for (const radio of document.querySelectorAll("#type-switcher input")) {
+        radio.addEventListener("change", () => {
+          for (const bar of document.querySelectorAll(".tab-bar.switchable")) {
+            for (const el of [bar, bar.nextElementSibling]) {
+              if (!el?.classList.contains("tab-bar") && !el?.classList.contains("tab-contents")) continue
+              el.classList.remove(...TYPE_STYLES)
+              el.classList.add(radio.value)
+            }
+            bar.update?.()
+          }
         })
       }
     </script>

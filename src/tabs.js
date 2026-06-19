@@ -9,6 +9,17 @@ const tabBarResizeObserver = new ResizeObserver(entries => {
 
 const TAB_STYLES = ["tab-style-buttons", "tab-style-tabs", "tab-style-slide"]
 
+let lastWheelAt = 0
+let wheelOwner = null
+
+addEventListener("wheel", e => {
+  const now = performance.now()
+  if (now - lastWheelAt > 200) {
+    wheelOwner = e.target.closest?.(".tab-bar") || null
+  }
+  lastWheelAt = now
+}, { capture: true, passive: true })
+
 function initTabBars() {
   const tabBars = document.querySelectorAll(".tab-bar:not(.initialised)")
   for (const tabBar of tabBars) {
@@ -46,8 +57,15 @@ function initTabBars() {
     function getParentBox() {
       const parentRect = tabBar.getBoundingClientRect()
       const style = getComputedStyle(tabBar)
+      const sx = tabBar.scrollLeft
+      const sy = tabBar.scrollTop
       return {
-        rect: parentRect,
+        rect: {
+          left: parentRect.left - sx,
+          right: parentRect.right - sx,
+          top: parentRect.top - sy,
+          bottom: parentRect.bottom - sy
+        },
         left: parentRect.left + parseFloat(style.paddingLeft),
         right: parentRect.right - parseFloat(style.paddingRight),
         top: parentRect.top + parseFloat(style.paddingTop),
@@ -72,8 +90,42 @@ function initTabBars() {
       }
     }
 
+    function updateFades() {
+      if (tabBar.classList.contains("tab-bar-wrap")) {
+        tabBar.classList.remove("tab-bar-fade-start", "tab-bar-fade-end")
+        return
+      }
+      const buffer = 2
+      const maxScroll = tabBar.scrollWidth - tabBar.clientWidth
+      tabBar.classList.toggle("tab-bar-fade-start", tabBar.scrollLeft > buffer)
+      tabBar.classList.toggle("tab-bar-fade-end", maxScroll > buffer && tabBar.scrollLeft < maxScroll - buffer)
+    }
+
     tabBar.update = () => {
       updateIndicator()
+      updateFades()
+    }
+
+    tabBar.addEventListener("scroll", updateFades)
+
+    function scrollActiveIntoView(smooth) {
+      const active = tabBar.querySelector(".tab-bar-button.active")
+      const maxScroll = tabBar.scrollWidth - tabBar.clientWidth
+      if (!active || maxScroll <= 0) return
+      const style = getComputedStyle(tabBar)
+      const padLeft = parseFloat(style.paddingLeft) || 0
+      const padRight = parseFloat(style.paddingRight) || 0
+      const fade = parseFloat(style.getPropertyValue("--tab-fade")) || 0
+      const visibleLeft = tabBar.scrollLeft + padLeft + fade
+      const visibleRight = tabBar.scrollLeft + tabBar.clientWidth - padRight - fade
+      const activeLeft = active.offsetLeft
+      const activeRight = activeLeft + active.offsetWidth
+      let next = tabBar.scrollLeft
+      if (activeLeft < visibleLeft) next = Math.max(0, activeLeft - padLeft - fade)
+      else if (activeRight > visibleRight) next = activeRight - tabBar.clientWidth + padRight + fade
+      if (next === tabBar.scrollLeft) return
+      if (smooth) tabBar.scrollTo({ left: next, behavior: "smooth" })
+      else tabBar.scrollLeft = next
     }
 
     for (const button of buttons) {
@@ -226,13 +278,104 @@ function initTabBars() {
 
         if (!willAnimate) finish()
 
+        scrollActiveIntoView(true)
+
         tabBar.dispatchEvent(new CustomEvent("tab-changed", {
           detail: button.dataset.tab
         }))
       })
     }
 
-    const swipeTargets = [tabBar, ...contentWraps]
+    let dragStartX, dragStartScroll, dragLastScroll, dragLastAt, dragVelocity, dragMoved, dragging, momentumRaf
+
+    function stopMomentum() {
+      if (momentumRaf) {
+        cancelAnimationFrame(momentumRaf)
+        momentumRaf = null
+      }
+    }
+
+    function startMomentum() {
+      stopMomentum()
+      if (Math.abs(dragVelocity) < 0.01) return
+      let lastAt = performance.now()
+      function step(now) {
+        const maxScroll = tabBar.scrollWidth - tabBar.clientWidth
+        if (maxScroll <= 0) return stopMomentum()
+        const dt = Math.min(32, now - lastAt)
+        lastAt = now
+        tabBar.scrollLeft = Math.max(0, Math.min(maxScroll, tabBar.scrollLeft + dragVelocity * dt))
+        if ((tabBar.scrollLeft <= 0.1 && dragVelocity < 0) || (tabBar.scrollLeft >= maxScroll - 0.1 && dragVelocity > 0)) return stopMomentum()
+        dragVelocity *= Math.pow(0.8, dt / 16.67)
+        if (Math.abs(dragVelocity) <= 0.002) return stopMomentum()
+        momentumRaf = requestAnimationFrame(step)
+      }
+      momentumRaf = requestAnimationFrame(step)
+    }
+
+    function onDragMove(e) {
+      if (!dragging) return
+      const deltaX = e.clientX - dragStartX
+      if (Math.abs(deltaX) > 5) dragMoved = true
+      const now = performance.now()
+      const dt = now - dragLastAt
+      tabBar.scrollLeft = dragStartScroll - deltaX
+      if (dt > 0) {
+        dragVelocity = dragVelocity * 0.65 + ((tabBar.scrollLeft - dragLastScroll) / dt) * 0.35
+        dragLastScroll = tabBar.scrollLeft
+        dragLastAt = now
+      }
+    }
+
+    function onDragEnd() {
+      if (!dragging) return
+      dragging = false
+      tabBar.classList.remove("tab-bar-dragging")
+      removeEventListener("pointermove", onDragMove)
+      removeEventListener("pointerup", onDragEnd)
+      removeEventListener("pointercancel", onDragEnd)
+      if (dragMoved) startMomentum()
+    }
+
+    tabBar.addEventListener("pointerdown", e => {
+      if (e.button !== 0) return
+      if (tabBar.scrollWidth - tabBar.clientWidth <= 0) return
+      stopMomentum()
+      dragging = true
+      dragMoved = false
+      dragStartX = e.clientX
+      dragStartScroll = dragLastScroll = tabBar.scrollLeft
+      dragLastAt = performance.now()
+      dragVelocity = 0
+      tabBar.classList.add("tab-bar-dragging")
+      addEventListener("pointermove", onDragMove)
+      addEventListener("pointerup", onDragEnd)
+      addEventListener("pointercancel", onDragEnd)
+    })
+
+    tabBar.addEventListener("click", e => {
+      if (!dragMoved) return
+      e.stopPropagation()
+      e.preventDefault()
+      dragMoved = false
+    }, true)
+
+    tabBar.addEventListener("wheel", e => {
+      if (wheelOwner !== tabBar) return
+      const maxScroll = tabBar.scrollWidth - tabBar.clientWidth
+      if (maxScroll <= 0) return
+      e.preventDefault()
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+      const atStart = tabBar.scrollLeft <= 0.1
+      const atEnd = tabBar.scrollLeft >= maxScroll - 0.1
+      if ((atStart && delta < 0) || (atEnd && delta > 0)) return
+      if (atStart && delta > 0 && dragVelocity < 0) dragVelocity = 0
+      if (atEnd && delta < 0 && dragVelocity > 0) dragVelocity = 0
+      dragVelocity = (dragVelocity || 0) + delta * 0.015
+      if (!momentumRaf) startMomentum()
+    }, { passive: false })
+
+    const swipeTargets = [...contentWraps]
 
     let swipeStartX = 0
     let swipeStartY = 0
@@ -272,6 +415,8 @@ function initTabBars() {
     tabBarResizeObserver.observe(tabBar)
 
     updateIndicator()
+    scrollActiveIntoView(false)
+    updateFades()
   }
 }
 
