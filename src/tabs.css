@@ -3,7 +3,6 @@
   --tab-transition-easing: cubic-bezier(.4, 0, .2, 1);
   --tab-slide-lag: .333;
   --tab-tease-x: 10px;
-  --tab-tease-y: 2px;
 }
 
 @property --tab-fade-start {
@@ -152,7 +151,6 @@
 }
 
 .tab-style-buttons .tab-bar-active {
-  --tab-tease-y: 0;
   border-bottom: 2px solid #1c1c1c;
 }
 

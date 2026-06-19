@@ -51,10 +51,8 @@ function initTabBars() {
     }
     const contentsWrap = contentWraps[0] || null
     const contents = contentWraps.flatMap(el => Array.from(el.querySelectorAll(".tab-content")))
-    const indicatorStyle = getComputedStyle(activeIndicator)
-    const teaseX = parseFloat(indicatorStyle.getPropertyValue("--tab-tease-x")) || 0
-    const teaseY = parseFloat(indicatorStyle.getPropertyValue("--tab-tease-y")) || 0
-    let locked = false
+    const teaseX = parseFloat(getComputedStyle(activeIndicator).getPropertyValue("--tab-tease-x")) || 0
+    let endTransition = null
 
     function getParentBox() {
       const parentRect = tabBar.getBoundingClientRect()
@@ -132,7 +130,6 @@ function initTabBars() {
 
     for (const button of buttons) {
       button.addEventListener("mouseenter", () => {
-        if (locked) return
         const active = tabBar.querySelector(".tab-bar-button.active")
         if (!active) return
 
@@ -141,36 +138,17 @@ function initTabBars() {
         const hoverRect = button.getBoundingClientRect()
         const activeCenter = getCenter(rect)
         const hoverCenter = getCenter(hoverRect)
+        const isFirstCol = rect.left <= parentBox.left + 1
+        const isLastCol = rect.right >= parentBox.right - 1
 
-        if (button === active) {
-          const isFirstCol = rect.left <= parentBox.left + 1
-          const isLastCol = rect.right >= parentBox.right - 1
+        activeIndicator.style.top = rect.top - parentBox.rect.top + "px"
+        activeIndicator.style.bottom = parentBox.rect.bottom - rect.bottom + "px"
+
+        if (button === active || Math.abs(hoverCenter.x - activeCenter.x) <= 8) {
           const left = rect.left - parentBox.rect.left - (isFirstCol ? 0 : teaseX / 2)
           const right = parentBox.rect.right - rect.right - (isLastCol ? 0 : teaseX / 2)
           activeIndicator.style.left = left + "px"
           activeIndicator.style.right = right + "px"
-          activeIndicator.style.top = rect.top - parentBox.rect.top + "px"
-          activeIndicator.style.bottom = parentBox.rect.bottom - rect.bottom + "px"
-          return
-        }
-
-        const isFirstCol = rect.left <= parentBox.left + 1
-        const isLastCol = rect.right >= parentBox.right - 1
-        const isFirstRow = rect.top <= parentBox.top + 1
-        const isLastRow = rect.bottom >= parentBox.bottom - 1
-
-        const CENTER_THRESHOLD = 8
-
-        if (Math.abs(hoverCenter.x - activeCenter.x) <= CENTER_THRESHOLD) {
-          if (teaseY) {
-            activeIndicator.style.left = rect.left - parentBox.rect.left + "px"
-            activeIndicator.style.right = parentBox.rect.right - rect.right + "px"
-          } else {
-            const left = rect.left - parentBox.rect.left - (isFirstCol ? 0 : teaseX / 2)
-            const right = parentBox.rect.right - rect.right - (isLastCol ? 0 : teaseX / 2)
-            activeIndicator.style.left = left + "px"
-            activeIndicator.style.right = right + "px"
-          }
         } else if (hoverCenter.x < activeCenter.x) {
           const left = rect.left - parentBox.rect.left - (isFirstCol ? 0 : teaseX)
           activeIndicator.style.left = left + "px"
@@ -180,43 +158,24 @@ function initTabBars() {
           activeIndicator.style.left = rect.left - parentBox.rect.left + "px"
           activeIndicator.style.right = right + "px"
         }
-
-        if (hoverCenter.y < activeCenter.y) {
-          const top = rect.top - parentBox.rect.top - (isFirstRow ? 0 : teaseY)
-          activeIndicator.style.top = top + "px"
-          activeIndicator.style.bottom = parentBox.rect.bottom - rect.bottom + "px"
-        } else if (hoverCenter.y > activeCenter.y) {
-          const bottom = parentBox.rect.bottom - rect.bottom - (isLastRow ? 0 : teaseY)
-          activeIndicator.style.top = rect.top - parentBox.rect.top + "px"
-          activeIndicator.style.bottom = bottom + "px"
-        } else {
-          activeIndicator.style.top = rect.top - parentBox.rect.top + "px"
-          activeIndicator.style.bottom = parentBox.rect.bottom - rect.bottom + "px"
-        }
       })
 
       button.addEventListener("mouseleave", () => {
-        if (!locked) updateIndicator()
+        updateIndicator()
       })
 
       button.addEventListener("click", () => {
-        if (locked || button.classList.contains("active")) return
+        if (button.classList.contains("active")) return
         const currentActive = tabBar.querySelector(".tab-bar-button.active")
-        locked = true
+
+        endTransition?.()
 
         const toRect = button.getBoundingClientRect()
         const fromRect = currentActive.getBoundingClientRect()
         const parentBox = getParentBox()
 
         for (const wrap of contentWraps) {
-          const activeContent = wrap.querySelector(".tab-content.active")
-          const border =
-            parseFloat(getComputedStyle(wrap).borderTopWidth) +
-            parseFloat(getComputedStyle(wrap).borderBottomWidth)
-
-          wrap.style.height = activeContent
-            ? activeContent.getBoundingClientRect().height + border + "px"
-            : border + "px"
+          wrap.style.height = wrap.getBoundingClientRect().height + "px"
         }
 
         if (currentActive) currentActive.classList.remove("active")
@@ -251,34 +210,28 @@ function initTabBars() {
           movingUp ? lag : "0s"
         ].join(", ")
 
+        const cleanup = () => activeIndicator.removeEventListener("transitionend", onEnd)
         function finish() {
+          cleanup()
           activeIndicator.style.transitionDelay = ""
-          locked = false
           for (const wrap of contentWraps) wrap.classList.remove("transitioning")
-        }
-
-        const willAnimate = parseFloat(getComputedStyle(activeIndicator).transitionDuration) > 0
-        let running = 0
-        function onRun() {
-          running++
+          endTransition = null
         }
         function onEnd() {
-          if (--running > 0) return
-          activeIndicator.removeEventListener("transitionrun", onRun)
-          activeIndicator.removeEventListener("transitionend", onEnd)
+          if (activeIndicator.getAnimations().length) return
           finish()
         }
-        if (willAnimate) {
-          activeIndicator.addEventListener("transitionrun", onRun)
-          activeIndicator.addEventListener("transitionend", onEnd)
-        }
+        endTransition = cleanup
+        activeIndicator.addEventListener("transitionend", onEnd)
 
         activeIndicator.style.left = toRect.left - parentBox.rect.left + "px"
         activeIndicator.style.right = parentBox.rect.right - toRect.right + "px"
         activeIndicator.style.top = toRect.top - parentBox.rect.top + "px"
         activeIndicator.style.bottom = parentBox.rect.bottom - toRect.bottom + "px"
 
-        if (!willAnimate) finish()
+        if (button.matches(":hover")) button.dispatchEvent(new MouseEvent("mouseenter"))
+
+        if (!activeIndicator.getAnimations().length) finish()
 
         scrollActiveIntoView(true)
 
@@ -400,7 +353,6 @@ function initTabBars() {
 
         const active = tabBar.querySelector(".tab-bar-button.active")
         if (!active) return
-        if (locked) return
 
         const index = Array.from(buttons).indexOf(active)
 
