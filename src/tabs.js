@@ -195,7 +195,7 @@ function initTabBars() {
           movingLeft ? lag : "0s",
           movingUp ? "0s" : lag,
           movingUp ? lag : "0s"
-        ].join(" ")
+        ].join(", ")
 
         function finish() {
           activeIndicator.style.transitionDelay = ""
