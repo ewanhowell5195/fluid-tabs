@@ -375,7 +375,7 @@ function initTabBars() {
       if (!momentumRaf) startMomentum()
     }, { passive: false })
 
-    const swipeTargets = [...contentWraps]
+    const swipeTargets = tabBar.classList.contains("tab-bar-no-swipe") ? [] : [...contentWraps]
 
     let swipeStartX = 0
     let swipeStartY = 0
