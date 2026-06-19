@@ -150,7 +150,7 @@ function initTabBars() {
             parseFloat(getComputedStyle(wrap).borderBottomWidth)
 
           wrap.style.height = activeContent
-            ? activeContent.offsetHeight + border + "px"
+            ? activeContent.getBoundingClientRect().height + border + "px"
             : border + "px"
         }
 
