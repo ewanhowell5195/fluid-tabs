@@ -142,6 +142,7 @@
 }
 
 .tab-style-buttons .tab-bar-button {
+  flex: 0 0 auto;
   color: #6b6b6b;
   padding: 12px 16px;
 }

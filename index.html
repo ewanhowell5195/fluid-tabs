@@ -209,9 +209,9 @@
       <h2>Scroll &amp; wrap — switch tab type</h2>
       <p>Switch the style applied to both examples below.</p>
       <div class="controls" id="type-switcher">
-        <label><input type="radio" name="tab-type" value="tab-style-buttons" checked> Buttons</label>
-        <label><input type="radio" name="tab-type" value="tab-style-tabs"> Tabs</label>
-        <label><input type="radio" name="tab-type" value="tab-style-slide"> Slide</label>
+        <label><input type="radio" name="tab-type" value="buttons" checked> Buttons</label>
+        <label><input type="radio" name="tab-type" value="tabs"> Tabs</label>
+        <label><input type="radio" name="tab-type" value="slide"> Slide</label>
       </div>
     </section>
 
@@ -248,7 +248,7 @@
       <p>Opt back into wrapping with <code>tab-bar-wrap</code>. The indicator follows the active button across rows.</p>
 
       <div style="max-width: 290px;">
-        <div class="tab-bar tab-bar-wrap switchable">
+        <div class="tab-bar switchable" data-tab-wrap>
           <button type="button" class="tab-bar-button active" data-tab="Item 1">Item 1</button>
           <button type="button" class="tab-bar-button" data-tab="Item 2">Item 2</button>
           <button type="button" class="tab-bar-button" data-tab="Item 3">Item 3</button>
@@ -310,7 +310,7 @@
             for (const el of [bar, bar.nextElementSibling]) {
               if (!el?.classList.contains("tab-bar") && !el?.classList.contains("tab-contents")) continue
               el.classList.remove(...TYPE_STYLES)
-              el.classList.add(radio.value)
+              el.classList.add(`tab-style-${radio.value}`)
             }
             bar.update?.()
           }

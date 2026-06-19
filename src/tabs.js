@@ -27,6 +27,8 @@ function initTabBars() {
 
     const style = TAB_STYLES.find(c => tabBar.classList.contains(c)) ?? "tab-style-buttons"
     if (!tabBar.classList.contains(style)) tabBar.classList.add(style)
+    if (tabBar.hasAttribute("data-tab-wrap")) tabBar.classList.add("tab-bar-wrap")
+    if (tabBar.hasAttribute("data-tab-no-swipe")) tabBar.classList.add("tab-bar-no-swipe")
 
     const activeIndicator = document.createElement("div")
     activeIndicator.className = "tab-bar-active"
