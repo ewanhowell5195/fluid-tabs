@@ -121,6 +121,8 @@
   transition: height var(--tab-transition-duration) var(--tab-transition-easing);
   display: flex;
   interpolate-size: initial;
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
 .tab-contents:not(.transitioning) {
