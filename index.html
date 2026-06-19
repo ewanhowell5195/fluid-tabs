@@ -47,10 +47,6 @@
         align-items: center;
         flex-wrap: wrap;
       }
-
-      .narrow-container {
-        max-width: 480px;
-      }
     </style>
   </head>
 
@@ -213,7 +209,7 @@
       <h2>Many tabs (wraps to multiple rows)</h2>
       <p>The tab bar wraps. The active indicator should follow the active button across rows and the <code>ResizeObserver</code> should re-snap it on resize.</p>
 
-      <div style="max-width: 720px;">
+      <div style="max-width: 290px;">
         <div class="tab-bar">
           <button type="button" class="tab-bar-button active" data-tab="Item 1">Item 1</button>
           <button type="button" class="tab-bar-button" data-tab="Item 2">Item 2</button>
@@ -233,26 +229,6 @@
           <div class="tab-content" data-tab="Item 6">Panel 6</div>
           <div class="tab-content" data-tab="Item 7">Panel 7</div>
           <div class="tab-content" data-tab="Item 8">Panel 8</div>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2>Narrow container</h2>
-      <p>Slide-style tabs constrained to 480px. Buttons should flex to fill and the indicator should still track correctly.</p>
-
-      <div class="narrow-container">
-        <div class="tab-bar tab-style-slide">
-          <button type="button" class="tab-bar-button active" data-tab="Inbox">Inbox</button>
-          <button type="button" class="tab-bar-button" data-tab="Sent">Sent</button>
-          <button type="button" class="tab-bar-button" data-tab="Drafts">Drafts</button>
-          <button type="button" class="tab-bar-button" data-tab="Spam">Spam</button>
-        </div>
-        <div class="tab-contents">
-          <div class="tab-content active" data-tab="Inbox">Inbox.</div>
-          <div class="tab-content" data-tab="Sent">Sent.</div>
-          <div class="tab-content" data-tab="Drafts">Drafts.</div>
-          <div class="tab-content" data-tab="Spam">Spam.</div>
         </div>
       </div>
     </section>
