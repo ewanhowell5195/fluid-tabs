@@ -38,6 +38,9 @@ function initTabBars() {
     }
     const contentsWrap = contentWraps[0] || null
     const contents = contentWraps.flatMap(el => Array.from(el.querySelectorAll(".tab-content")))
+    const indicatorStyle = getComputedStyle(activeIndicator)
+    const teaseX = parseFloat(indicatorStyle.getPropertyValue("--tab-tease-x")) || 0
+    const teaseY = parseFloat(indicatorStyle.getPropertyValue("--tab-tease-y")) || 0
     let locked = false
 
     function getParentBox() {
@@ -88,8 +91,8 @@ function initTabBars() {
         if (button === active) {
           const isFirstCol = rect.left <= parentBox.left + 1
           const isLastCol = rect.right >= parentBox.right - 1
-          const left = rect.left - parentBox.rect.left - (isFirstCol ? 0 : 5)
-          const right = parentBox.rect.right - rect.right - (isLastCol ? 0 : 5)
+          const left = rect.left - parentBox.rect.left - (isFirstCol ? 0 : teaseX / 2)
+          const right = parentBox.rect.right - rect.right - (isLastCol ? 0 : teaseX / 2)
           activeIndicator.style.left = left + "px"
           activeIndicator.style.right = right + "px"
           activeIndicator.style.top = rect.top - parentBox.rect.top + "px"
@@ -105,24 +108,31 @@ function initTabBars() {
         const CENTER_THRESHOLD = 8
 
         if (Math.abs(hoverCenter.x - activeCenter.x) <= CENTER_THRESHOLD) {
-          activeIndicator.style.left = rect.left - parentBox.rect.left + "px"
-          activeIndicator.style.right = parentBox.rect.right - rect.right + "px"
+          if (teaseY) {
+            activeIndicator.style.left = rect.left - parentBox.rect.left + "px"
+            activeIndicator.style.right = parentBox.rect.right - rect.right + "px"
+          } else {
+            const left = rect.left - parentBox.rect.left - (isFirstCol ? 0 : teaseX / 2)
+            const right = parentBox.rect.right - rect.right - (isLastCol ? 0 : teaseX / 2)
+            activeIndicator.style.left = left + "px"
+            activeIndicator.style.right = right + "px"
+          }
         } else if (hoverCenter.x < activeCenter.x) {
-          const left = rect.left - parentBox.rect.left - (isFirstCol ? 0 : 10)
+          const left = rect.left - parentBox.rect.left - (isFirstCol ? 0 : teaseX)
           activeIndicator.style.left = left + "px"
           activeIndicator.style.right = parentBox.rect.right - rect.right + "px"
         } else {
-          const right = parentBox.rect.right - rect.right - (isLastCol ? 0 : 10)
+          const right = parentBox.rect.right - rect.right - (isLastCol ? 0 : teaseX)
           activeIndicator.style.left = rect.left - parentBox.rect.left + "px"
           activeIndicator.style.right = right + "px"
         }
 
         if (hoverCenter.y < activeCenter.y) {
-          const top = rect.top - parentBox.rect.top - (isFirstRow ? 0 : 2)
+          const top = rect.top - parentBox.rect.top - (isFirstRow ? 0 : teaseY)
           activeIndicator.style.top = top + "px"
           activeIndicator.style.bottom = parentBox.rect.bottom - rect.bottom + "px"
         } else if (hoverCenter.y > activeCenter.y) {
-          const bottom = parentBox.rect.bottom - rect.bottom - (isLastRow ? 0 : 2)
+          const bottom = parentBox.rect.bottom - rect.bottom - (isLastRow ? 0 : teaseY)
           activeIndicator.style.top = rect.top - parentBox.rect.top + "px"
           activeIndicator.style.bottom = bottom + "px"
         } else {
