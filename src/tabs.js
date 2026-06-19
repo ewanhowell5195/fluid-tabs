@@ -102,17 +102,19 @@ function initTabBars() {
         const isFirstRow = rect.top <= parentBox.top + 1
         const isLastRow = rect.bottom >= parentBox.bottom - 1
 
-        if (hoverCenter.x < activeCenter.x) {
+        const CENTER_THRESHOLD = 8
+
+        if (Math.abs(hoverCenter.x - activeCenter.x) <= CENTER_THRESHOLD) {
+          activeIndicator.style.left = rect.left - parentBox.rect.left + "px"
+          activeIndicator.style.right = parentBox.rect.right - rect.right + "px"
+        } else if (hoverCenter.x < activeCenter.x) {
           const left = rect.left - parentBox.rect.left - (isFirstCol ? 0 : 10)
           activeIndicator.style.left = left + "px"
           activeIndicator.style.right = parentBox.rect.right - rect.right + "px"
-        } else if (hoverCenter.x > activeCenter.x) {
+        } else {
           const right = parentBox.rect.right - rect.right - (isLastCol ? 0 : 10)
           activeIndicator.style.left = rect.left - parentBox.rect.left + "px"
           activeIndicator.style.right = right + "px"
-        } else {
-          activeIndicator.style.left = rect.left - parentBox.rect.left + "px"
-          activeIndicator.style.right = parentBox.rect.right - rect.right + "px"
         }
 
         if (hoverCenter.y < activeCenter.y) {
