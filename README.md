@@ -1,372 +1,190 @@
-# fluid-marquee
+# fluid-tabs
 
-A lightweight, zero-dependency marquee/scrolling content library using modern JavaScript and CSS.
-Just add `class="fluid-marquee"` to any container!
+A lightweight, zero-dependency tabs library with a smooth animated indicator, drag/wheel/swipe scrolling, and multiple visual styles.
 
-[![npm version](https://badge.fury.io/js/fluid-marquee.svg)](https://www.npmjs.com/package/fluid-marquee)
-[![jsDelivr](https://data.jsdelivr.com/v1/package/npm/fluid-marquee/badge)](https://www.jsdelivr.com/package/npm/fluid-marquee)
+[![npm version](https://badge.fury.io/js/fluid-tabs.svg)](https://www.npmjs.com/package/fluid-tabs)
+[![jsDelivr](https://data.jsdelivr.com/v1/package/npm/fluid-tabs/badge)](https://www.jsdelivr.com/package/npm/fluid-tabs)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-[**Live Demo**](https://fluid-marquee.ewanhowell.com/)
 
 ## Features
 
 * No dependencies
-* Only scrolls when content actually overflows, otherwise it stays static and centered
-* Horizontal or vertical
-* Configurable speed, in either direction
-* Smooth ease in/out on pause and resume
-* Pause on hover, on click, or both
-* Drag-to-scrub with momentum, on mouse and touch
-* Auto recalculates on resize and when images finish loading
-* Auto pauses when scrolled off-screen
-* Performance-conscious - steady-state scrolling runs on the compositor thread, off the main thread
-* Programmatic API for pause, resume, and item management
-* Framework-friendly when items are managed via the JS API (`add`, `remove`, `setItems`) instead of reactive rendering
+* Three visual styles out of the box: underline, classic tabs, and a sliding segmented control
+* Animated indicator that slides between tabs with an elastic stretch, and a spring "tease" on hover
+* Animated content panel that cross-fades and resizes between tabs
+* Too many tabs? They scroll horizontally (drag, wheel, or swipe) with momentum and edge fades. Opt into wrapping instead.
+* Swipe left/right on the content to change tabs on touch
+* Interruptible: click another tab mid-animation and the indicator redirects, no waiting
+* Detached tabs: the bar and its panels don't have to be siblings
+* Fires a `tab-changed` event, and works with plain `.click()`
+* Themeable with a handful of CSS variables
 
 ## Quick Start
 
 ### Install via npm
 ```bash
-npm install fluid-marquee
+npm install fluid-tabs
 ```
 
 ```js
-import "fluid-marquee/styles.css"
-import "fluid-marquee"
+import "fluid-tabs/styles.css"
+import "fluid-tabs"
 ```
 
 ### Or use via CDN
-https://www.jsdelivr.com/package/npm/fluid-marquee
+https://www.jsdelivr.com/package/npm/fluid-tabs
 
-### Add a marquee to your HTML
+### Add tabs to your HTML
 
 ```html
-<div class="fluid-marquee">
-  <div class="fluid-marquee-item">First item</div>
-  <div class="fluid-marquee-item">Second item</div>
-  <div class="fluid-marquee-item">Third item</div>
+<div class="tab-bar">
+  <button class="tab-bar-button active" data-tab="overview">Overview</button>
+  <button class="tab-bar-button" data-tab="details">Details</button>
+  <button class="tab-bar-button" data-tab="reviews">Reviews</button>
+</div>
+<div class="tab-contents">
+  <div class="tab-content active" data-tab="overview">Overview content</div>
+  <div class="tab-content" data-tab="details">Details content</div>
+  <div class="tab-content" data-tab="reviews">Reviews content</div>
 </div>
 ```
 
-Every `.fluid-marquee` on the page is initialised automatically on load - no setup or config required. Marquees added later can be initialised with `FluidMarquee.init(el)` or `FluidMarquee.initAll()`.
+Every `.tab-bar` on the page is initialised automatically on load - no setup or config required.
 
-By default, the marquee only animates when its contents are wider than the container. If they fit, the items stay static and centered. Resize the window or add/remove items and it recalculates automatically.
+* A `.tab-bar` holds the `.tab-bar-button`s.
+* The matching `.tab-contents` holds the `.tab-content` panels.
+* Buttons and panels are paired by `data-tab` - clicking a button shows the panel with the same value.
+* Mark the starting button and panel with `active`.
 
-## Settings
+The content panel is optional. A `.tab-bar` on its own still animates the indicator and fires `tab-changed` - useful as a filter/segmented control.
 
-All options can be set as HTML data attributes:
+## Styles
+
+The look is chosen with a class on the `.tab-bar`. The library copies it onto the matching `.tab-contents` for you - unless the panel already has its own `tab-style-*` class, which is left as-is.
+
+| Class | Style |
+|---|---|
+| *(none)* / `tab-style-buttons` | **Underline** - text tabs with a sliding underline. The default. |
+| `tab-style-tabs` | **Classic tabs** - filled tabs joined to a bordered content panel. |
+| `tab-style-slide` | **Slide** - a pill-shaped segmented control with a sliding knob. |
+
+```html
+<div class="tab-bar tab-style-slide"> … </div>
+```
+
+## Linking the content
+
+There are three ways a bar finds its panels.
+
+### Adjacent (default)
+
+Put the `.tab-contents` immediately after the `.tab-bar`:
+
+```html
+<div class="tab-bar"> … </div>
+<div class="tab-contents"> … </div>
+```
+
+### Detached
+
+If the bar and panels can't be siblings, give the bar an `id` and point the contents at it with `data-tab-bar`:
+
+```html
+<div class="tab-bar" id="account"> … </div>
+
+<p>…anything in between…</p>
+
+<div class="tab-contents" data-tab-bar="account"> … </div>
+```
+
+### Standalone
+
+A `.tab-bar` with no matching `.tab-contents` just tracks the active button and fires `tab-changed`.
+
+## Options
+
+Behavioural options are set as data attributes on the `.tab-bar`. Presence is enough - the value is ignored.
 
 | Attribute | Description |
 |---|---|
-| `data-fluid-marquee-speed="64"` | Scroll speed in pixels per second. Defaults to `64`. Negative values reverse direction. |
-| `data-fluid-marquee-infinite` | Always scroll, even if the content fits inside the container. |
-| `data-fluid-marquee-vertical` | Scroll vertically instead of horizontally. The container needs a height. |
-| `data-fluid-marquee-pausable` | Pause on hover (auto resumes) and on click (click outside to resume). |
-| `data-fluid-marquee-pause-hover` | Only pause on hover. |
-| `data-fluid-marquee-pause-click` | Only pause on click. |
-| `data-fluid-marquee-draggable` | Allow click-and-drag (or touch-drag) to scrub through the marquee, with momentum on release. |
-| `data-fluid-marquee-run-scripts` | Re-execute `<script>` tags inside cloned items. Off by default. |
-
-All options can also be passed as a JavaScript object - see [Programmatic init](#programmatic-init).
-
-## Advanced Usage
-
-### Speed and direction
-
-Speed is in pixels per second. Set a negative value to scroll in reverse:
+| `data-tab-wrap` | Wrap to multiple rows instead of scrolling when the tabs don't fit. |
+| `data-tab-no-swipe` | Disable swipe-to-change on the content panel. |
 
 ```html
-<div class="fluid-marquee" data-fluid-marquee-speed="64">…</div>
-<div class="fluid-marquee" data-fluid-marquee-speed="-128">…</div>
+<div class="tab-bar" data-tab-wrap> … </div>
 ```
 
-### Infinite scroll
+## Scrolling &amp; wrapping
 
-Without `data-fluid-marquee-infinite`, the marquee stays static when the content fits. Add it to force scrolling regardless:
+When there are more tabs than fit, the bar **scrolls** horizontally by default. You can:
 
-```html
-<div class="fluid-marquee" data-fluid-marquee-infinite>…</div>
-```
+* **Drag** it with the mouse or finger (with flick momentum)
+* **Wheel** over it
+* **Swipe** the content panel to step between tabs
 
-### Vertical
+A soft fade appears on whichever edge has hidden tabs, and selecting a tab scrolls it into view. Wheel scrolling only kicks in when a gesture *starts* over the bar, so scrolling the page past it isn't hijacked.
 
-```html
-<div class="fluid-marquee" data-fluid-marquee-vertical style="height: 320px;">
-  <div class="fluid-marquee-item">First</div>
-  <div class="fluid-marquee-item">Second</div>
-  <div class="fluid-marquee-item">Third</div>
-</div>
-```
+Add `data-tab-wrap` to wrap onto multiple rows instead of scrolling.
 
-Default item padding is swapped from `0 16px` to `16px 0` when vertical.
+## Events
 
-### Pausing
-
-```html
-<!-- Hover and click -->
-<div class="fluid-marquee" data-fluid-marquee-pausable>…</div>
-
-<!-- Pauses while hovered, auto resumes -->
-<div class="fluid-marquee" data-fluid-marquee-pause-hover>…</div>
-
-<!-- Click to lock pause, click outside to unlock -->
-<div class="fluid-marquee" data-fluid-marquee-pause-click>…</div>
-```
-
-Pause and resume are smoothly eased so the marquee doesn't visually snap.
-
-### Dragging
-
-Add `data-fluid-marquee-draggable` to let users grab the marquee and scrub through it. Flicking on release applies momentum that decays smoothly back into the normal scroll.
-
-```html
-<div class="fluid-marquee" data-fluid-marquee-draggable>…</div>
-```
-
-### Scripts in items
-
-By default, `<script>` tags inside items are *not* re-executed when items are cloned. Add `data-fluid-marquee-run-scripts` to re-execute them on each clone:
-
-```html
-<div class="fluid-marquee" data-fluid-marquee-run-scripts data-fluid-marquee-infinite>
-  <div class="fluid-marquee-item">
-    <button>Click me</button>
-    <script>
-      const btn = document.currentScript.previousElementSibling
-      btn.addEventListener("click", () => alert("Clicked!"))
-    </script>
-  </div>
-</div>
-```
-
-In this example, each clone runs its own copy of the script, so every visible button gets its own click listener. Without `data-fluid-marquee-run-scripts`, the inert clones produced by `cloneNode` wouldn't run and only the original button would respond - clicks on the clones would do nothing.
-
-Event delegation on the marquee element is the alternative if you want the listener attached just once.
-
-## Programmatic API
-
-`fluid-marquee` auto-initialises every `.fluid-marquee` on the page. You can also drive it from JavaScript.
-
-### Programmatic init
+The bar dispatches a `tab-changed` event when the active tab changes. `event.detail` is the new tab's `data-tab`:
 
 ```js
-// Initialise a specific element (returns the instance, idempotent)
-FluidMarquee.init(el, { speed: 64, pausable: true })
-
-// Initialise everything inside a root (defaults to document)
-FluidMarquee.initAll(document, { draggable: true })
-
-// Initialise an element directly, without the closest() lookup
-new FluidMarquee(el, { speed: 64 })
-```
-
-`FluidMarquee.init(el)` walks up from `el` with `closest(".fluid-marquee")` and uses that, so you can pass a child of the marquee. `new FluidMarquee(el)` initialises `el` itself directly, with no lookup.
-
-Both paths are idempotent: calling them on an already-initialised element returns the existing instance instead of creating a new one.
-
-The `options` argument accepts the same keys as the data attributes, but in `camelCase`:
-
-| Option | Type |
-|---|---|
-| `speed` | number |
-| `infinite` | boolean |
-| `vertical` | boolean |
-| `pausable` | boolean |
-| `pauseHover` | boolean |
-| `pauseClick` | boolean |
-| `draggable` | boolean |
-| `runScripts` | boolean |
-
-### Getting the instance
-
-After init, the marquee instance is available three ways:
-
-```js
-const el = document.querySelector(".fluid-marquee")
-
-el.marquee                  // The instance, attached to the marquee element itself
-FluidMarquee.get(el)        // Same instance - also accepts any descendant (uses closest)
-FluidMarquee.init(el)       // Same - also accepts any descendant (uses closest)
-```
-
-`el.marquee` is the shortest form when you already have a reference to the marquee element. `get` and `init` walk up from `el` using `closest(".fluid-marquee")`, so they work whether you pass the marquee itself or any element inside it.
-
-### Events
-
-A `fluid-marquee:init` event is dispatched on each marquee element once it finishes initialising.
-
-```js
-el.addEventListener("fluid-marquee:init", e => {
-  e.target.marquee.pause()
+document.querySelector(".tab-bar").addEventListener("tab-changed", e => {
+  console.log("switched to", e.detail)
 })
 ```
 
-A `fluid-marquee:ready` event is dispatched on `window` once the initial auto-init pass has run (after `DOMContentLoaded`):
+## Programmatic control
+
+Switch tabs by clicking a button - the library listens for normal clicks:
 
 ```js
-addEventListener("fluid-marquee:ready", () => {
-  document.querySelector(".fluid-marquee").marquee.pause()
-})
+const bar = document.querySelector(".tab-bar")
+bar.querySelector('.tab-bar-button[data-tab="reviews"]').click()
 ```
 
-Use this when your code runs before the library has had a chance to initialise (e.g. when scripts are deferred or async).
-
-`fluid-marquee:pause` and `fluid-marquee:resume` events fire when a pause cause activates or deactivates, *as long as no higher-priority cause is already active*. `event.detail.cause` tells you which cause the event refers to:
-
-| `cause` | Meaning |
-|---|---|
-| `"api"` | `m.pause()` / `m.resume()` |
-| `"click"` | The user clicked the marquee (or clicked outside to unlock) |
-| `"drag"` | The user is dragging the marquee |
-| `"hover"` | The mouse is over the marquee |
-
-Priority order is `api > click > drag > hover`. While a higher-priority cause is in effect, lower-priority causes flip silently in the background. For example, hovering on/off while click-paused fires no events, since click is the visible cause.
+Each initialised bar also exposes an `update()` method that re-snaps the indicator and edge fades. It's called automatically on resize; call it yourself if you change the layout in a way a `ResizeObserver` won't catch:
 
 ```js
-el.addEventListener("fluid-marquee:pause", e => {
-  if (e.detail.cause === "hover") return // ignore hover
-  pauseButton.textContent = "Resume"
-})
-
-el.addEventListener("fluid-marquee:resume", e => {
-  if (e.detail.cause === "hover") return
-  pauseButton.textContent = "Pause"
-})
+bar.update()
 ```
 
-`event.detail.marquee` is the instance, the same as `e.target.marquee`.
+## Theming
 
-### Instance API
+The library ships the structural and default styling it needs. Tweak the look with these CSS variables (shown with their defaults):
 
-```js
-m.pause()         // Sticky pause - only resume() clears it
-m.pause(false)    // User-style pause - clicking outside the marquee clears it
-m.resume()        // Clears api and click pauses (hover and drag self-resolve)
-m.paused          // True if anything is currently keeping it paused
-m.apiPaused       // True if paused via m.pause()
-m.userPaused      // Aggregate - hoverPaused || clickPaused || dragPaused
-m.hoverPaused     // True if the mouse is currently hovering
-m.clickPaused     // True if the user clicked the marquee to lock pause
-m.dragPaused      // True while the user is actively touching/dragging the marquee
-
-m.refresh()       // Force a re-measure (rarely needed, ResizeObserver handles most cases)
-m.destroy()       // Tear down completely and restore the current items as direct children
-```
-
-### Item management
-
-```js
-m.items           // Getter - array of the current item elements
-
-m.add(itemEl)              // Append one or more items
-m.add(itemA, itemB, itemC) // Append several
-m.add([itemA, itemB])      // Or pass an array
-
-m.remove(itemEl)           // Remove one or more items
-m.remove(itemA, itemB)     // Several
-m.remove([itemA, itemB])   // Or as an array
-
-m.setItems([a, b, c])      // Replace all items at once
-m.setItems(a, b, c)        // Or pass them as args
-```
-
-After any items change, the measure snapshot is rebuilt and clones are regenerated automatically.
-
-### Example
-
-```html
-<div class="fluid-marquee">
-  <div class="fluid-marquee-item">First</div>
-  <div class="fluid-marquee-item">Second</div>
-</div>
-<button id="add">Add</button>
-<button id="pause">Toggle pause</button>
-```
-
-```js
-const m = document.querySelector(".fluid-marquee").marquee
-
-document.getElementById("add").onclick = () => {
-  const item = document.createElement("div")
-  item.className = "fluid-marquee-item"
-  item.textContent = `Item ${m.items.length + 1}`
-  m.add(item)
-}
-
-document.getElementById("pause").onclick = () => {
-  if (m.paused) m.resume()
-  else m.pause()
-}
-```
-
-## Styling
-
-`fluid-marquee` only ships the structural CSS it needs to function. All visual styling is up to you - style `.fluid-marquee` and `.fluid-marquee-item` like any other element:
+| Variable | Default | Description |
+|---|---|---|
+| `--tab-transition-duration` | `.25s` | Duration of every transition (indicator, panel, height). |
+| `--tab-transition-easing` | `cubic-bezier(.4, 0, .2, 1)` | Easing for every transition. |
+| `--tab-slide-lag` | `.333` | Trailing-edge lag of the indicator slide, as a fraction of the duration. `0` removes the elastic stretch. |
+| `--tab-tease-x` | `10px` | How far the indicator stretches toward a hovered tab. |
+| `--tab-fade` | `60px` | Width of the scroll edge fade. |
 
 ```css
-.fluid-marquee {
-  background: #f1f1f1;
-  border: 1px solid #ddd;
-  padding: 12px 0;
-}
-
-.fluid-marquee-item {
-  font-weight: 600;
+.tab-bar {
+  --tab-transition-duration: .2s;
+  --tab-fade: 40px;
 }
 ```
 
-### Structure after init
-
-After init, your items are no longer direct children of `.fluid-marquee`. They get wrapped in `.fluid-marquee-sub`, which sits inside `.fluid-marquee-track`. Cloned copies of the strip are appended alongside the original. So the DOM looks roughly like:
-
-```html
-<div class="fluid-marquee fluid-marquee-initialised">
-  <div class="fluid-marquee-track">
-    <div class="fluid-marquee-sub">…your items…</div>
-    <div class="fluid-marquee-sub fluid-marquee-clone">…</div>
-    <div class="fluid-marquee-sub fluid-marquee-clone">…</div>
-  </div>
-  <div class="fluid-marquee-measure">…hidden measure copy…</div>
-</div>
-```
-
-Avoid direct-child selectors like `.fluid-marquee > *` or `.fluid-marquee > .item` - they won't match your items post-init. Use `.fluid-marquee-item` (or a descendant selector) instead.
+Colours, radii, and spacing are plain values in the stylesheet - override the `.tab-bar`, `.tab-bar-button`, `.tab-contents`, and `.tab-content` rules to restyle.
 
 ### Classes
 
-These classes are added by `fluid-marquee` and can be targeted with CSS:
+These are added by the library and can be targeted with CSS:
 
 | Class | When applied |
 |---|---|
-| `fluid-marquee-initialised` | After the marquee is initialised. |
-| `fluid-marquee-scrolling` | While the marquee is actively scrolling (content overflows or `data-fluid-marquee-infinite` is set). |
-| `fluid-marquee-vertical` | When `data-fluid-marquee-vertical` is set. |
-| `fluid-marquee-draggable` | When `data-fluid-marquee-draggable` is set. |
-| `fluid-marquee-dragging` | While the user is actively dragging. |
-| `fluid-marquee-clone` | On each cloned copy of the item strip. |
-
-If the content fits inside the container and `data-fluid-marquee-infinite` is not set, the marquee stays static and centered.
-
-## How it works
-
-`fluid-marquee` uses a clone-and-translate technique:
-
-1. **Wraps your items** in an internal `.fluid-marquee-track` and `.fluid-marquee-sub`
-2. **Measures the strip** in a hidden node alongside the real one
-3. **Decides whether to scroll** based on whether the strip overflows the container
-4. **Clones the strip** as many times as needed to fill the visible width
-5. **Animates with a hybrid WAAPI + rAF strategy** (see below) by translating the track, wrapping the offset modulo the strip width
-6. **Recalculates automatically** on container resize, image load, and item changes
-
-### Hybrid animation
-
-The animation runs in two modes and seamlessly hands off between them:
-
-* **WAAPI (Web Animations API)** drives the steady state. When the marquee is just scrolling at a constant speed (not paused, not dragging, no momentum, on-screen), the track is animated via `element.animate()`. This runs on the browser's compositor thread - the same path CSS `@keyframes` use - so it stays smooth even when the main thread is busy, and doesn't burden the main thread itself.
-* **`requestAnimationFrame`** takes over whenever something needs frame-by-frame JS: drag-to-scrub, momentum flick, the smooth ease in/out on pause/resume, or any other transitional state.
-
-On handoff, the current `currentTime` of the WAAPI animation is read back into the shared `offset`, and the next mode picks up exactly where the previous one left off - so you get native-compositor smoothness in the common case without giving up any of the interactive behaviour rAF makes easy.
+| `initialised` | On each `.tab-bar` once set up. |
+| `active` | On the current `.tab-bar-button` and its `.tab-content`. |
+| `tab-bar-active` | The indicator element, appended inside each `.tab-bar`. |
+| `tab-bar-wrap` | When `data-tab-wrap` is set. |
+| `tab-bar-dragging` | While the bar is being drag-scrolled. |
+| `tab-bar-fade-start` / `tab-bar-fade-end` | When there are hidden tabs off the start / end edge. |
+| `transitioning` | On `.tab-contents` while a panel change is animating. |
 
 ## License
 

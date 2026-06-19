@@ -274,10 +274,10 @@
     <script type="module">
       const link = document.createElement("link")
       link.rel = "stylesheet"
-      link.href = `src/tabs.css?rnd=${Math.random()}`
+      link.href = `src/fluid-tabs.css?rnd=${Math.random()}`
       document.head.append(link)
 
-      await import(`./src/tabs.js?rnd=${Math.random()}`)
+      await import(`./src/fluid-tabs.js?rnd=${Math.random()}`)
 
       // standalone tab bar — only event, no contents
       const standaloneBar = document.getElementById("standalone-bar")

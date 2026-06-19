@@ -1,27 +1,19 @@
 {
-  "name": "tabs",
-  "version": "1.0.0",
+  "name": "fluid-tabs",
+  "version": "0.1.0",
   "description": "A lightweight, zero-dependency tabs library with smooth animated indicators, swipe support, and multiple visual styles.",
   "author": "Ewan Howell <ewanhowell5195>",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/tabs.min.js",
-  "style": "./dist/tabs.min.css",
+  "main": "./dist/fluid-tabs.min.js",
+  "style": "./dist/fluid-tabs.min.css",
   "exports": {
-    ".": "./dist/tabs.min.js",
-    "./styles.css": "./dist/tabs.min.css"
+    ".": "./dist/fluid-tabs.min.js",
+    "./styles.css": "./dist/fluid-tabs.min.css"
   },
   "files": [
     "dist"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ewanhowell5195/tabs.git"
-  },
-  "bugs": {
-    "url": "https://github.com/ewanhowell5195/tabs/issues"
-  },
-  "homepage": "https://tabs.ewanhowell.com/",
   "scripts": {
     "build": "node build.js"
   },
@@ -30,6 +22,7 @@
     "terser": "^5.43.1"
   },
   "keywords": [
+    "fluid-tabs",
     "tabs",
     "tab-bar",
     "tabbed-interface",

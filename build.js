@@ -6,11 +6,11 @@ const version = JSON.parse(fs.readFileSync("package.json", "utf8")).version
 
 fs.mkdirSync("dist", { recursive: true })
 
-const js = fs.readFileSync("src/tabs.js", "utf8")
-const css = fs.readFileSync("src/tabs.css", "utf8")
+const js = fs.readFileSync("src/fluid-tabs.js", "utf8")
+const css = fs.readFileSync("src/fluid-tabs.css", "utf8")
 
 const banner = `/*!
- * tabs
+ * fluid-tabs
  * Version  : ${version}
  * License  : MIT
  * Copyright: ${new Date().getFullYear()} Ewan Howell
@@ -23,7 +23,7 @@ const minifiedJs = (await minify(js, {
 
 const minifiedCss = new CleanCSS().minify(css).styles
 
-fs.writeFileSync("dist/tabs.min.js", banner + minifiedJs)
-fs.writeFileSync("dist/tabs.min.css", banner + minifiedCss)
+fs.writeFileSync("dist/fluid-tabs.min.js", banner + minifiedJs)
+fs.writeFileSync("dist/fluid-tabs.min.css", banner + minifiedCss)
 
-console.log("Built tabs v" + version)
+console.log("Built fluid-tabs v" + version)

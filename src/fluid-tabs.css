@@ -131,7 +131,7 @@
   transform: translateX(64px);
 }
 
-/* Buttons style — text tabs with a sliding underline above the content */
+/* Buttons style - text tabs with a sliding underline above the content */
 
 .tab-bar.tab-style-buttons {
   width: 100%;
@@ -154,7 +154,7 @@
   border-bottom: 2px solid #1c1c1c;
 }
 
-/* Shared sliding indicator — positioned by JS */
+/* Shared sliding indicator - positioned by JS */
 
 .tab-bar-active {
   position: absolute;
@@ -165,7 +165,7 @@
     bottom var(--tab-transition-duration) var(--tab-transition-easing);
 }
 
-/* Tabs style — classic tabs with a connected, filled content panel */
+/* Tabs style - classic tabs with a connected, filled content panel */
 
 .tab-bar.tab-style-tabs {
   width: 100%;
@@ -213,7 +213,7 @@
   padding: 24px;
 }
 
-/* Slide style — segmented control with a sliding knob */
+/* Slide style - segmented control with a sliding knob */
 
 .tab-bar.tab-style-slide {
   width: fit-content;
