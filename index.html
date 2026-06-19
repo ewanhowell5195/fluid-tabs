@@ -122,7 +122,7 @@
           <button type="button" class="tab-bar-button" data-tab="month">Month</button>
           <button type="button" class="tab-bar-button" data-tab="year">Year</button>
         </div>
-        <div class="tab-contents">
+        <div class="tab-contents tab-style-slide">
           <div class="tab-content active" data-tab="day">Day view.</div>
           <div class="tab-content" data-tab="week">Week view.</div>
           <div class="tab-content" data-tab="month">Month view.</div>
@@ -275,7 +275,9 @@
       const link = document.createElement("link")
       link.rel = "stylesheet"
       link.href = `src/fluid-tabs.css?rnd=${Math.random()}`
+      const cssLoaded = new Promise(resolve => link.addEventListener("load", resolve))
       document.head.append(link)
+      await cssLoaded
 
       await import(`./src/fluid-tabs.js?rnd=${Math.random()}`)
 
@@ -303,14 +305,14 @@
         })
       }
 
-      const TYPE_STYLES = ["tab-style-buttons", "tab-style-tabs", "tab-style-slide"]
+      const TYPE_STYLES = ["tab-style-tabs", "tab-style-slide"]
       for (const radio of document.querySelectorAll("#type-switcher input")) {
         radio.addEventListener("change", () => {
           for (const bar of document.querySelectorAll(".tab-bar.switchable")) {
             for (const el of [bar, bar.nextElementSibling]) {
               if (!el?.classList.contains("tab-bar") && !el?.classList.contains("tab-contents")) continue
               el.classList.remove(...TYPE_STYLES)
-              el.classList.add(`tab-style-${radio.value}`)
+              if (radio.value !== "buttons") el.classList.add(`tab-style-${radio.value}`)
             }
             bar.update?.()
           }

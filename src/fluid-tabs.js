@@ -372,6 +372,11 @@
       updateIndicator()
       scrollActiveIntoView(false)
       updateFades()
+
+      requestAnimationFrame(() => {
+        tabBar.classList.add("tab-bar-ready")
+        for (const wrap of contentWraps) wrap.classList.add("tab-bar-ready")
+      })
     }
   }
 

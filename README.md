@@ -60,7 +60,7 @@ The content panel is optional. A `.tab-bar` on its own still animates the indica
 
 ## Styles
 
-The look is chosen with a class on the `.tab-bar`. The library copies it onto the matching `.tab-contents` for you - unless the panel already has its own `tab-style-*` class, which is left as-is.
+Set a `tab-style-*` class on both the `.tab-bar` and its matching `.tab-contents`. If you forget it on the panel, the library copies the bar's style onto it as a fallback.
 
 | Class | Style |
 |---|---|
@@ -70,6 +70,7 @@ The look is chosen with a class on the `.tab-bar`. The library copies it onto th
 
 ```html
 <div class="tab-bar tab-style-slide"> … </div>
+<div class="tab-contents tab-style-slide"> … </div>
 ```
 
 ## Linking the content

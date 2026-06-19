@@ -17,6 +17,13 @@
   initial-value: 0px;
 }
 
+.tab-bar:not(.tab-bar-ready),
+.tab-bar:not(.tab-bar-ready) *,
+.tab-contents:not(.tab-bar-ready),
+.tab-contents:not(.tab-bar-ready) * {
+  transition: none !important;
+}
+
 .tab-bar {
   display: flex;
   position: relative;
