@@ -153,7 +153,6 @@ function initTabBars() {
         const toRect = button.getBoundingClientRect()
         const fromRect = currentActive.getBoundingClientRect()
         const parentBox = getParentBox()
-        const duration = parseFloat(getComputedStyle(activeIndicator).getPropertyValue("--tab-transition-duration")) * 2000 / 3
 
         for (const wrap of contentWraps) {
           const activeContent = wrap.querySelector(".tab-content.active")
@@ -187,35 +186,45 @@ function initTabBars() {
 
         const fromCenter = getCenter(fromRect)
         const toCenter = getCenter(toRect)
+        const movingLeft = toCenter.x < fromCenter.x
+        const movingUp = toCenter.y < fromCenter.y
+        const lag = "calc(var(--tab-transition-duration) * var(--tab-slide-lag))"
 
-        if (toCenter.x < fromCenter.x) {
-          activeIndicator.style.left = toRect.left - parentBox.rect.left + "px"
-          setTimeout(() => {
-            activeIndicator.style.right = parentBox.rect.right - toRect.right + "px"
-          }, duration / 2)
-        } else {
-          activeIndicator.style.right = parentBox.rect.right - toRect.right + "px"
-          setTimeout(() => {
-            activeIndicator.style.left = toRect.left - parentBox.rect.left + "px"
-          }, duration / 2)
-        }
+        activeIndicator.style.transitionDelay = [
+          movingLeft ? "0s" : lag,
+          movingLeft ? lag : "0s",
+          movingUp ? "0s" : lag,
+          movingUp ? lag : "0s"
+        ].join(" ")
 
-        if (toCenter.y < fromCenter.y) {
-          activeIndicator.style.top = toRect.top - parentBox.rect.top + "px"
-          setTimeout(() => {
-            activeIndicator.style.bottom = parentBox.rect.bottom - toRect.bottom + "px"
-          }, duration / 2)
-        } else {
-          activeIndicator.style.bottom = parentBox.rect.bottom - toRect.bottom + "px"
-          setTimeout(() => {
-            activeIndicator.style.top = toRect.top - parentBox.rect.top + "px"
-          }, duration / 2)
-        }
-
-        setTimeout(() => {
+        function finish() {
+          activeIndicator.style.transitionDelay = ""
           locked = false
           for (const wrap of contentWraps) wrap.classList.remove("transitioning")
-        }, duration)
+        }
+
+        const willAnimate = parseFloat(getComputedStyle(activeIndicator).transitionDuration) > 0
+        let running = 0
+        function onRun() {
+          running++
+        }
+        function onEnd() {
+          if (--running > 0) return
+          activeIndicator.removeEventListener("transitionrun", onRun)
+          activeIndicator.removeEventListener("transitionend", onEnd)
+          finish()
+        }
+        if (willAnimate) {
+          activeIndicator.addEventListener("transitionrun", onRun)
+          activeIndicator.addEventListener("transitionend", onEnd)
+        }
+
+        activeIndicator.style.left = toRect.left - parentBox.rect.left + "px"
+        activeIndicator.style.right = parentBox.rect.right - toRect.right + "px"
+        activeIndicator.style.top = toRect.top - parentBox.rect.top + "px"
+        activeIndicator.style.bottom = parentBox.rect.bottom - toRect.bottom + "px"
+
+        if (!willAnimate) finish()
 
         tabBar.dispatchEvent(new CustomEvent("tab-changed", {
           detail: button.dataset.tab

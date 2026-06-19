@@ -1,6 +1,7 @@
 :root {
   --tab-transition-duration: .25s;
   --tab-transition-easing: cubic-bezier(.4, 0, .2, 1);
+  --tab-slide-lag: .333;
   --tab-tease-x: 10px;
   --tab-tease-y: 2px;
 }
