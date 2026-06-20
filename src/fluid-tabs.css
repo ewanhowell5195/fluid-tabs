@@ -80,6 +80,10 @@
   font-family: inherit;
 }
 
+.tab-bar-button img {
+  pointer-events: none;
+}
+
 .tab-bar-button-icon {
   width: 24px;
   height: 24px;

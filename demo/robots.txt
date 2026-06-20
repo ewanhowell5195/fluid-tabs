@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://fluid-marquee.ewanhowell.com/sitemap.xml
+Sitemap: https://fluid-tabs.ewanhowell.com/sitemap.xml

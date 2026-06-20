@@ -54,6 +54,7 @@
       const contents = contentWraps.flatMap(el => Array.from(el.querySelectorAll(".tab-content")))
       const teaseX = parseFloat(getComputedStyle(activeIndicator).getPropertyValue("--tab-tease-x")) || 0
       let endTransition = null
+      let teaseFromClick = false
 
       function getParentBox() {
         const parentRect = tabBar.getBoundingClientRect()
@@ -133,6 +134,10 @@
         button.addEventListener("mouseenter", () => {
           const active = tabBar.querySelector(".tab-bar-button.active")
           if (!active) return
+
+          // a real hover should never inherit a click's elastic lag, or the
+          // tease's two edges animate on different delays and look broken
+          if (!teaseFromClick) activeIndicator.style.transitionDelay = ""
 
           const parentBox = getParentBox()
           const rect = active.getBoundingClientRect()
@@ -230,7 +235,11 @@
           activeIndicator.style.top = toRect.top - parentBox.rect.top + "px"
           activeIndicator.style.bottom = parentBox.rect.bottom - toRect.bottom + "px"
 
-          if (button.matches(":hover")) button.dispatchEvent(new MouseEvent("mouseenter"))
+          if (button.matches(":hover")) {
+            teaseFromClick = true
+            button.dispatchEvent(new MouseEvent("mouseenter"))
+            teaseFromClick = false
+          }
 
           if (!activeIndicator.getAnimations().length) finish()
 
