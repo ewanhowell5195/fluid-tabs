@@ -56,6 +56,16 @@
       let endTransition = null
       let teaseFromClick = false
 
+      function updateInert(focusFallback) {
+        for (const content of contents) {
+          const active = content.classList.contains("active")
+          if (!active && content.contains(document.activeElement)) {
+            focusFallback?.focus({ preventScroll: true })
+          }
+          content.inert = !active
+        }
+      }
+
       function getParentBox() {
         const parentRect = tabBar.getBoundingClientRect()
         const style = getComputedStyle(tabBar)
@@ -190,6 +200,7 @@
           if (contentWraps.length) {
             const target = button.dataset.tab
             contents.forEach(c => c.classList.toggle("active", c.dataset.tab === target))
+            updateInert(button)
             for (const wrap of contentWraps) {
               wrap.classList.add("transitioning")
               const activeContent = wrap.querySelector(".tab-content.active")
@@ -378,6 +389,7 @@
 
       tabBarResizeObserver.observe(tabBar)
 
+      updateInert()
       updateIndicator()
       scrollActiveIntoView(false)
       updateFades()
