@@ -4,7 +4,7 @@ A lightweight, zero-dependency tabs library with a smooth animated indicator, dr
 
 [![npm version](https://badge.fury.io/js/fluid-tabs.svg)](https://www.npmjs.com/package/fluid-tabs)
 [![jsDelivr](https://data.jsdelivr.com/v1/package/npm/fluid-tabs/badge)](https://www.jsdelivr.com/package/npm/fluid-tabs)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
 ## Features
 
@@ -198,4 +198,4 @@ These are added by the library and can be targeted with CSS:
 
 ## License
 
-MIT © [Ewan Howell](https://ewanhowell.com/)
+[MPL-2.0](LICENSE) © [Ewan Howell](https://ewanhowell.com/)

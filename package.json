@@ -3,7 +3,7 @@
   "version": "0.1.3",
   "description": "A lightweight, zero-dependency tabs library with smooth animated indicators, swipe support, and multiple visual styles.",
   "author": "Ewan Howell <ewanhowell5195>",
-  "license": "MIT",
+  "license": "MPL-2.0",
   "type": "module",
   "main": "./dist/fluid-tabs.min.js",
   "style": "./dist/fluid-tabs.min.css",

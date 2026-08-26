@@ -12,7 +12,7 @@ const css = fs.readFileSync("src/fluid-tabs.css", "utf8")
 const banner = `/*!
  * fluid-tabs
  * Version  : ${version}
- * License  : MIT
+ * License  : MPL-2.0
  * Copyright: ${new Date().getFullYear()} Ewan Howell
  */
 `
