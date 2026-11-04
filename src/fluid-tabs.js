@@ -249,7 +249,7 @@
               const activeContent = contents.find(c => c.classList.contains("active") && c.closest(".tab-contents") === wrap)
               const wrapStyle = getComputedStyle(wrap)
               const border = parseFloat(wrapStyle.borderTopWidth) + parseFloat(wrapStyle.borderBottomWidth)
-              wrap.style.height = (activeContent?.offsetHeight ?? 0) + border + "px"
+              wrap.style.height = (activeContent?.getBoundingClientRect().height ?? 0) + border + "px"
             }
           }
 
