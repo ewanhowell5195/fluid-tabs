@@ -267,7 +267,7 @@
         }, { signal })
       }
 
-      let dragStartX, dragStartScroll, dragLastScroll, dragLastAt, dragVelocity, dragMoved, dragging, momentumRaf
+      let dragStartX, dragStartScroll, dragLastScroll, dragLastAt, dragVelocity, dragMoved, dragging, dragPointer, momentumRaf
 
       function stopMomentum() {
         if (momentumRaf) {
@@ -295,7 +295,7 @@
       }
 
       function onDragMove(e) {
-        if (!dragging) return
+        if (!dragging || e.pointerId !== dragPointer) return
         const deltaX = e.clientX - dragStartX
         if (Math.abs(deltaX) > 5) dragMoved = true
         const now = performance.now()
@@ -317,7 +317,7 @@
       }
 
       function onDragEnd(e) {
-        if (!dragging) return
+        if (!dragging || e.pointerId !== dragPointer) return
         stopDrag()
         if (dragMoved) startMomentum()
         // no click follows a release off the bar, so nothing else would clear this before a programmatic click
@@ -327,8 +327,10 @@
       tabBar.addEventListener("pointerdown", e => {
         if (e.button !== 0) return
         if (tabBar.scrollWidth - tabBar.clientWidth <= 0) return
+        if (dragging && e.pointerId !== dragPointer) return
         stopMomentum()
         dragging = true
+        dragPointer = e.pointerId
         dragMoved = false
         dragStartX = e.clientX
         dragStartScroll = dragLastScroll = tabBar.scrollLeft
