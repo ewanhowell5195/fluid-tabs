@@ -26,8 +26,12 @@
     for (const tabBar of tabBars) {
       tabBar.classList.add("initialised")
 
+      const controller = new AbortController()
+      const { signal } = controller
+
       const style = TAB_STYLES.find(c => tabBar.classList.contains(c)) ?? "tab-style-buttons"
-      if (!tabBar.classList.contains(style)) tabBar.classList.add(style)
+      const addedStyle = !tabBar.classList.contains(style)
+      if (addedStyle) tabBar.classList.add(style)
       if (tabBar.hasAttribute("data-tab-wrap")) tabBar.classList.add("tab-bar-wrap")
       if (tabBar.hasAttribute("data-tab-no-swipe")) tabBar.classList.add("tab-bar-no-swipe")
 
@@ -45,13 +49,10 @@
           if (!contentWraps.includes(el)) contentWraps.push(el)
         })
       }
-      for (const wrap of contentWraps) {
-        if (!TAB_STYLES.some(c => wrap.classList.contains(c))) {
-          wrap.classList.add(style)
-        }
-      }
+      const styledWraps = contentWraps.filter(wrap => !TAB_STYLES.some(c => wrap.classList.contains(c)))
+      for (const wrap of styledWraps) wrap.classList.add(style)
       const contentsWrap = contentWraps[0] || null
-      const contents = contentWraps.flatMap(el => Array.from(el.querySelectorAll(".tab-content")))
+      const contents = contentWraps.flatMap(el => Array.from(el.querySelectorAll(".tab-content")).filter(c => c.closest(".tab-contents") === el))
       const teaseX = parseFloat(getComputedStyle(activeIndicator).getPropertyValue("--tab-tease-x")) || 0
       let endTransition = null
       let teaseFromClick = false
@@ -118,7 +119,8 @@
         updateFades()
       }
 
-      tabBar.addEventListener("scroll", updateFades)
+      tabBar.addEventListener("scroll", updateFades, { signal })
+      activeIndicator.addEventListener("transitionend", updateFades)
 
       function scrollActiveIntoView(smooth) {
         const active = tabBar.querySelector(".tab-bar-button.active")
@@ -174,11 +176,11 @@
             activeIndicator.style.left = rect.left - parentBox.rect.left + "px"
             activeIndicator.style.right = right + "px"
           }
-        })
+        }, { signal })
 
         button.addEventListener("mouseleave", () => {
           updateIndicator()
-        })
+        }, { signal })
 
         button.addEventListener("click", () => {
           if (button.classList.contains("active")) return
@@ -203,7 +205,7 @@
             updateInert(button)
             for (const wrap of contentWraps) {
               wrap.classList.add("transitioning")
-              const activeContent = wrap.querySelector(".tab-content.active")
+              const activeContent = contents.find(c => c.classList.contains("active") && c.closest(".tab-contents") === wrap)
               const border =
                 parseFloat(getComputedStyle(wrap).borderTopWidth) +
                 parseFloat(getComputedStyle(wrap).borderBottomWidth)
@@ -259,7 +261,7 @@
           tabBar.dispatchEvent(new CustomEvent("tab-changed", {
             detail: button.dataset.tab
           }))
-        })
+        }, { signal })
       }
 
       let dragStartX, dragStartScroll, dragLastScroll, dragLastAt, dragVelocity, dragMoved, dragging, momentumRaf
@@ -303,14 +305,20 @@
         }
       }
 
-      function onDragEnd() {
-        if (!dragging) return
+      function stopDrag() {
         dragging = false
         tabBar.classList.remove("tab-bar-dragging")
         removeEventListener("pointermove", onDragMove)
         removeEventListener("pointerup", onDragEnd)
         removeEventListener("pointercancel", onDragEnd)
+      }
+
+      function onDragEnd(e) {
+        if (!dragging) return
+        stopDrag()
         if (dragMoved) startMomentum()
+        // no click follows a release off the bar, so nothing else would clear this before a programmatic click
+        if (e.type === "pointercancel" || !tabBar.contains(e.target)) dragMoved = false
       }
 
       tabBar.addEventListener("pointerdown", e => {
@@ -327,14 +335,14 @@
         addEventListener("pointermove", onDragMove)
         addEventListener("pointerup", onDragEnd)
         addEventListener("pointercancel", onDragEnd)
-      })
+      }, { signal })
 
       tabBar.addEventListener("click", e => {
         if (!dragMoved) return
         e.stopPropagation()
         e.preventDefault()
         dragMoved = false
-      }, true)
+      }, { capture: true, signal })
 
       tabBar.addEventListener("wheel", e => {
         if (wheelOwner !== tabBar) return
@@ -349,7 +357,7 @@
         if (atEnd && delta < 0 && dragVelocity > 0) dragVelocity = 0
         dragVelocity = (dragVelocity || 0) + delta * 0.015
         if (!momentumRaf) startMomentum()
-      }, { passive: false })
+      }, { passive: false, signal })
 
       const swipeTargets = tabBar.classList.contains("tab-bar-no-swipe") ? [] : [...contentWraps]
 
@@ -361,9 +369,10 @@
           const t = e.changedTouches[0]
           swipeStartX = t.clientX
           swipeStartY = t.clientY
-        })
+        }, { signal })
 
         target.addEventListener("touchend", e => {
+          if (e.target.closest(".tab-contents") !== target) return
           if (e.target.closest(".splide")) return
           const t = e.changedTouches[0]
           const dx = t.clientX - swipeStartX
@@ -384,7 +393,7 @@
             const prev = buttons[index - 1]
             if (prev) prev.click()
           }
-        })
+        }, { signal })
       }
 
       tabBarResizeObserver.observe(tabBar)
@@ -394,10 +403,30 @@
       scrollActiveIntoView(false)
       updateFades()
 
-      requestAnimationFrame(() => {
+      const readyRaf = requestAnimationFrame(() => {
         tabBar.classList.add("tab-bar-ready")
         for (const wrap of contentWraps) wrap.classList.add("tab-bar-ready")
       })
+
+      tabBar.destroy = () => {
+        stopDrag()
+        stopMomentum()
+        controller.abort()
+        cancelAnimationFrame(readyRaf)
+        tabBarResizeObserver.unobserve(tabBar)
+        if (wheelOwner === tabBar) wheelOwner = null
+        activeIndicator.remove()
+        tabBar.classList.remove("initialised", "tab-bar-ready", "tab-bar-wrap", "tab-bar-no-swipe", "tab-bar-dragging", "tab-bar-fade-start", "tab-bar-fade-end")
+        if (addedStyle) tabBar.classList.remove(style)
+        for (const wrap of contentWraps) {
+          wrap.classList.remove("tab-bar-ready", "transitioning")
+          wrap.style.height = ""
+        }
+        for (const wrap of styledWraps) wrap.classList.remove(style)
+        for (const content of contents) content.inert = false
+        delete tabBar.update
+        delete tabBar.destroy
+      }
     }
   }
 

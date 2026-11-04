@@ -152,6 +152,12 @@ Each initialised bar also exposes an `update()` method that re-snaps the indicat
 bar.update()
 ```
 
+`destroy()` removes the indicator, listeners, observers and classes the library added. The current `active` tab and panel are kept, and `FluidTabs.init()` can initialise the bar again:
+
+```js
+bar.destroy()
+```
+
 ### Initialising dynamically-added tabs
 
 Every `.tab-bar` present on load is initialised automatically. If you add tab bars later, call `FluidTabs.init()` to pick up any that aren't initialised yet. It's idempotent - already-initialised bars are skipped. Pass a root element to limit the scan:
