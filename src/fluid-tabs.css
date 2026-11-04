@@ -131,18 +131,10 @@
   width: 100%;
 }
 
-.tab-content * {
-  pointer-events: none !important;
-}
-
 .tab-content.active {
   transform: initial;
   opacity: 1;
   pointer-events: initial;
-}
-
-.tab-content.active * {
-  pointer-events: initial !important;
 }
 
 .tab-content.active ~ .tab-content {
