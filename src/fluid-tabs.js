@@ -185,14 +185,14 @@
           endTransition?.()
 
           const toRect = button.getBoundingClientRect()
-          const fromRect = currentActive.getBoundingClientRect()
+          const fromRect = currentActive?.getBoundingClientRect() ?? toRect
           const parentBox = getParentBox()
 
           for (const wrap of contentWraps) {
             wrap.style.height = wrap.getBoundingClientRect().height + "px"
           }
 
-          if (currentActive) currentActive.classList.remove("active")
+          currentActive?.classList.remove("active")
           button.classList.add("active")
 
           if (contentWraps.length) {
