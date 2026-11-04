@@ -6,6 +6,13 @@
 
   const TAB_STYLES = ["tab-style-buttons", "tab-style-tabs", "tab-style-slide"]
 
+  function insideScroller(el, root) {
+    for (; el && el !== root; el = el.parentElement) {
+      if (el.scrollWidth > el.clientWidth && /auto|scroll/.test(getComputedStyle(el).overflowX)) return true
+    }
+    return false
+  }
+
   let lastWheelAt = 0
   let wheelOwner = null
 
@@ -370,6 +377,7 @@
         target.addEventListener("touchend", e => {
           if (e.target.closest(".tab-contents") !== target) return
           if (e.target.closest(".splide")) return
+          if (insideScroller(e.target, target)) return
           const t = e.changedTouches[0]
           const dx = t.clientX - swipeStartX
           const dy = t.clientY - swipeStartY
