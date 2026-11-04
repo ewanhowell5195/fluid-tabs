@@ -1,11 +1,7 @@
 {
   const tabBarResizeObserver = new ResizeObserver(entries => {
-    for (const entry of entries) {
-      if (!entry.target.classList.contains("tab-bar")) continue
-      if (entry.target.classList.contains("initialised")) {
-        entry.target.update()
-      }
-    }
+    const bars = new Set(entries.map(entry => entry.target.closest(".tab-bar")))
+    for (const bar of bars) bar?.update()
   })
 
   const TAB_STYLES = ["tab-style-buttons", "tab-style-tabs", "tab-style-slide"]
@@ -397,6 +393,7 @@
       }
 
       tabBarResizeObserver.observe(tabBar)
+      for (const button of buttons) tabBarResizeObserver.observe(button)
 
       updateInert()
       updateIndicator()
@@ -414,6 +411,7 @@
         controller.abort()
         cancelAnimationFrame(readyRaf)
         tabBarResizeObserver.unobserve(tabBar)
+        for (const button of buttons) tabBarResizeObserver.unobserve(button)
         if (wheelOwner === tabBar) wheelOwner = null
         activeIndicator.remove()
         tabBar.classList.remove("initialised", "tab-bar-ready", "tab-bar-wrap", "tab-bar-no-swipe", "tab-bar-dragging", "tab-bar-fade-start", "tab-bar-fade-end")
