@@ -111,6 +111,13 @@
   position: initial;
 }
 
+.tab-contents:not(.transitioning) > .tab-content:not(.active) {
+  height: 0;
+  padding-block: 0;
+  border-block-width: 0;
+  overflow: hidden;
+}
+
 .tab-content {
   transform: translateX(-64px);
   opacity: 0;
