@@ -52,6 +52,10 @@
               --tab-fade-end var(--tab-transition-duration) var(--tab-transition-easing);
 }
 
+.tab-bar:dir(rtl) {
+  mask-image: linear-gradient(to left, transparent, #000 var(--tab-fade-start), #000 calc(100% - var(--tab-fade-end)), transparent);
+}
+
 .tab-bar.tab-bar-dragging {
   cursor: grabbing;
 }
@@ -156,6 +160,14 @@
 
 .tab-content.active ~ .tab-content {
   transform: translateX(64px);
+}
+
+.tab-contents:dir(rtl) > .tab-content:not(.active) {
+  transform: translateX(64px);
+}
+
+.tab-contents:dir(rtl) > .tab-content.active ~ .tab-content {
+  transform: translateX(-64px);
 }
 
 /* Buttons style - text tabs with a sliding underline above the content */
