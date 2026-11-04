@@ -17,6 +17,18 @@
   initial-value: 0px;
 }
 
+@property --tab-tease-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 10px;
+}
+
+@property --tab-fade {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 60px;
+}
+
 .tab-bar:not(.tab-bar-ready),
 .tab-bar:not(.tab-bar-ready) *,
 .tab-contents:not(.tab-bar-ready),
