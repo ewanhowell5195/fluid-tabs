@@ -41,7 +41,7 @@
         contentWraps.push(tabBar.nextElementSibling)
       }
       if (tabBar.id) {
-        document.querySelectorAll(`.tab-contents[data-tab-bar="${tabBar.id}"]`).forEach(el => {
+        document.querySelectorAll(`.tab-contents[data-tab-bar="${CSS.escape(tabBar.id)}"]`).forEach(el => {
           if (!contentWraps.includes(el)) contentWraps.push(el)
         })
       }
