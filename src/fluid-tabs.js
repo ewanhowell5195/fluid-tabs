@@ -58,7 +58,6 @@
       }
       const styledWraps = contentWraps.filter(wrap => !TAB_STYLES.some(c => wrap.classList.contains(c)))
       for (const wrap of styledWraps) wrap.classList.add(style)
-      const contentsWrap = contentWraps[0] || null
       const contents = contentWraps.flatMap(el => Array.from(el.querySelectorAll(".tab-content")).filter(c => c.closest(".tab-contents") === el))
       const teaseX = parseFloat(getComputedStyle(activeIndicator).getPropertyValue("--tab-tease-x")) || 0
       let endTransition = null
@@ -120,27 +119,51 @@
             bottom: parentRect.bottom - sy
           },
           left: parentRect.left + parseFloat(style.paddingLeft),
-          right: parentRect.right - parseFloat(style.paddingRight),
-          top: parentRect.top + parseFloat(style.paddingTop),
-          bottom: parentRect.bottom - parseFloat(style.paddingBottom)
+          right: parentRect.right - parseFloat(style.paddingRight)
         }
       }
 
-      const getCenter = rect => ({
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2
-      })
+      function getCenter(rect) {
+        return {
+          x: rect.left + rect.width / 2,
+          y: rect.top + rect.height / 2
+        }
+      }
+
+      function placeIndicator(rect, parentBox) {
+        activeIndicator.style.left = rect.left - parentBox.rect.left + "px"
+        activeIndicator.style.right = parentBox.rect.right - rect.right + "px"
+        activeIndicator.style.top = rect.top - parentBox.rect.top + "px"
+        activeIndicator.style.bottom = parentBox.rect.bottom - rect.bottom + "px"
+      }
 
       function updateIndicator() {
         const active = tabBar.querySelector(".tab-bar-button.active")
-        if (active) {
-          const rect = active.getBoundingClientRect()
-          const parentBox = getParentBox()
-          activeIndicator.style.left = rect.left - parentBox.rect.left + "px"
-          activeIndicator.style.right = parentBox.rect.right - rect.right + "px"
-          activeIndicator.style.top = rect.top - parentBox.rect.top + "px"
-          activeIndicator.style.bottom = parentBox.rect.bottom - rect.bottom + "px"
-        }
+        if (active) placeIndicator(active.getBoundingClientRect(), getParentBox())
+      }
+
+      function tease(button, fromClick) {
+        const active = tabBar.querySelector(".tab-bar-button.active")
+        if (!active || reducedMotion.matches) return
+
+        // a real hover should never inherit a click's elastic lag, or the
+        // tease's two edges animate on different delays and look broken
+        if (!fromClick) activeIndicator.style.transitionDelay = ""
+
+        const parentBox = getParentBox()
+        const rect = active.getBoundingClientRect()
+        const activeX = getCenter(rect).x
+        const hoverX = getCenter(button.getBoundingClientRect()).x
+        const nearby = button === active || Math.abs(hoverX - activeX) <= 8
+        const stretchLeft = nearby ? teaseX / 2 : hoverX < activeX ? teaseX : 0
+        const stretchRight = nearby ? teaseX / 2 : hoverX > activeX ? teaseX : 0
+
+        placeIndicator({
+          left: rect.left - (rect.left <= parentBox.left + 1 ? 0 : stretchLeft),
+          right: rect.right + (rect.right >= parentBox.right - 1 ? 0 : stretchRight),
+          top: rect.top,
+          bottom: rect.bottom
+        }, parentBox)
       }
 
       function updateFades() {
@@ -183,43 +206,8 @@
       }
 
       for (const button of buttons) {
-        function tease(fromClick) {
-          const active = tabBar.querySelector(".tab-bar-button.active")
-          if (!active || reducedMotion.matches) return
-
-          // a real hover should never inherit a click's elastic lag, or the
-          // tease's two edges animate on different delays and look broken
-          if (!fromClick) activeIndicator.style.transitionDelay = ""
-
-          const parentBox = getParentBox()
-          const rect = active.getBoundingClientRect()
-          const hoverRect = button.getBoundingClientRect()
-          const activeCenter = getCenter(rect)
-          const hoverCenter = getCenter(hoverRect)
-          const isFirstCol = rect.left <= parentBox.left + 1
-          const isLastCol = rect.right >= parentBox.right - 1
-
-          activeIndicator.style.top = rect.top - parentBox.rect.top + "px"
-          activeIndicator.style.bottom = parentBox.rect.bottom - rect.bottom + "px"
-
-          if (button === active || Math.abs(hoverCenter.x - activeCenter.x) <= 8) {
-            const left = rect.left - parentBox.rect.left - (isFirstCol ? 0 : teaseX / 2)
-            const right = parentBox.rect.right - rect.right - (isLastCol ? 0 : teaseX / 2)
-            activeIndicator.style.left = left + "px"
-            activeIndicator.style.right = right + "px"
-          } else if (hoverCenter.x < activeCenter.x) {
-            const left = rect.left - parentBox.rect.left - (isFirstCol ? 0 : teaseX)
-            activeIndicator.style.left = left + "px"
-            activeIndicator.style.right = parentBox.rect.right - rect.right + "px"
-          } else {
-            const right = parentBox.rect.right - rect.right - (isLastCol ? 0 : teaseX)
-            activeIndicator.style.left = rect.left - parentBox.rect.left + "px"
-            activeIndicator.style.right = right + "px"
-          }
-        }
-
         button.addEventListener("pointerenter", e => {
-          if (e.pointerType !== "touch") tease(false)
+          if (e.pointerType !== "touch") tease(button, false)
         }, { signal })
 
         button.addEventListener("pointerleave", e => {
@@ -251,13 +239,9 @@
             for (const wrap of contentWraps) {
               wrap.classList.add("transitioning")
               const activeContent = contents.find(c => c.classList.contains("active") && c.closest(".tab-contents") === wrap)
-              const border =
-                parseFloat(getComputedStyle(wrap).borderTopWidth) +
-                parseFloat(getComputedStyle(wrap).borderBottomWidth)
-
-              wrap.style.height = activeContent
-                ? activeContent.offsetHeight + border + "px"
-                : border + "px"
+              const wrapStyle = getComputedStyle(wrap)
+              const border = parseFloat(wrapStyle.borderTopWidth) + parseFloat(wrapStyle.borderBottomWidth)
+              wrap.style.height = (activeContent?.offsetHeight ?? 0) + border + "px"
             }
           }
 
@@ -288,12 +272,9 @@
           endTransition = cleanup
           activeIndicator.addEventListener("transitionend", onEnd)
 
-          activeIndicator.style.left = toRect.left - parentBox.rect.left + "px"
-          activeIndicator.style.right = parentBox.rect.right - toRect.right + "px"
-          activeIndicator.style.top = toRect.top - parentBox.rect.top + "px"
-          activeIndicator.style.bottom = parentBox.rect.bottom - toRect.bottom + "px"
+          placeIndicator(toRect, parentBox)
 
-          if (button.matches(":hover") && lastPointerType !== "touch") tease(true)
+          if (button.matches(":hover") && lastPointerType !== "touch") tease(button, true)
 
           if (!activeIndicator.getAnimations().length) finish()
 
@@ -305,7 +286,8 @@
         }, { signal })
       }
 
-      let dragStartX, dragStartScroll, dragLastScroll, dragLastAt, dragVelocity, dragMoved, dragging, dragPointer, momentumRaf
+      let dragStartX, dragStartScroll, dragLastScroll, dragLastAt, dragMoved, dragging, dragPointer, momentumRaf
+      let dragVelocity = 0
 
       function stopMomentum() {
         if (momentumRaf) {
@@ -417,11 +399,11 @@
         }
         if (atStart && delta > 0 && dragVelocity < 0) dragVelocity = 0
         if (atEnd && delta < 0 && dragVelocity > 0) dragVelocity = 0
-        dragVelocity = (dragVelocity || 0) + delta * 0.015
+        dragVelocity += delta * 0.015
         if (!momentumRaf) startMomentum()
       }, { passive: false, signal })
 
-      const swipeTargets = tabBar.classList.contains("tab-bar-no-swipe") ? [] : [...contentWraps]
+      const swipeTargets = tabBar.classList.contains("tab-bar-no-swipe") ? [] : contentWraps
 
       let swipeStartX = 0
       let swipeStartY = 0
