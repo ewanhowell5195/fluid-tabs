@@ -271,3 +271,13 @@
 .tab-style-slide > .tab-bar-button:focus-visible {
   border-radius: 6px;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .tab-bar,
+  .tab-bar-button,
+  .tab-bar-active,
+  .tab-contents,
+  .tab-content {
+    transition: none;
+  }
+}

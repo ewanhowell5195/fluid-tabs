@@ -6,6 +6,8 @@
 
   const TAB_STYLES = ["tab-style-buttons", "tab-style-tabs", "tab-style-slide"]
 
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)")
+
   let nextId = 0
 
   function insideScroller(el, root) {
@@ -183,7 +185,7 @@
       for (const button of buttons) {
         function tease(fromClick) {
           const active = tabBar.querySelector(".tab-bar-button.active")
-          if (!active) return
+          if (!active || reducedMotion.matches) return
 
           // a real hover should never inherit a click's elastic lag, or the
           // tease's two edges animate on different delays and look broken
@@ -295,7 +297,7 @@
 
           if (!activeIndicator.getAnimations().length) finish()
 
-          scrollActiveIntoView(true)
+          scrollActiveIntoView(!reducedMotion.matches)
 
           tabBar.dispatchEvent(new CustomEvent("tab-changed", {
             detail: button.dataset.tab
@@ -355,7 +357,7 @@
       function onDragEnd(e) {
         if (!dragging || e.pointerId !== dragPointer) return
         stopDrag()
-        if (dragMoved) startMomentum()
+        if (dragMoved && !reducedMotion.matches) startMomentum()
         // no click follows a release off the bar, so nothing else would clear this before a programmatic click
         if (e.type === "pointercancel" || !tabBar.contains(e.target)) dragMoved = false
       }
@@ -409,6 +411,10 @@
         const atStart = tabBar.scrollLeft <= 0.1
         const atEnd = tabBar.scrollLeft >= maxScroll - 0.1
         if ((atStart && delta < 0) || (atEnd && delta > 0)) return
+        if (reducedMotion.matches) {
+          tabBar.scrollLeft += delta
+          return
+        }
         if (atStart && delta > 0 && dragVelocity < 0) dragVelocity = 0
         if (atEnd && delta < 0 && dragVelocity > 0) dragVelocity = 0
         dragVelocity = (dragVelocity || 0) + delta * 0.015
