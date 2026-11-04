@@ -6,6 +6,8 @@
 
   const TAB_STYLES = ["tab-style-buttons", "tab-style-tabs", "tab-style-slide"]
 
+  let nextId = 0
+
   function insideScroller(el, root) {
     for (; el && el !== root; el = el.parentElement) {
       if (el.scrollWidth > el.clientWidth && /auto|scroll/.test(getComputedStyle(el).overflowX)) return true
@@ -59,6 +61,39 @@
       const teaseX = parseFloat(getComputedStyle(activeIndicator).getPropertyValue("--tab-tease-x")) || 0
       let endTransition = null
       let teaseFromClick = false
+
+      const addedAttributes = []
+
+      function addAttribute(el, name, value) {
+        if (el.hasAttribute(name)) return
+        el.setAttribute(name, value)
+        addedAttributes.push([el, name])
+      }
+
+      function ensureId(el) {
+        addAttribute(el, "id", `fluid-tab-${++nextId}`)
+        return el.id
+      }
+
+      addAttribute(tabBar, "role", "tablist")
+      activeIndicator.setAttribute("role", "presentation")
+      for (const button of buttons) {
+        addAttribute(button, "role", "tab")
+        const panels = contents.filter(c => c.dataset.tab === button.dataset.tab)
+        if (panels.length) addAttribute(button, "aria-controls", panels.map(ensureId).join(" "))
+        for (const panel of panels) {
+          addAttribute(panel, "role", "tabpanel")
+          addAttribute(panel, "aria-labelledby", ensureId(button))
+        }
+      }
+
+      function updateSelection() {
+        const active = tabBar.querySelector(".tab-bar-button.active") ?? buttons[0]
+        for (const button of buttons) {
+          button.setAttribute("aria-selected", button.classList.contains("active"))
+          button.tabIndex = button === active ? 0 : -1
+        }
+      }
 
       function updateInert(focusFallback) {
         for (const content of contents) {
@@ -201,6 +236,7 @@
 
           currentActive?.classList.remove("active")
           button.classList.add("active")
+          updateSelection()
 
           if (contentWraps.length) {
             const target = button.dataset.tab
@@ -349,6 +385,20 @@
         dragMoved = false
       }, { capture: true, signal })
 
+      tabBar.addEventListener("keydown", e => {
+        if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
+        const enabled = Array.from(buttons).filter(button => !button.disabled)
+        const index = enabled.indexOf(e.target.closest(".tab-bar-button"))
+        if (index < 0) return
+        const rtl = getComputedStyle(tabBar).direction === "rtl"
+        const steps = { [rtl ? "ArrowLeft" : "ArrowRight"]: index + 1, [rtl ? "ArrowRight" : "ArrowLeft"]: index - 1, Home: 0, End: enabled.length - 1 }
+        if (!(e.key in steps)) return
+        e.preventDefault()
+        const next = enabled[(steps[e.key] + enabled.length) % enabled.length]
+        next.focus({ preventScroll: true })
+        next.click()
+      }, { signal })
+
       tabBar.addEventListener("wheel", e => {
         if (wheelOwner !== tabBar) return
         const maxScroll = tabBar.scrollWidth - tabBar.clientWidth
@@ -405,6 +455,7 @@
       tabBarResizeObserver.observe(tabBar)
       for (const button of buttons) tabBarResizeObserver.observe(button)
 
+      updateSelection()
       updateInert()
       updateIndicator()
       scrollActiveIntoView(false)
@@ -432,6 +483,11 @@
         }
         for (const wrap of styledWraps) wrap.classList.remove(style)
         for (const content of contents) content.inert = false
+        for (const button of buttons) {
+          button.removeAttribute("aria-selected")
+          button.removeAttribute("tabindex")
+        }
+        for (const [el, name] of addedAttributes) el.removeAttribute(name)
         delete tabBar.update
         delete tabBar.destroy
       }

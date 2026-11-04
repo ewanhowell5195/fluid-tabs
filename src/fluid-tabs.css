@@ -88,6 +88,11 @@
               border-color var(--tab-transition-duration) var(--tab-transition-easing);
 }
 
+.tab-bar-button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+
 .tab-bar-button * {
   font-family: inherit;
 }
@@ -261,4 +266,8 @@
 
 .tab-style-slide > .tab-bar-button.active {
   color: #18181b;
+}
+
+.tab-style-slide > .tab-bar-button:focus-visible {
+  border-radius: 6px;
 }
