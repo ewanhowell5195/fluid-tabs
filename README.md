@@ -255,6 +255,25 @@ Each `.tab-bar-button` gets `--tab-button-x`, which is `-1` before the active ta
 }
 ```
 
+### Active label reveal
+
+Each button has a hidden copy of its label in `.tab-bar-button-reveal`, clipped to the indicator's shape. Show it to change the label's colour exactly at the indicator's edge. The slide style uses it. To use it in your own style:
+
+```css
+.my-bar > .tab-bar-button.active {
+  color: #fff;
+}
+
+.my-bar > .tab-bar-button > .tab-bar-button-reveal {
+  visibility: visible;
+  color: #fff;
+}
+```
+
+Hide it again with `visibility: hidden` for a custom indicator that hides `.tab-bar-active`.
+
+The `textContent` of the bar or anything around it includes the copies, as does a button's `innerText` while its copy is visible. A rule using `.tab-bar-button > svg` doesn't reach inside the copy. Use `.tab-bar-button svg`.
+
 ### Classes
 
 These are added by the library and can be targeted with CSS:
@@ -264,6 +283,7 @@ These are added by the library and can be targeted with CSS:
 | `initialised` | On each `.tab-bar` once set up. |
 | `active` | On the current `.tab-bar-button` and its `.tab-content`. |
 | `tab-bar-active` | The indicator element, appended inside each `.tab-bar`. |
+| `tab-bar-button-reveal` | The hidden copy of the label, inside each `.tab-bar-button`. |
 | `tab-bar-wrap` | When `data-tab-wrap` is set. |
 | `tab-bar-vertical` / `tab-contents-vertical` | On the bar and its panels while vertical. |
 | `tab-bar-dragging` | While the bar is being drag-scrolled. |

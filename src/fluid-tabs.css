@@ -30,6 +30,30 @@
   initial-value: 0px;
 }
 
+@property --tab-reveal-left {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --tab-reveal-right {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --tab-reveal-top {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --tab-reveal-bottom {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
 @property --tab-tease-x {
   syntax: "<length>";
   inherits: true;
@@ -248,6 +272,26 @@
     bottom var(--tab-transition-duration) var(--tab-transition-easing);
 }
 
+.tab-bar-button-reveal {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: inherit;
+  flex-direction: inherit;
+  align-items: inherit;
+  justify-content: inherit;
+  gap: inherit;
+  padding: inherit;
+  pointer-events: none;
+  visibility: hidden;
+  clip-path: inset(var(--tab-reveal-top) var(--tab-reveal-right) var(--tab-reveal-bottom) var(--tab-reveal-left) round var(--tab-reveal-radius));
+  transition:
+    --tab-reveal-left var(--tab-transition-duration) var(--tab-transition-easing),
+    --tab-reveal-right var(--tab-transition-duration) var(--tab-transition-easing),
+    --tab-reveal-top var(--tab-transition-duration) var(--tab-transition-easing),
+    --tab-reveal-bottom var(--tab-transition-duration) var(--tab-transition-easing);
+}
+
 /* Tabs style - classic tabs with a connected, filled content panel */
 
 .tab-bar.tab-style-tabs {
@@ -318,9 +362,19 @@
   min-width: min-content;
   font-weight: 600;
   color: #71717a;
+  transition-property: background, border-color;
 }
 
 .tab-style-slide > .tab-bar-button.active {
+  color: #18181b;
+  transition:
+    background var(--tab-transition-duration) var(--tab-transition-easing),
+    border-color var(--tab-transition-duration) var(--tab-transition-easing),
+    color 0s linear var(--tab-transition-duration);
+}
+
+.tab-style-slide > .tab-bar-button > .tab-bar-button-reveal {
+  visibility: visible;
   color: #18181b;
 }
 
@@ -417,6 +471,8 @@
   .tab-bar,
   .tab-bar-button,
   .tab-bar-active,
+  .tab-bar-button-reveal,
+  .tab-bar > .tab-bar-button.active,
   .tab-contents,
   .tab-content {
     transition: none;

@@ -8,6 +8,8 @@
 
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)")
 
+  const nativeTextContent = Object.getOwnPropertyDescriptor(Node.prototype, "textContent")
+
   let nextId = 0
 
   function insideScroller(el, root) {
@@ -97,6 +99,40 @@
         }
       }
 
+      const reveals = []
+      for (const button of buttons) {
+        const layer = document.createElement("div")
+        layer.className = "tab-bar-button-reveal"
+        layer.inert = true
+        layer.setAttribute("aria-hidden", "true")
+        const observer = new MutationObserver(records => {
+          if (records.some(r => !layer.contains(r.target) && (r.type !== "attributes" || r.target !== button))) {
+            syncReveal(button, layer)
+            observer.takeRecords()
+          }
+        })
+        observer.observe(button, { childList: true, characterData: true, attributes: true, subtree: true })
+        syncReveal(button, layer)
+        observer.takeRecords()
+        reveals.push({ layer, observer })
+        Object.defineProperty(button, "textContent", {
+          configurable: true,
+          get: () => Array.from(button.childNodes).filter(node => node !== layer && node.nodeType !== Node.COMMENT_NODE).map(node => node.textContent).join(""),
+          set: value => nativeTextContent.set.call(button, value)
+        })
+      }
+
+      function syncReveal(button, layer) {
+        layer.replaceChildren(...Array.from(button.childNodes).filter(node => node !== layer).map(node => node.cloneNode(true)))
+        for (const el of layer.querySelectorAll("[id]")) el.removeAttribute("id")
+        if (layer.parentNode !== button) button.append(layer)
+      }
+
+      function setIndicatorDelay(delay) {
+        activeIndicator.style.transitionDelay = delay
+        for (const { layer } of reveals) layer.style.transitionDelay = delay
+      }
+
       function updateSelection() {
         const active = tabBar.querySelector(".tab-bar-button.active") ?? buttons[0]
         for (const button of buttons) {
@@ -146,6 +182,14 @@
         activeIndicator.style.right = parentBox.rect.right - rect.right + "px"
         activeIndicator.style.top = rect.top - parentBox.rect.top + "px"
         activeIndicator.style.bottom = parentBox.rect.bottom - rect.bottom + "px"
+        for (const { layer } of reveals) {
+          const box = layer.getBoundingClientRect()
+          layer.style.setProperty("--tab-reveal-left", rect.left - box.left + "px")
+          layer.style.setProperty("--tab-reveal-right", box.right - rect.right + "px")
+          layer.style.setProperty("--tab-reveal-top", rect.top - box.top + "px")
+          layer.style.setProperty("--tab-reveal-bottom", box.bottom - rect.bottom + "px")
+          layer.style.setProperty("--tab-reveal-radius", getComputedStyle(activeIndicator).borderRadius)
+        }
       }
 
       function updateIndicator() {
@@ -159,7 +203,7 @@
 
         // a real hover should never inherit a click's elastic lag, or the
         // tease's two edges animate on different delays and look broken
-        activeIndicator.style.transitionDelay = ""
+        setIndicatorDelay("")
 
         const parentBox = getParentBox()
         const rect = active.getBoundingClientRect()
@@ -315,19 +359,19 @@
           const movingUp = toCenter.y < fromCenter.y
           const lag = "calc(var(--tab-transition-duration) * var(--tab-slide-lag))"
 
-          activeIndicator.style.transitionDelay = [
+          setIndicatorDelay([
             movingLeft ? "0s" : lag,
             movingLeft ? lag : "0s",
             movingUp ? "0s" : lag,
             movingUp ? lag : "0s"
-          ].join(", ")
+          ].join(", "))
 
           placeIndicator(toRect, parentBox)
 
           const switchId = ++lastSwitch
           function finish() {
             if (switchId !== lastSwitch) return
-            activeIndicator.style.transitionDelay = ""
+            setIndicatorDelay("")
             for (const wrap of contentWraps) wrap.classList.remove("transitioning")
           }
           const animations = runningAnimations().filter(a => !alreadyRunning.has(a) && a.effect.getComputedTiming().endTime !== Infinity)
@@ -547,6 +591,10 @@
         for (const button of buttons) tabBarResizeObserver.unobserve(button)
         if (wheelOwner === tabBar) wheelOwner = null
         activeIndicator.remove()
+        for (const { layer, observer } of reveals) {
+          observer.disconnect()
+          layer.remove()
+        }
         tabBar.classList.remove("initialised", "tab-bar-ready", "tab-bar-wrap", "tab-bar-vertical", "tab-bar-scrollable", "tab-bar-no-swipe", "tab-bar-dragging", "tab-bar-fade-start", "tab-bar-fade-end")
         tabBar.removeAttribute("aria-orientation")
         if (addedStyle) tabBar.classList.remove(style)
@@ -558,6 +606,7 @@
         for (const wrap of styledWraps) wrap.classList.remove(style)
         for (const content of contents) content.inert = false
         for (const button of buttons) {
+          delete button.textContent
           button.removeAttribute("aria-selected")
           button.removeAttribute("tabindex")
         }
