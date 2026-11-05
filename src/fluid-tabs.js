@@ -60,7 +60,7 @@
       for (const wrap of styledWraps) wrap.classList.add(style)
       const contents = contentWraps.flatMap(el => Array.from(el.querySelectorAll(".tab-content")).filter(c => c.closest(".tab-contents") === el))
       const teaseX = parseFloat(getComputedStyle(activeIndicator).getPropertyValue("--tab-tease-x")) || 0
-      let endTransition = null
+      let lastSwitch = 0
 
       const addedAttributes = []
 
@@ -165,6 +165,17 @@
         }, parentBox)
       }
 
+      function outerHeight(el) {
+        const style = getComputedStyle(el)
+        const height = parseFloat(style.height) || 0
+        if (style.boxSizing === "border-box") return height
+        return height + parseFloat(style.paddingTop) + parseFloat(style.paddingBottom) + parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth)
+      }
+
+      function runningAnimations() {
+        return activeIndicator.getAnimations().concat(contentWraps.flatMap(wrap => wrap.getAnimations({ subtree: true })))
+      }
+
       function isRtl() {
         return getComputedStyle(tabBar).direction === "rtl"
       }
@@ -225,14 +236,14 @@
           if (button.classList.contains("active")) return
           const currentActive = tabBar.querySelector(".tab-bar-button.active")
 
-          endTransition?.()
+          const alreadyRunning = new Set(runningAnimations())
 
           const toRect = button.getBoundingClientRect()
           const fromRect = currentActive?.getBoundingClientRect() ?? toRect
           const parentBox = getParentBox()
 
           for (const wrap of contentWraps) {
-            wrap.style.height = wrap.getBoundingClientRect().height + "px"
+            wrap.style.height = getComputedStyle(wrap).height
           }
 
           currentActive?.classList.remove("active")
@@ -248,7 +259,7 @@
               const activeContent = contents.find(c => c.classList.contains("active") && c.closest(".tab-contents") === wrap)
               const wrapStyle = getComputedStyle(wrap)
               const border = parseFloat(wrapStyle.borderTopWidth) + parseFloat(wrapStyle.borderBottomWidth)
-              wrap.style.height = (activeContent?.getBoundingClientRect().height ?? 0) + border + "px"
+              wrap.style.height = (activeContent ? outerHeight(activeContent) : 0) + border + "px"
             }
           }
 
@@ -265,23 +276,17 @@
             movingUp ? lag : "0s"
           ].join(", ")
 
-          const cleanup = () => activeIndicator.removeEventListener("transitionend", onEnd)
-          function finish() {
-            cleanup()
-            activeIndicator.style.transitionDelay = ""
-            for (const wrap of contentWraps) wrap.classList.remove("transitioning")
-            endTransition = null
-          }
-          function onEnd() {
-            if (activeIndicator.getAnimations().length) return
-            finish()
-          }
-          endTransition = cleanup
-          activeIndicator.addEventListener("transitionend", onEnd)
-
           placeIndicator(toRect, parentBox)
 
-          if (!activeIndicator.getAnimations().length) finish()
+          const switchId = ++lastSwitch
+          function finish() {
+            if (switchId !== lastSwitch) return
+            activeIndicator.style.transitionDelay = ""
+            for (const wrap of contentWraps) wrap.classList.remove("transitioning")
+          }
+          const animations = runningAnimations().filter(a => !alreadyRunning.has(a) && a.effect.getComputedTiming().endTime !== Infinity)
+          if (animations.length) Promise.allSettled(animations.map(a => a.finished)).then(finish)
+          else finish()
 
           scrollActiveIntoView(!reducedMotion.matches)
 
@@ -467,6 +472,7 @@
         stopDrag()
         stopMomentum()
         controller.abort()
+        lastSwitch++
         cancelAnimationFrame(readyRaf)
         tabBarResizeObserver.unobserve(tabBar)
         for (const button of buttons) tabBarResizeObserver.unobserve(button)

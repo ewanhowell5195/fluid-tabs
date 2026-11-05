@@ -127,6 +127,10 @@ A soft fade appears on whichever edge has hidden tabs, and selecting a tab scrol
 
 Add `data-tab-wrap` to wrap onto multiple rows instead of scrolling.
 
+## Right-to-left
+
+In a `dir="rtl"` layout everything mirrors automatically, including scrolling, edge fades, swipes, arrow keys, and the panel slide.
+
 ## Events
 
 The bar dispatches a `tab-changed` event when the active tab changes. `event.detail` is the new tab's `data-tab`:
@@ -178,6 +182,8 @@ The library ships the structural and default styling it needs. Tweak the look wi
 | `--tab-slide-lag` | `.333` | Trailing-edge lag of the indicator slide, as a fraction of the duration. `0` removes the elastic stretch. |
 | `--tab-tease-x` | `10px` | How far the indicator stretches toward a hovered tab. |
 | `--tab-fade` | `60px` | Width of the scroll edge fade. |
+| `--tab-panel-distance` | `64px` | How far panels slide. `0` leaves just the fade. Set it on `.tab-contents` or an ancestor, not `.tab-bar`. |
+| `--tab-panel-blend` | `normal` | Blend mode of panels while they cross-fade. Set it on the `.tab-contents` itself. |
 
 ```css
 .tab-bar {
@@ -187,6 +193,52 @@ The library ships the structural and default styling it needs. Tweak the look wi
 ```
 
 Colours, radii, and spacing are plain values in the stylesheet - override the `.tab-bar`, `.tab-bar-button`, `.tab-contents`, and `.tab-content` rules to restyle.
+
+### Panel transitions
+
+Each `.tab-content` gets `--tab-panel-x`, which is `-1` before the active tab, `0` when active, and `1` after it. Use it to move something inside a panel separately. Here the panel's background fades while its content slides:
+
+```css
+.my-panels > .tab-content {
+  transform: none;
+}
+
+.my-panels .content {
+  transform: translateX(calc(var(--tab-panel-x) * 64px));
+  transition: transform var(--tab-transition-duration) var(--tab-transition-easing);
+}
+```
+
+To keep the same background on every tab, set the CSS `background` on `.tab-contents` instead of on each `.tab-content`. Any other animation can key off `.tab-content.active`, and the panel change waits for it unless it repeats forever.
+
+Panels with their own backgrounds let the page show through as they cross-fade. Set `--tab-panel-blend: plus-lighter` to stop that. It needs a `.tab-contents` with no background of its own.
+
+### Custom indicators
+
+Each `.tab-bar-button` gets `--tab-button-x`, which is `-1` before the active tab, `0` when active, and `1` after it. To replace the sliding indicator, hide it and draw your own on each button. Here the old one blurs away towards the new tab, and the new one blurs in from the same direction:
+
+```css
+.my-bar > .tab-bar-active {
+  display: none;
+}
+
+.my-bar > .tab-bar-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #fff;
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateX(calc(var(--tab-button-x) * -16px));
+  transition: opacity .5s, filter .5s, transform .5s;
+}
+
+.my-bar > .tab-bar-button.active::before {
+  opacity: 1;
+  filter: none;
+}
+```
 
 ### Classes
 

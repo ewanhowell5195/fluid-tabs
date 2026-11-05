@@ -3,6 +3,19 @@
   --tab-transition-easing: cubic-bezier(.4, 0, .2, 1);
   --tab-slide-lag: .333;
   --tab-tease-x: 10px;
+  --tab-panel-distance: 64px;
+}
+
+@property --tab-panel-distance {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 64px;
+}
+
+@property --tab-panel-blend {
+  syntax: "<custom-ident>";
+  inherits: false;
+  initial-value: normal;
 }
 
 @property --tab-fade-start {
@@ -92,6 +105,26 @@
               border-color var(--tab-transition-duration) var(--tab-transition-easing);
 }
 
+.tab-bar-button {
+  --tab-button-x: -1;
+}
+
+.tab-bar-button.active {
+  --tab-button-x: 0;
+}
+
+.tab-bar-button.active ~ .tab-bar-button {
+  --tab-button-x: 1;
+}
+
+.tab-bar:dir(rtl) > .tab-bar-button:not(.active) {
+  --tab-button-x: 1;
+}
+
+.tab-bar:dir(rtl) > .tab-bar-button.active ~ .tab-bar-button {
+  --tab-button-x: -1;
+}
+
 .tab-bar-button:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: -2px;
@@ -128,6 +161,15 @@
   height: auto !important;
 }
 
+.tab-contents.transitioning {
+  isolation: isolate;
+}
+
+.tab-contents.transitioning > .tab-content {
+  --tab-panel-blend: inherit;
+  mix-blend-mode: var(--tab-panel-blend);
+}
+
 .tab-contents:not(.transitioning) > .tab-content.active {
   position: initial;
 }
@@ -140,7 +182,8 @@
 }
 
 .tab-content {
-  transform: translateX(-64px);
+  --tab-panel-x: -1;
+  transform: translateX(calc(var(--tab-panel-x) * var(--tab-panel-distance)));
   opacity: 0;
   transition: transform var(--tab-transition-duration) var(--tab-transition-easing),
               opacity var(--tab-transition-duration) var(--tab-transition-easing);
@@ -153,21 +196,22 @@
 }
 
 .tab-content.active {
+  --tab-panel-x: 0;
   transform: initial;
   opacity: 1;
   pointer-events: initial;
 }
 
 .tab-content.active ~ .tab-content {
-  transform: translateX(64px);
+  --tab-panel-x: 1;
 }
 
 .tab-contents:dir(rtl) > .tab-content:not(.active) {
-  transform: translateX(64px);
+  --tab-panel-x: 1;
 }
 
 .tab-contents:dir(rtl) > .tab-content.active ~ .tab-content {
-  transform: translateX(-64px);
+  --tab-panel-x: -1;
 }
 
 /* Buttons style - text tabs with a sliding underline above the content */
@@ -291,5 +335,13 @@
   .tab-contents,
   .tab-content {
     transition: none;
+  }
+
+  .tab-content {
+    --tab-panel-x: 0 !important;
+  }
+
+  .tab-bar-button {
+    --tab-button-x: 0 !important;
   }
 }
