@@ -64,7 +64,7 @@ Set a `tab-style-*` class on both the `.tab-bar` and its matching `.tab-contents
 
 | Class | Style |
 |---|---|
-| *(none)* / `tab-style-buttons` | **Underline** - text tabs with a sliding underline. The default. |
+| *(none)* / `tab-style-underline` | **Underline** - text tabs with a sliding underline. The default. |
 | `tab-style-tabs` | **Classic tabs** - filled tabs joined to a bordered content panel. |
 | `tab-style-slide` | **Slide** - a pill-shaped segmented control with a sliding knob. |
 

@@ -4,7 +4,7 @@
     for (const bar of bars) bar?.update()
   })
 
-  const TAB_STYLES = ["tab-style-buttons", "tab-style-tabs", "tab-style-slide"]
+  const TAB_STYLES = ["tab-style-underline", "tab-style-tabs", "tab-style-slide"]
 
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)")
 
@@ -36,7 +36,7 @@
       const controller = new AbortController()
       const { signal } = controller
 
-      const style = TAB_STYLES.find(c => tabBar.classList.contains(c)) ?? "tab-style-buttons"
+      const style = TAB_STYLES.find(c => tabBar.classList.contains(c)) ?? "tab-style-underline"
       const addedStyle = !tabBar.classList.contains(style)
       if (addedStyle) tabBar.classList.add(style)
       if (tabBar.hasAttribute("data-tab-wrap")) tabBar.classList.add("tab-bar-wrap")

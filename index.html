@@ -209,7 +209,7 @@
       <h2>Scroll &amp; wrap — switch tab type</h2>
       <p>Switch the style applied to both examples below.</p>
       <div class="controls" id="type-switcher">
-        <label><input type="radio" name="tab-type" value="buttons" checked> Buttons</label>
+        <label><input type="radio" name="tab-type" value="underline" checked> Underline</label>
         <label><input type="radio" name="tab-type" value="tabs"> Tabs</label>
         <label><input type="radio" name="tab-type" value="slide"> Slide</label>
       </div>
@@ -312,7 +312,7 @@
             for (const el of [bar, bar.nextElementSibling]) {
               if (!el?.classList.contains("tab-bar") && !el?.classList.contains("tab-contents")) continue
               el.classList.remove(...TYPE_STYLES)
-              if (radio.value !== "buttons") el.classList.add(`tab-style-${radio.value}`)
+              if (radio.value !== "underline") el.classList.add(`tab-style-${radio.value}`)
             }
             bar.update?.()
           }
