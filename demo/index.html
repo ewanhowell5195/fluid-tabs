@@ -2114,83 +2114,81 @@
         <h2>Vertical Tabs</h2>
         <p>Add <code>data-tab-vertical</code> to run the bar down the side, inside a flex container with its panels. Use a media query as the value to only do this when it matches, so these switch to horizontal on smaller screens:</p>
 
-        <div class="demo">
-          <div class="tab-bar tab-style-slide" data-tab-no-swipe>
-            <button type="button" class="tab-bar-button active" data-tab="underline">Underline</button>
-            <button type="button" class="tab-bar-button" data-tab="classic">Classic tabs</button>
-            <button type="button" class="tab-bar-button" data-tab="slide">Slide</button>
-            <button type="button" class="tab-bar-button" data-tab="pill">Pill</button>
-            <button type="button" class="tab-bar-button" data-tab="card">Card</button>
+        <div class="tab-bar tab-style-tabs" data-tab-no-swipe>
+          <button type="button" class="tab-bar-button active" data-tab="underline">Underline</button>
+          <button type="button" class="tab-bar-button" data-tab="classic">Classic tabs</button>
+          <button type="button" class="tab-bar-button" data-tab="slide">Slide</button>
+          <button type="button" class="tab-bar-button" data-tab="pill">Pill</button>
+          <button type="button" class="tab-bar-button" data-tab="card">Card</button>
+        </div>
+        <div class="tab-contents tab-style-tabs">
+          <div class="tab-content active" data-tab="underline">
+            <div class="vertical-layout">
+              <div class="tab-bar" data-tab-vertical="(min-width: 700px)">
+                <button type="button" class="tab-bar-button active" data-tab="general">General</button>
+                <button type="button" class="tab-bar-button" data-tab="privacy">Privacy</button>
+                <button type="button" class="tab-bar-button" data-tab="billing">Billing</button>
+              </div>
+              <div class="tab-contents">
+                <div class="tab-content active" data-tab="general"><div class="row"><span>Language</span><strong>English</strong></div><div class="row"><span>Time zone</span><strong>London</strong></div></div>
+                <div class="tab-content" data-tab="privacy"><div class="row"><span>Profile</span><strong>Public</strong></div><div class="row"><span>Search engines</span><strong>Allowed</strong></div><div class="row"><span>Activity</span><strong>Hidden</strong></div></div>
+                <div class="tab-content" data-tab="billing"><div class="row"><span>Plan</span><strong>Pro</strong></div></div>
+              </div>
+            </div>
           </div>
-          <div class="tab-contents tab-style-slide">
-            <div class="tab-content active" data-tab="underline">
-              <div class="vertical-layout">
-                <div class="tab-bar" data-tab-vertical="(min-width: 700px)">
-                  <button type="button" class="tab-bar-button active" data-tab="general">General</button>
-                  <button type="button" class="tab-bar-button" data-tab="privacy">Privacy</button>
-                  <button type="button" class="tab-bar-button" data-tab="billing">Billing</button>
-                </div>
-                <div class="tab-contents">
-                  <div class="tab-content active" data-tab="general"><div class="row"><span>Language</span><strong>English</strong></div><div class="row"><span>Time zone</span><strong>London</strong></div></div>
-                  <div class="tab-content" data-tab="privacy"><div class="row"><span>Profile</span><strong>Public</strong></div><div class="row"><span>Search engines</span><strong>Allowed</strong></div><div class="row"><span>Activity</span><strong>Hidden</strong></div></div>
-                  <div class="tab-content" data-tab="billing"><div class="row"><span>Plan</span><strong>Pro</strong></div></div>
-                </div>
+          <div class="tab-content" data-tab="classic">
+            <div class="vertical-layout">
+              <div class="tab-bar tab-style-tabs" data-tab-vertical="(min-width: 700px)">
+                <button type="button" class="tab-bar-button active" data-tab="general">General</button>
+                <button type="button" class="tab-bar-button" data-tab="privacy">Privacy</button>
+                <button type="button" class="tab-bar-button" data-tab="billing">Billing</button>
+              </div>
+              <div class="tab-contents tab-style-tabs">
+                <div class="tab-content active" data-tab="general"><div class="row"><span>Language</span><strong>English</strong></div><div class="row"><span>Time zone</span><strong>London</strong></div></div>
+                <div class="tab-content" data-tab="privacy"><div class="row"><span>Profile</span><strong>Public</strong></div><div class="row"><span>Search engines</span><strong>Allowed</strong></div><div class="row"><span>Activity</span><strong>Hidden</strong></div></div>
+                <div class="tab-content" data-tab="billing"><div class="row"><span>Plan</span><strong>Pro</strong></div></div>
               </div>
             </div>
-            <div class="tab-content" data-tab="classic">
-              <div class="vertical-layout">
-                <div class="tab-bar tab-style-tabs" data-tab-vertical="(min-width: 700px)">
-                  <button type="button" class="tab-bar-button active" data-tab="general">General</button>
-                  <button type="button" class="tab-bar-button" data-tab="privacy">Privacy</button>
-                  <button type="button" class="tab-bar-button" data-tab="billing">Billing</button>
-                </div>
-                <div class="tab-contents tab-style-tabs">
-                  <div class="tab-content active" data-tab="general"><div class="row"><span>Language</span><strong>English</strong></div><div class="row"><span>Time zone</span><strong>London</strong></div></div>
-                  <div class="tab-content" data-tab="privacy"><div class="row"><span>Profile</span><strong>Public</strong></div><div class="row"><span>Search engines</span><strong>Allowed</strong></div><div class="row"><span>Activity</span><strong>Hidden</strong></div></div>
-                  <div class="tab-content" data-tab="billing"><div class="row"><span>Plan</span><strong>Pro</strong></div></div>
-                </div>
+          </div>
+          <div class="tab-content" data-tab="slide">
+            <div class="vertical-layout">
+              <div class="tab-bar tab-style-slide" data-tab-vertical="(min-width: 700px)">
+                <button type="button" class="tab-bar-button active" data-tab="general">General</button>
+                <button type="button" class="tab-bar-button" data-tab="privacy">Privacy</button>
+                <button type="button" class="tab-bar-button" data-tab="billing">Billing</button>
+              </div>
+              <div class="tab-contents tab-style-slide">
+                <div class="tab-content active" data-tab="general"><div class="row"><span>Language</span><strong>English</strong></div><div class="row"><span>Time zone</span><strong>London</strong></div></div>
+                <div class="tab-content" data-tab="privacy"><div class="row"><span>Profile</span><strong>Public</strong></div><div class="row"><span>Search engines</span><strong>Allowed</strong></div><div class="row"><span>Activity</span><strong>Hidden</strong></div></div>
+                <div class="tab-content" data-tab="billing"><div class="row"><span>Plan</span><strong>Pro</strong></div></div>
               </div>
             </div>
-            <div class="tab-content" data-tab="slide">
-              <div class="vertical-layout">
-                <div class="tab-bar tab-style-slide" data-tab-vertical="(min-width: 700px)">
-                  <button type="button" class="tab-bar-button active" data-tab="general">General</button>
-                  <button type="button" class="tab-bar-button" data-tab="privacy">Privacy</button>
-                  <button type="button" class="tab-bar-button" data-tab="billing">Billing</button>
-                </div>
-                <div class="tab-contents tab-style-slide">
-                  <div class="tab-content active" data-tab="general"><div class="row"><span>Language</span><strong>English</strong></div><div class="row"><span>Time zone</span><strong>London</strong></div></div>
-                  <div class="tab-content" data-tab="privacy"><div class="row"><span>Profile</span><strong>Public</strong></div><div class="row"><span>Search engines</span><strong>Allowed</strong></div><div class="row"><span>Activity</span><strong>Hidden</strong></div></div>
-                  <div class="tab-content" data-tab="billing"><div class="row"><span>Plan</span><strong>Pro</strong></div></div>
-                </div>
+          </div>
+          <div class="tab-content" data-tab="pill">
+            <div class="vertical-layout">
+              <div class="tab-bar tab-style-pill" data-tab-vertical="(min-width: 700px)">
+                <button type="button" class="tab-bar-button active" data-tab="general">General</button>
+                <button type="button" class="tab-bar-button" data-tab="privacy">Privacy</button>
+                <button type="button" class="tab-bar-button" data-tab="billing">Billing</button>
+              </div>
+              <div class="tab-contents tab-style-pill">
+                <div class="tab-content active" data-tab="general"><div class="row"><span>Language</span><strong>English</strong></div><div class="row"><span>Time zone</span><strong>London</strong></div></div>
+                <div class="tab-content" data-tab="privacy"><div class="row"><span>Profile</span><strong>Public</strong></div><div class="row"><span>Search engines</span><strong>Allowed</strong></div><div class="row"><span>Activity</span><strong>Hidden</strong></div></div>
+                <div class="tab-content" data-tab="billing"><div class="row"><span>Plan</span><strong>Pro</strong></div></div>
               </div>
             </div>
-            <div class="tab-content" data-tab="pill">
-              <div class="vertical-layout">
-                <div class="tab-bar tab-style-pill" data-tab-vertical="(min-width: 700px)">
-                  <button type="button" class="tab-bar-button active" data-tab="general">General</button>
-                  <button type="button" class="tab-bar-button" data-tab="privacy">Privacy</button>
-                  <button type="button" class="tab-bar-button" data-tab="billing">Billing</button>
-                </div>
-                <div class="tab-contents tab-style-pill">
-                  <div class="tab-content active" data-tab="general"><div class="row"><span>Language</span><strong>English</strong></div><div class="row"><span>Time zone</span><strong>London</strong></div></div>
-                  <div class="tab-content" data-tab="privacy"><div class="row"><span>Profile</span><strong>Public</strong></div><div class="row"><span>Search engines</span><strong>Allowed</strong></div><div class="row"><span>Activity</span><strong>Hidden</strong></div></div>
-                  <div class="tab-content" data-tab="billing"><div class="row"><span>Plan</span><strong>Pro</strong></div></div>
-                </div>
+          </div>
+          <div class="tab-content" data-tab="card">
+            <div class="vertical-layout">
+              <div class="tab-bar tab-style-card" data-tab-vertical="(min-width: 700px)">
+                <button type="button" class="tab-bar-button active" data-tab="general">General<span>Language and region</span></button>
+                <button type="button" class="tab-bar-button" data-tab="privacy">Privacy<span>Who can see you</span></button>
+                <button type="button" class="tab-bar-button" data-tab="billing">Billing<span>Plan and invoices</span></button>
               </div>
-            </div>
-            <div class="tab-content" data-tab="card">
-              <div class="vertical-layout">
-                <div class="tab-bar tab-style-card" data-tab-vertical="(min-width: 700px)">
-                  <button type="button" class="tab-bar-button active" data-tab="general">General<span>Language and region</span></button>
-                  <button type="button" class="tab-bar-button" data-tab="privacy">Privacy<span>Who can see you</span></button>
-                  <button type="button" class="tab-bar-button" data-tab="billing">Billing<span>Plan and invoices</span></button>
-                </div>
-                <div class="tab-contents tab-style-card">
-                  <div class="tab-content active" data-tab="general"><div class="row"><span>Language</span><strong>English</strong></div><div class="row"><span>Time zone</span><strong>London</strong></div></div>
-                  <div class="tab-content" data-tab="privacy"><div class="row"><span>Profile</span><strong>Public</strong></div><div class="row"><span>Search engines</span><strong>Allowed</strong></div><div class="row"><span>Activity</span><strong>Hidden</strong></div></div>
-                  <div class="tab-content" data-tab="billing"><div class="row"><span>Plan</span><strong>Pro</strong></div></div>
-                </div>
+              <div class="tab-contents tab-style-card">
+                <div class="tab-content active" data-tab="general"><div class="row"><span>Language</span><strong>English</strong></div><div class="row"><span>Time zone</span><strong>London</strong></div></div>
+                <div class="tab-content" data-tab="privacy"><div class="row"><span>Profile</span><strong>Public</strong></div><div class="row"><span>Search engines</span><strong>Allowed</strong></div><div class="row"><span>Activity</span><strong>Hidden</strong></div></div>
+                <div class="tab-content" data-tab="billing"><div class="row"><span>Plan</span><strong>Pro</strong></div></div>
               </div>
             </div>
           </div>
