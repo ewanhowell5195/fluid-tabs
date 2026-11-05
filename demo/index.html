@@ -235,6 +235,26 @@
       margin-bottom: 0;
     }
 
+    .style-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .style-grid > .demo + .demo {
+      margin-top: 0;
+    }
+
+    .style-grid .tab-style-card > .tab-bar-button {
+      min-width: 0;
+    }
+
+    @media (max-width: 800px) {
+      .style-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
     .demo h3 {
       font-size: 1rem;
       color: #2c3e50;
@@ -1775,87 +1795,89 @@
         <h2>Styles</h2>
         <p>Six styles are built in as starting points to restyle from. Add a <code>tab-style-*</code> class to the bar and its panels, or leave it off for the underline:</p>
 
-        <div class="demo">
-          <h3>Underline</h3>
-          <div class="tab-bar">
-            <button type="button" class="tab-bar-button active" data-tab="latest">Latest</button>
-            <button type="button" class="tab-bar-button" data-tab="popular">Popular</button>
-            <button type="button" class="tab-bar-button" data-tab="saved">Saved</button>
+        <div class="style-grid">
+          <div class="demo">
+            <h3>Underline</h3>
+            <div class="tab-bar">
+              <button type="button" class="tab-bar-button active" data-tab="latest">Latest</button>
+              <button type="button" class="tab-bar-button" data-tab="popular">Popular</button>
+              <button type="button" class="tab-bar-button" data-tab="saved">Saved</button>
+            </div>
+            <div class="tab-contents">
+              <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
+              <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
+              <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
+            </div>
           </div>
-          <div class="tab-contents">
-            <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
-            <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
-            <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
-          </div>
-        </div>
 
-        <div class="demo">
-          <h3>Classic tabs</h3>
-          <div class="tab-bar tab-style-tabs">
-            <button type="button" class="tab-bar-button active" data-tab="latest">Latest</button>
-            <button type="button" class="tab-bar-button" data-tab="popular">Popular</button>
-            <button type="button" class="tab-bar-button" data-tab="saved">Saved</button>
+          <div class="demo">
+            <h3>Classic tabs</h3>
+            <div class="tab-bar tab-style-tabs">
+              <button type="button" class="tab-bar-button active" data-tab="latest">Latest</button>
+              <button type="button" class="tab-bar-button" data-tab="popular">Popular</button>
+              <button type="button" class="tab-bar-button" data-tab="saved">Saved</button>
+            </div>
+            <div class="tab-contents tab-style-tabs">
+              <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
+              <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
+              <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
+            </div>
           </div>
-          <div class="tab-contents tab-style-tabs">
-            <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
-            <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
-            <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
-          </div>
-        </div>
 
-        <div class="demo">
-          <h3>Slide</h3>
-          <div class="tab-bar tab-style-slide">
-            <button type="button" class="tab-bar-button active" data-tab="latest">Latest</button>
-            <button type="button" class="tab-bar-button" data-tab="popular">Popular</button>
-            <button type="button" class="tab-bar-button" data-tab="saved">Saved</button>
+          <div class="demo">
+            <h3>Slide</h3>
+            <div class="tab-bar tab-style-slide">
+              <button type="button" class="tab-bar-button active" data-tab="latest">Latest</button>
+              <button type="button" class="tab-bar-button" data-tab="popular">Popular</button>
+              <button type="button" class="tab-bar-button" data-tab="saved">Saved</button>
+            </div>
+            <div class="tab-contents tab-style-slide">
+              <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
+              <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
+              <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
+            </div>
           </div>
-          <div class="tab-contents tab-style-slide">
-            <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
-            <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
-            <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
-          </div>
-        </div>
 
-        <div class="demo">
-          <h3>Pill</h3>
-          <div class="tab-bar tab-style-pill">
-            <button type="button" class="tab-bar-button active" data-tab="latest">Latest</button>
-            <button type="button" class="tab-bar-button" data-tab="popular">Popular</button>
-            <button type="button" class="tab-bar-button" data-tab="saved">Saved</button>
+          <div class="demo">
+            <h3>Pill</h3>
+            <div class="tab-bar tab-style-pill">
+              <button type="button" class="tab-bar-button active" data-tab="latest">Latest</button>
+              <button type="button" class="tab-bar-button" data-tab="popular">Popular</button>
+              <button type="button" class="tab-bar-button" data-tab="saved">Saved</button>
+            </div>
+            <div class="tab-contents tab-style-pill">
+              <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
+              <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
+              <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
+            </div>
           </div>
-          <div class="tab-contents tab-style-pill">
-            <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
-            <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
-            <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
-          </div>
-        </div>
 
-        <div class="demo">
-          <h3>Nav</h3>
-          <div class="tab-contents tab-style-nav" data-tab-bar="style-nav-bar">
-            <div class="tab-content active" data-tab="latest"><p class="flush nav-panel">The newest articles, most recent first.</p></div>
-            <div class="tab-content" data-tab="popular"><p class="flush nav-panel">The most read articles this week.</p></div>
-            <div class="tab-content" data-tab="saved"><p class="flush nav-panel">Articles you have saved for later.</p></div>
+          <div class="demo">
+            <h3>Nav</h3>
+            <div class="tab-contents tab-style-nav" data-tab-bar="style-nav-bar">
+              <div class="tab-content active" data-tab="latest"><p class="flush nav-panel">The newest articles, most recent first.</p></div>
+              <div class="tab-content" data-tab="popular"><p class="flush nav-panel">The most read articles this week.</p></div>
+              <div class="tab-content" data-tab="saved"><p class="flush nav-panel">Articles you have saved for later.</p></div>
+            </div>
+            <div class="tab-bar tab-style-nav" id="style-nav-bar">
+              <button type="button" class="tab-bar-button active" data-tab="latest"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 10.4 4 2.4-1 1.6-5-3V7h2z"/></svg>Latest</button>
+              <button type="button" class="tab-bar-button" data-tab="popular"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.3 18.2 21l-1.6-7L22 9.2l-7.2-.6L12 2 9.2 8.6 2 9.2 7.5 14l-1.7 7z"/></svg>Popular</button>
+              <button type="button" class="tab-bar-button" data-tab="saved"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>Saved</button>
+            </div>
           </div>
-          <div class="tab-bar tab-style-nav" id="style-nav-bar">
-            <button type="button" class="tab-bar-button active" data-tab="latest"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 10.4 4 2.4-1 1.6-5-3V7h2z"/></svg>Latest</button>
-            <button type="button" class="tab-bar-button" data-tab="popular"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.3 18.2 21l-1.6-7L22 9.2l-7.2-.6L12 2 9.2 8.6 2 9.2 7.5 14l-1.7 7z"/></svg>Popular</button>
-            <button type="button" class="tab-bar-button" data-tab="saved"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>Saved</button>
-          </div>
-        </div>
 
-        <div class="demo">
-          <h3>Card</h3>
-          <div class="tab-bar tab-style-card">
-            <button type="button" class="tab-bar-button active" data-tab="latest">Latest<span>Most recent first</span></button>
-            <button type="button" class="tab-bar-button" data-tab="popular">Popular<span>Most read this week</span></button>
-            <button type="button" class="tab-bar-button" data-tab="saved">Saved<span>Kept for later</span></button>
-          </div>
-          <div class="tab-contents tab-style-card">
-            <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
-            <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
-            <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
+          <div class="demo">
+            <h3>Card</h3>
+            <div class="tab-bar tab-style-card">
+              <button type="button" class="tab-bar-button active" data-tab="latest">Latest<span>Most recent first</span></button>
+              <button type="button" class="tab-bar-button" data-tab="popular">Popular<span>Most read this week</span></button>
+              <button type="button" class="tab-bar-button" data-tab="saved">Saved<span>Kept for later</span></button>
+            </div>
+            <div class="tab-contents tab-style-card">
+              <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
+              <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
+              <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
+            </div>
           </div>
         </div>
 
