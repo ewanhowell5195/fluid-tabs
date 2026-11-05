@@ -62,7 +62,6 @@
       const styledWraps = contentWraps.filter(wrap => !TAB_STYLES.some(c => wrap.classList.contains(c)))
       for (const wrap of styledWraps) wrap.classList.add(style)
       const contents = contentWraps.flatMap(el => Array.from(el.querySelectorAll(".tab-content")).filter(c => c.closest(".tab-contents") === el))
-      const teaseX = parseFloat(getComputedStyle(activeIndicator).getPropertyValue("--tab-tease-x")) || 0
       let lastSwitch = 0
 
       const addedAttributes = []
@@ -221,6 +220,7 @@
         // tease's two edges animate on different delays and look broken
         setIndicatorDelay("")
 
+        const teaseX = parseFloat(getComputedStyle(activeIndicator).getPropertyValue("--tab-tease-x")) || 0
         const parentBox = getParentBox()
         const rect = active.getBoundingClientRect()
         const axis = vertical ? "y" : "x"

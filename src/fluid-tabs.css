@@ -398,6 +398,7 @@
 /* Pill style - separate rounded tabs with a filled pill sliding between them */
 
 .tab-bar.tab-style-pill {
+  --tab-tease-x: 4px;
   width: 100%;
   justify-content: flex-start;
   gap: 8px;
