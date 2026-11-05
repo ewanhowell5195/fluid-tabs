@@ -95,8 +95,6 @@
   touch-action: pan-y;
   margin-bottom: 24px;
   --tab-fade: 60px;
-  --tab-fade-start: 0px;
-  --tab-fade-end: 0px;
   mask-image: linear-gradient(to right, transparent, #000 var(--tab-fade-start), #000 calc(100% - var(--tab-fade-end)), transparent);
   transition: --tab-fade-start var(--tab-transition-duration) var(--tab-transition-easing),
               --tab-fade-end var(--tab-transition-duration) var(--tab-transition-easing);
@@ -137,13 +135,10 @@
   gap: 8px;
   position: relative;
   z-index: 1;
+  --tab-button-x: -1;
   transition: background var(--tab-transition-duration) var(--tab-transition-easing),
               color var(--tab-transition-duration) var(--tab-transition-easing),
               border-color var(--tab-transition-duration) var(--tab-transition-easing);
-}
-
-.tab-bar-button {
-  --tab-button-x: -1;
 }
 
 .tab-bar-button.active {
@@ -173,15 +168,6 @@
 
 .tab-bar-button img {
   pointer-events: none;
-}
-
-.tab-bar-button-icon {
-  width: 24px;
-  height: 24px;
-  background-color: currentColor;
-  mask-size: contain;
-  mask-repeat: no-repeat;
-  mask-position: center;
 }
 
 .tab-contents {
@@ -251,30 +237,7 @@
   --tab-panel-x: -1;
 }
 
-/* Underline style - text tabs with a sliding underline above the content */
-
-.tab-bar.tab-style-underline {
-  width: 100%;
-  justify-content: flex-start;
-  margin-bottom: 20px;
-  box-shadow: inset 0 -1px 0 #d6d6d6;
-}
-
-.tab-style-underline > .tab-bar-button {
-  flex: 0 0 auto;
-  color: #6b6b6b;
-  padding: 12px 16px;
-}
-
-.tab-style-underline > .tab-bar-button.active {
-  color: #1c1c1c;
-}
-
-.tab-style-underline > .tab-bar-active {
-  border-bottom: 2px solid #1c1c1c;
-}
-
-/* Shared sliding indicator - positioned by JS */
+/* Sliding indicator */
 
 .tab-bar-active {
   position: absolute;
@@ -305,7 +268,30 @@
     --tab-reveal-bottom var(--tab-transition-duration) var(--tab-transition-easing);
 }
 
-/* Tabs style - classic tabs with a connected, filled content panel */
+/* Underline style */
+
+.tab-bar.tab-style-underline {
+  width: 100%;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+  box-shadow: inset 0 -1px 0 #d6d6d6;
+}
+
+.tab-style-underline > .tab-bar-button {
+  flex: 0 0 auto;
+  color: #6b6b6b;
+  padding: 12px 16px;
+}
+
+.tab-style-underline > .tab-bar-button.active {
+  color: #1c1c1c;
+}
+
+.tab-style-underline > .tab-bar-active {
+  border-bottom: 2px solid #1c1c1c;
+}
+
+/* Tabs style */
 
 .tab-bar.tab-style-tabs {
   width: 100%;
@@ -353,7 +339,7 @@
   padding: 24px;
 }
 
-/* Slide style - segmented control with a sliding knob */
+/* Slide style */
 
 .tab-bar.tab-style-slide {
   width: fit-content;
@@ -375,19 +361,10 @@
   min-width: min-content;
   font-weight: 600;
   color: #71717a;
-  transition-property: background, border-color;
 }
 
-.tab-style-slide > .tab-bar-button.active {
-  color: #18181b;
-  transition:
-    background var(--tab-transition-duration) var(--tab-transition-easing),
-    border-color var(--tab-transition-duration) var(--tab-transition-easing),
-    color 0s linear var(--tab-transition-duration);
-}
-
+.tab-style-slide > .tab-bar-button.active,
 .tab-style-slide > .tab-bar-button > .tab-bar-button-reveal {
-  visibility: visible;
   color: #18181b;
 }
 
@@ -395,16 +372,12 @@
   border-radius: 6px;
 }
 
-/* Pill style - separate rounded tabs with a filled pill sliding between them */
+/* Pill style */
 
 .tab-bar.tab-style-pill {
   --tab-tease-x: 4px;
-  box-sizing: border-box;
-  width: calc(100% + 2px);
   justify-content: flex-start;
   gap: 8px;
-  margin: -1px -1px 19px;
-  padding: 1px;
 }
 
 .tab-style-pill > .tab-bar-button {
@@ -413,19 +386,10 @@
   border: 1px solid rgba(0, 0, 0, .16);
   border-radius: 999px;
   color: #6b6b6b;
-  transition-property: background, border-color;
 }
 
-.tab-style-pill > .tab-bar-button.active {
-  color: #fff;
-  transition:
-    background var(--tab-transition-duration) var(--tab-transition-easing),
-    border-color var(--tab-transition-duration) var(--tab-transition-easing),
-    color 0s linear var(--tab-transition-duration);
-}
-
+.tab-style-pill > .tab-bar-button.active,
 .tab-style-pill > .tab-bar-button > .tab-bar-button-reveal {
-  visibility: visible;
   color: #fff;
 }
 
@@ -434,7 +398,33 @@
   border-radius: 999px;
 }
 
-/* Nav style - equal width tabs with an icon above the label, like an app bar */
+.tab-style-slide > .tab-bar-button,
+.tab-style-pill > .tab-bar-button {
+  transition-property: background, border-color;
+}
+
+.tab-style-slide > .tab-bar-button.active,
+.tab-style-pill > .tab-bar-button.active {
+  transition:
+    background var(--tab-transition-duration) var(--tab-transition-easing),
+    border-color var(--tab-transition-duration) var(--tab-transition-easing),
+    color 0s linear var(--tab-transition-duration);
+}
+
+.tab-style-slide > .tab-bar-button > .tab-bar-button-reveal,
+.tab-style-pill > .tab-bar-button > .tab-bar-button-reveal {
+  visibility: visible;
+}
+
+.tab-bar.tab-style-pill,
+.tab-bar.tab-style-card {
+  box-sizing: border-box;
+  width: calc(100% + 2px);
+  margin: -1px -1px 19px;
+  padding: 1px;
+}
+
+/* Nav style */
 
 .tab-bar.tab-style-nav {
   width: 100%;
@@ -464,16 +454,12 @@
   border-top: 3px solid #1c1c1c;
 }
 
-/* Card style - large tabs with a title and description */
+/* Card style */
 
 .tab-bar.tab-style-card {
   --tab-reveal-soft: 80px;
   --tab-slide-lag: 0;
-  box-sizing: border-box;
-  width: calc(100% + 2px);
   gap: 12px;
-  margin: -1px -1px 19px;
-  padding: 1px;
 }
 
 .tab-style-card > .tab-bar-button {
@@ -495,13 +481,13 @@
   visibility: visible;
   color: transparent;
   clip-path: none;
-  mask: linear-gradient(to right, transparent calc(var(--tab-reveal-left) - var(--tab-reveal-edge-x) - 1px), #000 calc(var(--tab-reveal-left) - 1px), #000 calc(100% - var(--tab-reveal-right) + 1px), transparent calc(100% - var(--tab-reveal-right) + var(--tab-reveal-edge-x) + 1px));
+  --tab-reveal-mask-x: linear-gradient(to right, transparent calc(var(--tab-reveal-left) - var(--tab-reveal-edge-x) - 1px), #000 calc(var(--tab-reveal-left) - 1px), #000 calc(100% - var(--tab-reveal-right) + 1px), transparent calc(100% - var(--tab-reveal-right) + var(--tab-reveal-edge-x) + 1px));
+  --tab-reveal-mask-y: linear-gradient(to bottom, transparent calc(var(--tab-reveal-top) - var(--tab-reveal-edge-y) - 1px), #000 calc(var(--tab-reveal-top) - 1px), #000 calc(100% - var(--tab-reveal-bottom) + 1px), transparent calc(100% - var(--tab-reveal-bottom) + var(--tab-reveal-edge-y) + 1px));
+  mask: var(--tab-reveal-mask-x);
 }
 
 .tab-bar-wrap.tab-style-card > .tab-bar-button > .tab-bar-button-reveal {
-  mask:
-    linear-gradient(to right, transparent calc(var(--tab-reveal-left) - var(--tab-reveal-edge-x) - 1px), #000 calc(var(--tab-reveal-left) - 1px), #000 calc(100% - var(--tab-reveal-right) + 1px), transparent calc(100% - var(--tab-reveal-right) + var(--tab-reveal-edge-x) + 1px)),
-    linear-gradient(to bottom, transparent calc(var(--tab-reveal-top) - var(--tab-reveal-edge-y) - 1px), #000 calc(var(--tab-reveal-top) - 1px), #000 calc(100% - var(--tab-reveal-bottom) + 1px), transparent calc(100% - var(--tab-reveal-bottom) + var(--tab-reveal-edge-y) + 1px));
+  mask: var(--tab-reveal-mask-x), var(--tab-reveal-mask-y);
   mask-composite: intersect;
 }
 
@@ -519,11 +505,7 @@
   font-weight: 400;
 }
 
-.tab-style-card > .tab-bar-button:focus-visible {
-  border-radius: 10px;
-}
-
-/* Vertical - the bar runs down the side of its panels */
+/* Vertical */
 
 .tab-bar.tab-bar-vertical {
   flex-direction: column;
@@ -616,7 +598,7 @@
 }
 
 .tab-bar-vertical.tab-style-card > .tab-bar-button > .tab-bar-button-reveal {
-  mask: linear-gradient(to bottom, transparent calc(var(--tab-reveal-top) - var(--tab-reveal-edge-y) - 1px), #000 calc(var(--tab-reveal-top) - 1px), #000 calc(100% - var(--tab-reveal-bottom) + 1px), transparent calc(100% - var(--tab-reveal-bottom) + var(--tab-reveal-edge-y) + 1px));
+  mask: var(--tab-reveal-mask-y);
 }
 
 .tab-bar.tab-bar-vertical.tab-style-tabs {
