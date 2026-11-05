@@ -54,6 +54,18 @@
   initial-value: 0px;
 }
 
+@property --tab-reveal-edge-x {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --tab-reveal-edge-y {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
 @property --tab-tease-x {
   syntax: "<length>";
   inherits: true;
@@ -68,6 +80,7 @@
 
 .tab-bar:not(.tab-bar-ready),
 .tab-bar:not(.tab-bar-ready) *,
+.tab-bar:not(.tab-bar-ready) *::before,
 .tab-contents:not(.tab-bar-ready),
 .tab-contents:not(.tab-bar-ready) * {
   transition: none !important;
@@ -382,6 +395,129 @@
   border-radius: 6px;
 }
 
+/* Pill style - separate rounded tabs with a filled pill sliding between them */
+
+.tab-bar.tab-style-pill {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tab-style-pill > .tab-bar-button {
+  flex: 0 0 auto;
+  padding: 7px 15px;
+  border: 1px solid rgba(0, 0, 0, .16);
+  border-radius: 999px;
+  color: #6b6b6b;
+  transition-property: background, border-color;
+}
+
+.tab-style-pill > .tab-bar-button.active {
+  color: #fff;
+  transition:
+    background var(--tab-transition-duration) var(--tab-transition-easing),
+    border-color var(--tab-transition-duration) var(--tab-transition-easing),
+    color 0s linear var(--tab-transition-duration);
+}
+
+.tab-style-pill > .tab-bar-button > .tab-bar-button-reveal {
+  visibility: visible;
+  color: #fff;
+}
+
+.tab-style-pill > .tab-bar-active {
+  background: #1c1c1c;
+  border-radius: 999px;
+}
+
+/* Nav style - equal width tabs with an icon above the label, like an app bar */
+
+.tab-bar.tab-style-nav {
+  width: 100%;
+  margin-bottom: 0;
+  box-shadow: inset 0 1px 0 #d6d6d6;
+}
+
+.tab-style-nav > .tab-bar-button {
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 4px;
+  color: #6b6b6b;
+  font-size: .75rem;
+}
+
+.tab-style-nav > .tab-bar-button.active {
+  color: #1c1c1c;
+}
+
+.tab-style-nav > .tab-bar-button svg {
+  width: 22px;
+  height: 22px;
+}
+
+.tab-style-nav > .tab-bar-active {
+  border-top: 3px solid #1c1c1c;
+}
+
+/* Card style - large tabs with a title and description */
+
+.tab-bar.tab-style-card {
+  --tab-reveal-soft: 80px;
+  --tab-slide-lag: 0;
+  width: 100%;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.tab-style-card > .tab-bar-button {
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 4px;
+  min-width: 140px;
+  padding: 13px 15px;
+  border: 1px solid #d6d6d6;
+  border-radius: 10px;
+  color: #1c1c1c;
+  white-space: normal;
+}
+
+.tab-style-card > .tab-bar-button > .tab-bar-button-reveal {
+  inset: -1px;
+  visibility: visible;
+  color: transparent;
+  clip-path: inset(var(--tab-reveal-top) 0 var(--tab-reveal-bottom) 0);
+}
+
+.tab-bar-wrap.tab-style-card > .tab-bar-button > .tab-bar-button-reveal {
+  clip-path: none;
+  mask: linear-gradient(to bottom, transparent calc(var(--tab-reveal-top) - var(--tab-reveal-edge-y)), #000 var(--tab-reveal-top), #000 calc(100% - var(--tab-reveal-bottom)), transparent calc(100% - var(--tab-reveal-bottom) + var(--tab-reveal-edge-y)));
+}
+
+.tab-style-card > .tab-bar-button > .tab-bar-button-reveal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: 10px;
+  background: linear-gradient(to right, transparent calc(var(--tab-reveal-left) - var(--tab-reveal-edge-x)), #1c1c1c var(--tab-reveal-left), #1c1c1c calc(100% - var(--tab-reveal-right)), transparent calc(100% - var(--tab-reveal-right) + var(--tab-reveal-edge-x)));
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.tab-style-card > .tab-bar-button > span {
+  color: #6b6b6b;
+  font-size: .85em;
+  font-weight: 400;
+}
+
+.tab-style-card > .tab-bar-button:focus-visible {
+  border-radius: 10px;
+}
+
 /* Vertical - the bar runs down the side of its panels */
 
 .tab-bar.tab-bar-vertical {
@@ -441,6 +577,35 @@
 .tab-bar-vertical.tab-style-underline > .tab-bar-active {
   border-bottom: 0;
   border-inline-end: 2px solid #1c1c1c;
+}
+
+.tab-bar-vertical.tab-style-nav {
+  box-shadow: inset 1px 0 0 #d6d6d6;
+}
+
+.tab-bar-vertical.tab-style-nav:dir(rtl) {
+  box-shadow: inset -1px 0 0 #d6d6d6;
+}
+
+.tab-bar-vertical.tab-style-nav > .tab-bar-button {
+  padding: 10px 12px;
+}
+
+.tab-bar-vertical.tab-style-nav > .tab-bar-active {
+  border-top: 0;
+  border-inline-start: 3px solid #1c1c1c;
+}
+
+.tab-bar.tab-bar-vertical.tab-style-card {
+  width: 220px;
+}
+
+.tab-bar-vertical.tab-style-card > .tab-bar-button > .tab-bar-button-reveal {
+  clip-path: inset(0 var(--tab-reveal-right) 0 var(--tab-reveal-left));
+}
+
+.tab-bar-vertical.tab-style-card > .tab-bar-button > .tab-bar-button-reveal::before {
+  background: linear-gradient(to bottom, transparent calc(var(--tab-reveal-top) - var(--tab-reveal-edge-y)), #1c1c1c var(--tab-reveal-top), #1c1c1c calc(100% - var(--tab-reveal-bottom)), transparent calc(100% - var(--tab-reveal-bottom) + var(--tab-reveal-edge-y)));
 }
 
 .tab-bar.tab-bar-vertical.tab-style-tabs {

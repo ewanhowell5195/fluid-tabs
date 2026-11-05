@@ -212,6 +212,9 @@
         <label><input type="radio" name="tab-type" value="underline" checked> Underline</label>
         <label><input type="radio" name="tab-type" value="tabs"> Tabs</label>
         <label><input type="radio" name="tab-type" value="slide"> Slide</label>
+        <label><input type="radio" name="tab-type" value="pill"> Pill</label>
+        <label><input type="radio" name="tab-type" value="nav"> Nav</label>
+        <label><input type="radio" name="tab-type" value="card"> Card</label>
       </div>
     </section>
 
@@ -305,7 +308,7 @@
         })
       }
 
-      const TYPE_STYLES = ["tab-style-tabs", "tab-style-slide"]
+      const TYPE_STYLES = ["tab-style-tabs", "tab-style-slide", "tab-style-pill", "tab-style-nav", "tab-style-card"]
       for (const radio of document.querySelectorAll("#type-switcher input")) {
         radio.addEventListener("change", () => {
           for (const bar of document.querySelectorAll(".tab-bar.switchable")) {

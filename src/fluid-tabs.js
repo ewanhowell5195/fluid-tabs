@@ -4,7 +4,7 @@
     for (const bar of bars) bar?.update()
   })
 
-  const TAB_STYLES = ["tab-style-underline", "tab-style-tabs", "tab-style-slide"]
+  const TAB_STYLES = ["tab-style-underline", "tab-style-tabs", "tab-style-slide", "tab-style-pill", "tab-style-nav", "tab-style-card"]
 
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)")
 
@@ -126,6 +126,22 @@
         layer.replaceChildren(...Array.from(button.childNodes).filter(node => node !== layer).map(node => node.cloneNode(true)))
         for (const el of layer.querySelectorAll("[id]")) el.removeAttribute("id")
         if (layer.parentNode !== button) button.append(layer)
+      }
+
+      function softenReveal(from, to) {
+        const style = getComputedStyle(activeIndicator)
+        const soft = parseFloat(style.getPropertyValue("--tab-reveal-soft"))
+        if (!soft || reducedMotion.matches) return
+        const duration = Math.max(0, ...activeIndicator.getAnimations().map(a => a.effect.getComputedTiming().endTime))
+        const easing = style.getPropertyValue("--tab-transition-easing").trim()
+        const axes = [["--tab-reveal-edge-x", Math.max(Math.abs(to.left - from.left), Math.abs(to.right - from.right))], ["--tab-reveal-edge-y", Math.max(Math.abs(to.top - from.top), Math.abs(to.bottom - from.bottom))]]
+        for (const [property, distance] of axes) {
+          if (!distance) continue
+          const edge = Math.min(soft, distance / 2)
+          for (const { layer } of reveals) {
+            layer.animate({ [property]: [getComputedStyle(layer).getPropertyValue(property), edge + "px", edge + "px", "0px"], offset: [0, edge / distance, 1 - edge / distance, 1] }, { duration, easing })
+          }
+        }
       }
 
       function setIndicatorDelay(delay) {
@@ -366,7 +382,9 @@
             movingUp ? lag : "0s"
           ].join(", "))
 
+          const indicatorRect = activeIndicator.getBoundingClientRect()
           placeIndicator(toRect, parentBox)
+          softenReveal(indicatorRect, toRect)
 
           const switchId = ++lastSwitch
           function finish() {

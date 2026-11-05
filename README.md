@@ -9,7 +9,7 @@ A lightweight, zero-dependency tabs library with a smooth animated indicator, dr
 ## Features
 
 * No dependencies
-* Three visual styles out of the box: underline, classic tabs, and a sliding segmented control
+* Six visual styles out of the box: underline, classic tabs, slide, pill, nav, and card
 * Horizontal or vertical, switchable by screen size
 * Animated indicator that slides between tabs with an elastic stretch, and a spring "tease" on hover
 * Animated content panel that cross-fades and resizes between tabs
@@ -68,6 +68,9 @@ Set a `tab-style-*` class on both the `.tab-bar` and its matching `.tab-contents
 | *(none)* / `tab-style-underline` | **Underline** - text tabs with a sliding underline. The default. |
 | `tab-style-tabs` | **Classic tabs** - filled tabs joined to a bordered content panel. |
 | `tab-style-slide` | **Slide** - a pill-shaped segmented control with a sliding knob. |
+| `tab-style-pill` | **Pill** - separate rounded tabs with a filled pill sliding between them. |
+| `tab-style-nav` | **Nav** - equal width tabs with an icon above the label, like an app bar. Put an `<svg>` before the label. |
+| `tab-style-card` | **Card** - large tabs with a title and description. Put the description in a `<span>` after the title. |
 
 ```html
 <div class="tab-bar tab-style-slide"> … </div>
@@ -257,7 +260,7 @@ Each `.tab-bar-button` gets `--tab-button-x`, which is `-1` before the active ta
 
 ### Active label reveal
 
-Each button has a hidden copy of its label in `.tab-bar-button-reveal`, clipped to the indicator's shape. Show it to change the label's colour exactly at the indicator's edge. The slide style uses it. To use it in your own style:
+Each button has a hidden copy of its label in `.tab-bar-button-reveal`, clipped to the indicator's shape. Show it to change the label's colour exactly at the indicator's edge. The slide, pill and card styles use it. To use it in your own style:
 
 ```css
 .my-bar > .tab-bar-button.active {
