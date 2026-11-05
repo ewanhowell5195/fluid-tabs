@@ -296,7 +296,12 @@
         for (const wrap of contentWraps) wrap.style.minHeight = vertical ? outerHeight(tabBar) + "px" : ""
       }
 
+      let visibleSize = 0
+
       tabBar.update = () => {
+        const size = vertical ? tabBar.clientHeight : tabBar.clientWidth
+        if (size < visibleSize || !visibleSize) scrollActiveIntoView(visibleSize > 0 && !reducedMotion.matches)
+        visibleSize = size
         updateIndicator()
         updateFades()
         updateMinHeight()
