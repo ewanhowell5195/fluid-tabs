@@ -2229,7 +2229,7 @@
         <p>The bar fires a <code>tab-changed</code> event when the active tab changes, with the new tab's <code>data-tab</code> in <code>event.detail</code>. Panels are optional, so a bar on its own works as a filter. Here there are no panels, the event just hides the messages that don't match:</p>
 
         <div class="demo">
-          <div class="tab-bar tab-style-slide" id="filter-bar">
+          <div class="tab-bar tab-style-pill" id="filter-bar">
             <button type="button" class="tab-bar-button active" data-tab="all">All</button>
             <button type="button" class="tab-bar-button" data-tab="unread">Unread</button>
             <button type="button" class="tab-bar-button" data-tab="starred">Starred</button>
@@ -2255,12 +2255,12 @@
         <p>Switch tabs from your own code by calling <code>.click()</code> on a button. These Back and Next buttons drive the bar:</p>
 
         <div class="demo">
-          <div class="tab-bar tab-style-slide" id="wizard-bar">
-            <button type="button" class="tab-bar-button active" data-tab="cart">Cart</button>
-            <button type="button" class="tab-bar-button" data-tab="delivery">Delivery</button>
-            <button type="button" class="tab-bar-button" data-tab="payment">Payment</button>
+          <div class="tab-bar tab-style-card" id="wizard-bar">
+            <button type="button" class="tab-bar-button active" data-tab="cart">Cart<span>Check your items</span></button>
+            <button type="button" class="tab-bar-button" data-tab="delivery">Delivery<span>Choose a speed</span></button>
+            <button type="button" class="tab-bar-button" data-tab="payment">Payment<span>Pay and finish</span></button>
           </div>
-          <div class="tab-contents tab-style-slide">
+          <div class="tab-contents tab-style-card">
             <div class="tab-content active" data-tab="cart">
               <div class="row"><span>Trail Backpack</span><strong>$89</strong></div>
               <div class="row"><span>Water bottle</span><strong>$18</strong></div>
