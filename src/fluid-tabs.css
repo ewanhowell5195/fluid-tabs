@@ -128,7 +128,7 @@
   height: auto !important;
 }
 
-.tab-contents:not(.transitioning) .tab-content.active {
+.tab-contents:not(.transitioning) > .tab-content.active {
   position: initial;
 }
 
