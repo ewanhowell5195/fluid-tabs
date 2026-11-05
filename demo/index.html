@@ -450,10 +450,16 @@
 
     .dynamic-panel {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px 16px;
+      min-height: 37px;
+      padding-right: 110px;
+    }
+
+    .dynamic-block .controls {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      margin: 0;
     }
 
     .tab-contents.tab-style-tabs.scenes {
@@ -813,7 +819,8 @@
       color: #d4d4d8;
     }
 
-    .scene-pricing .tab-style-slide > .tab-bar-button.active {
+    .scene-pricing .tab-style-slide > .tab-bar-button.active,
+    .scene-pricing .tab-style-slide > .tab-bar-button > .tab-bar-button-reveal {
       color: #1c1c1f;
     }
 
@@ -913,34 +920,34 @@
       font-weight: 700;
     }
 
-    .scene-phone .tab-bar.tab-style-underline {
+    .scene-phone .tab-bar.tab-style-nav {
       flex-shrink: 0;
       margin: 0;
       padding-inline: 14px;
       box-shadow: inset 0 1px 0 #e5e7eb;
     }
 
-    .scene-phone .tab-style-underline > .tab-bar-button {
-      flex: 1 1 0;
-      flex-direction: column;
-      gap: 2px;
+    .scene-phone .tab-style-nav > .tab-bar-button {
       padding: 8px 0;
       color: #94a3b8;
       font-size: .7rem;
     }
 
-    .scene-phone .tab-style-underline > .tab-bar-button.active {
+    .scene-phone .tab-style-nav > .tab-bar-button.active {
       color: #2563eb;
     }
 
-    .scene-phone .tab-bar-button svg {
-      width: 22px;
-      height: 22px;
+    .scene-phone .tab-style-nav > .tab-bar-active {
+      border-top-color: #2563eb;
     }
 
-    .scene-phone .tab-style-underline > .tab-bar-active {
-      border-top: 3px solid #2563eb;
-      border-bottom: 0;
+    .vertical-layout {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .demo .nav-panel {
+      margin-bottom: 16px;
     }
 
     .scene-neon {
@@ -1105,6 +1112,11 @@
     .scene-glass .tab-style-slide > .tab-bar-button {
       padding: 8px 12px;
       color: rgba(255, 255, 255, .65);
+      transition: color var(--tab-transition-duration) var(--tab-transition-easing);
+    }
+
+    .scene-glass .tab-style-slide > .tab-bar-button > .tab-bar-button-reveal {
+      visibility: hidden;
     }
 
     .scene-glass .tab-style-slide > .tab-bar-button.active {
@@ -1170,6 +1182,10 @@
       color: #a1a1aa;
       font-weight: 700;
       transition: none;
+    }
+
+    .scene-glitch .tab-style-slide > .tab-bar-button > .tab-bar-button-reveal {
+      visibility: hidden;
     }
 
     .scene-glitch .tab-style-slide > .tab-bar-button.active {
@@ -1346,7 +1362,8 @@
       font-weight: 400;
     }
 
-    .scene-sketch .tab-style-slide > .tab-bar-button.active {
+    .scene-sketch .tab-style-slide > .tab-bar-button.active,
+    .scene-sketch .tab-style-slide > .tab-bar-button > .tab-bar-button-reveal {
       color: #2b2b2b;
     }
 
@@ -1470,7 +1487,8 @@
         <ul class="feature-list">
           <li>No dependencies</li>
           <li>Works with mouse, touch, and keyboard</li>
-          <li>Underline, classic tab, and sliding styles</li>
+          <li>Six built-in styles to restyle from</li>
+          <li>Horizontal or vertical, switchable by screen size</li>
           <li>Animated indicator with an elastic stretch and hover tease</li>
           <li>Panels cross-fade and resize between tabs</li>
           <li>Overflowing tabs scroll with momentum, or wrap onto new rows</li>
@@ -1582,7 +1600,7 @@
                   <div class="tab-content" data-tab="inbox"><h3>Alerts</h3><div class="phone-row"><span>12 diverted until Friday</span></div><div class="phone-row"><span>Market Square stop closed</span></div><div class="phone-row"><span>Your pass renews on 3 June</span></div></div>
                   <div class="tab-content" data-tab="me"><h3>Profile</h3><div class="phone-avatar">E</div><div class="phone-row"><span>Name</span><strong>Ewan Howell</strong></div><div class="phone-row"><span>Pass</span><strong>Monthly</strong></div></div>
                 </div>
-                <div class="tab-bar" id="phone-bar">
+                <div class="tab-bar tab-style-nav" id="phone-bar">
                   <button type="button" class="tab-bar-button active" data-tab="home"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</button>
                   <button type="button" class="tab-bar-button" data-tab="search"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>Search</button>
                   <button type="button" class="tab-bar-button" data-tab="saved"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Saved</button>
@@ -1708,7 +1726,7 @@
 
       <div class="section">
         <h2>Styles</h2>
-        <p>Three styles are built in. Add a <code>tab-style-*</code> class to the bar and its panels, or leave it off for the underline:</p>
+        <p>Six styles are built in as starting points to restyle from. Add a <code>tab-style-*</code> class to the bar and its panels, or leave it off for the underline:</p>
 
         <div class="demo">
           <h3>Underline</h3>
@@ -1752,11 +1770,53 @@
           </div>
         </div>
 
-        <pre>&lt;div class="tab-bar tab-style-tabs"&gt;…&lt;/div&gt;
-&lt;div class="tab-contents tab-style-tabs"&gt;…&lt;/div&gt;
+        <div class="demo">
+          <h3>Pill</h3>
+          <div class="tab-bar tab-style-pill">
+            <button type="button" class="tab-bar-button active" data-tab="latest">Latest</button>
+            <button type="button" class="tab-bar-button" data-tab="popular">Popular</button>
+            <button type="button" class="tab-bar-button" data-tab="saved">Saved</button>
+          </div>
+          <div class="tab-contents tab-style-pill">
+            <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
+            <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
+            <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
+          </div>
+        </div>
 
-&lt;div class="tab-bar tab-style-slide"&gt;…&lt;/div&gt;
-&lt;div class="tab-contents tab-style-slide"&gt;…&lt;/div&gt;</pre>
+        <div class="demo">
+          <h3>Nav</h3>
+          <div class="tab-contents tab-style-nav" data-tab-bar="style-nav-bar">
+            <div class="tab-content active" data-tab="latest"><p class="flush nav-panel">The newest articles, most recent first.</p></div>
+            <div class="tab-content" data-tab="popular"><p class="flush nav-panel">The most read articles this week.</p></div>
+            <div class="tab-content" data-tab="saved"><p class="flush nav-panel">Articles you have saved for later.</p></div>
+          </div>
+          <div class="tab-bar tab-style-nav" id="style-nav-bar">
+            <button type="button" class="tab-bar-button active" data-tab="latest"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 10.4 4 2.4-1 1.6-5-3V7h2z"/></svg>Latest</button>
+            <button type="button" class="tab-bar-button" data-tab="popular"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.3 18.2 21l-1.6-7L22 9.2l-7.2-.6L12 2 9.2 8.6 2 9.2 7.5 14l-1.7 7z"/></svg>Popular</button>
+            <button type="button" class="tab-bar-button" data-tab="saved"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>Saved</button>
+          </div>
+        </div>
+
+        <div class="demo">
+          <h3>Card</h3>
+          <div class="tab-bar tab-style-card">
+            <button type="button" class="tab-bar-button active" data-tab="latest">Latest<span>Most recent first</span></button>
+            <button type="button" class="tab-bar-button" data-tab="popular">Popular<span>Most read this week</span></button>
+            <button type="button" class="tab-bar-button" data-tab="saved">Saved<span>Kept for later</span></button>
+          </div>
+          <div class="tab-contents tab-style-card">
+            <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
+            <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
+            <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
+          </div>
+        </div>
+
+        <pre>&lt;div class="tab-bar tab-style-slide"&gt;…&lt;/div&gt;
+&lt;div class="tab-contents tab-style-slide"&gt;…&lt;/div&gt;
+
+&lt;button class="tab-bar-button" data-tab="saved"&gt;&lt;svg&gt;…&lt;/svg&gt;Saved&lt;/button&gt;
+&lt;button class="tab-bar-button" data-tab="saved"&gt;Saved&lt;span&gt;Kept for later&lt;/span&gt;&lt;/button&gt;</pre>
       </div>
 
       <div class="section">
@@ -2007,6 +2067,95 @@
       </div>
 
       <div class="section">
+        <h2>Vertical Tabs</h2>
+        <p>Add <code>data-tab-vertical</code> to run the bar down the side, inside a flex container with its panels. Use a media query as the value to only do this when it matches, so these switch to horizontal on smaller screens:</p>
+
+        <div class="demo">
+          <h3>Underline</h3>
+          <div class="vertical-layout">
+            <div class="tab-bar" data-tab-vertical="(min-width: 700px)">
+              <button type="button" class="tab-bar-button active" data-tab="general">General</button>
+              <button type="button" class="tab-bar-button" data-tab="privacy">Privacy</button>
+              <button type="button" class="tab-bar-button" data-tab="billing">Billing</button>
+            </div>
+            <div class="tab-contents">
+              <div class="tab-content active" data-tab="general"><div class="row"><span>Language</span><strong>English</strong></div><div class="row"><span>Time zone</span><strong>London</strong></div></div>
+              <div class="tab-content" data-tab="privacy"><div class="row"><span>Profile</span><strong>Public</strong></div><div class="row"><span>Search engines</span><strong>Allowed</strong></div><div class="row"><span>Activity</span><strong>Hidden</strong></div></div>
+              <div class="tab-content" data-tab="billing"><div class="row"><span>Plan</span><strong>Pro</strong></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="demo">
+          <h3>Classic tabs</h3>
+          <div class="vertical-layout">
+            <div class="tab-bar tab-style-tabs" data-tab-vertical="(min-width: 700px)">
+              <button type="button" class="tab-bar-button active" data-tab="general">General</button>
+              <button type="button" class="tab-bar-button" data-tab="privacy">Privacy</button>
+              <button type="button" class="tab-bar-button" data-tab="billing">Billing</button>
+            </div>
+            <div class="tab-contents tab-style-tabs">
+              <div class="tab-content active" data-tab="general"><div class="row"><span>Language</span><strong>English</strong></div><div class="row"><span>Time zone</span><strong>London</strong></div></div>
+              <div class="tab-content" data-tab="privacy"><div class="row"><span>Profile</span><strong>Public</strong></div><div class="row"><span>Search engines</span><strong>Allowed</strong></div><div class="row"><span>Activity</span><strong>Hidden</strong></div></div>
+              <div class="tab-content" data-tab="billing"><div class="row"><span>Plan</span><strong>Pro</strong></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="demo">
+          <h3>Slide</h3>
+          <div class="vertical-layout">
+            <div class="tab-bar tab-style-slide" data-tab-vertical="(min-width: 700px)">
+              <button type="button" class="tab-bar-button active" data-tab="general">General</button>
+              <button type="button" class="tab-bar-button" data-tab="privacy">Privacy</button>
+              <button type="button" class="tab-bar-button" data-tab="billing">Billing</button>
+            </div>
+            <div class="tab-contents tab-style-slide">
+              <div class="tab-content active" data-tab="general"><div class="row"><span>Language</span><strong>English</strong></div><div class="row"><span>Time zone</span><strong>London</strong></div></div>
+              <div class="tab-content" data-tab="privacy"><div class="row"><span>Profile</span><strong>Public</strong></div><div class="row"><span>Search engines</span><strong>Allowed</strong></div><div class="row"><span>Activity</span><strong>Hidden</strong></div></div>
+              <div class="tab-content" data-tab="billing"><div class="row"><span>Plan</span><strong>Pro</strong></div></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="after-demo">Give the bar a <code>max-height</code> and it scrolls vertically, with the same dragging, momentum, and edge fades:</p>
+
+        <div class="demo">
+          <div class="vertical-layout">
+            <div class="tab-bar" data-tab-vertical style="max-height: 230px;">
+              <button type="button" class="tab-bar-button active" data-tab="overview">Overview</button>
+              <button type="button" class="tab-bar-button" data-tab="specs">Specs</button>
+              <button type="button" class="tab-bar-button" data-tab="pricing">Pricing</button>
+              <button type="button" class="tab-bar-button" data-tab="faq">FAQ</button>
+              <button type="button" class="tab-bar-button" data-tab="support">Support</button>
+              <button type="button" class="tab-bar-button" data-tab="reviews">Reviews</button>
+              <button type="button" class="tab-bar-button" data-tab="downloads">Downloads</button>
+              <button type="button" class="tab-bar-button" data-tab="changelog">Changelog</button>
+              <button type="button" class="tab-bar-button" data-tab="community">Community</button>
+              <button type="button" class="tab-bar-button" data-tab="contact">Contact</button>
+            </div>
+            <div class="tab-contents">
+              <div class="tab-content active" data-tab="overview">What the product does and who it is for.</div>
+              <div class="tab-content" data-tab="specs">Sizes, weights, and materials.</div>
+              <div class="tab-content" data-tab="pricing">Plans and what each one includes.</div>
+              <div class="tab-content" data-tab="faq">Answers to the most common questions.</div>
+              <div class="tab-content" data-tab="support">How to get help from the team.</div>
+              <div class="tab-content" data-tab="reviews">What customers are saying.</div>
+              <div class="tab-content" data-tab="downloads">Installers and past versions.</div>
+              <div class="tab-content" data-tab="changelog">Everything new in each release.</div>
+              <div class="tab-content" data-tab="community">Forums, events, and meetups.</div>
+              <div class="tab-content" data-tab="contact">Get in touch with the sales team.</div>
+            </div>
+          </div>
+        </div>
+
+        <pre>&lt;div style="display: flex; flex-wrap: wrap"&gt;
+  &lt;div class="tab-bar" data-tab-vertical="(min-width: 700px)"&gt;…&lt;/div&gt;
+  &lt;div class="tab-contents"&gt;…&lt;/div&gt;
+&lt;/div&gt;</pre>
+      </div>
+
+      <div class="section">
         <h2>Swiping</h2>
         <p>On a touch screen, swipe left or right across the panels to move between tabs. Swiping doesn't do anything with a mouse on desktop, so try this one on your phone. Add <code>data-tab-no-swipe</code> to turn it off, for example when a panel has its own carousel:</p>
 
@@ -2230,16 +2379,15 @@ bar.destroy()</pre>
           <button type="button" class="tab-bar-button" data-tab="third">Third</button>
         </div>
         <div class="tab-contents tab-style-tabs">
-          <div class="tab-content active" data-tab="first"><div class="dynamic-panel"><span>Added after the page loaded.</span><div class="controls flush-top"><button type="button">Remove</button></div></div></div>
-          <div class="tab-content" data-tab="second"><div class="dynamic-panel"><span>Works like any other bar.</span><div class="controls flush-top"><button type="button">Remove</button></div></div></div>
-          <div class="tab-content" data-tab="third"><div class="dynamic-panel"><span>Remove it when you are done.</span><div class="controls flush-top"><button type="button">Remove</button></div></div></div>
+          <div class="tab-content active" data-tab="first"><div class="dynamic-panel">Added after the page loaded.</div></div>
+          <div class="tab-content" data-tab="second"><div class="dynamic-panel">Works like any other bar.</div></div>
+          <div class="tab-content" data-tab="third"><div class="dynamic-panel">Remove it when you are done.</div></div>
+          <div class="controls"><button type="button">Remove</button></div>
         </div>`
-      for (const button of block.querySelectorAll(".controls button")) {
-        button.addEventListener("click", () => {
-          block.querySelector(".tab-bar").destroy()
-          block.remove()
-        })
-      }
+      block.querySelector(".controls button").addEventListener("click", () => {
+        block.querySelector(".tab-bar").destroy()
+        block.remove()
+      })
       document.getElementById("dynamic-host").append(block)
       FluidTabs.init(block)
     })
@@ -2320,26 +2468,22 @@ bar.destroy()</pre>
       },
       "scene-phone": {
         title: "Phone",
-        description: "An app's bottom navigation. The panels are detached and sit above the bar, and the indicator is a line along the top of the active tab.",
+        description: "The nav style as an app's bottom bar. The panels are detached and sit above the bar, with padding to keep the outer tabs clear of the phone's corners.",
         html: `<div class="tab-contents" data-tab-bar="phone-tabs">
   <div class="tab-content active" data-tab="home">…</div>
   <div class="tab-content" data-tab="search">…</div>
   …
 </div>
-<div class="tab-bar" id="phone-tabs">
+<div class="tab-bar tab-style-nav" id="phone-tabs">
   <button class="tab-bar-button active" data-tab="home"><svg>…</svg>Home</button>
   <button class="tab-bar-button" data-tab="search"><svg>…</svg>Search</button>
   …
 </div>`,
         style: `.phone .tab-bar {
-  margin: 0;
   padding-inline: 14px;
 }
 
 .phone .tab-bar-button {
-  flex: 1 1 0;
-  flex-direction: column;
-  padding: 8px 0;
   color: #94a3b8;
 }
 
@@ -2348,8 +2492,7 @@ bar.destroy()</pre>
 }
 
 .phone .tab-bar-active {
-  border-top: 3px solid #2563eb;
-  border-bottom: 0;
+  border-top-color: #2563eb;
 }`
       },
       "scene-neon": {
@@ -2418,6 +2561,10 @@ bar.destroy()</pre>
   --tab-transition-duration: .5s;
 }
 
+.glass .tab-bar-button > .tab-bar-button-reveal {
+  visibility: hidden;
+}
+
 .glass .tab-bar-active {
   display: none;
 }
@@ -2461,7 +2608,11 @@ bar.destroy()</pre>
   <div class="tab-content active" data-tab="system">…</div>
   …
 </div>`,
-        style: `.glitch .tab-bar-active {
+        style: `.glitch .tab-bar-button > .tab-bar-button-reveal {
+  visibility: hidden;
+}
+
+.glitch .tab-bar-active {
   display: none;
 }
 
