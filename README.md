@@ -10,6 +10,7 @@ A lightweight, zero-dependency tabs library with a smooth animated indicator, dr
 
 * No dependencies
 * Three visual styles out of the box: underline, classic tabs, and a sliding segmented control
+* Horizontal or vertical, switchable by screen size
 * Animated indicator that slides between tabs with an elastic stretch, and a spring "tease" on hover
 * Animated content panel that cross-fades and resizes between tabs
 * Too many tabs? They scroll horizontally (drag, wheel, or swipe) with momentum and edge fades. Opt into wrapping instead.
@@ -104,11 +105,12 @@ A `.tab-bar` with no matching `.tab-contents` just tracks the active button and 
 
 ## Options
 
-Behavioural options are set as data attributes on the `.tab-bar`. Presence is enough - the value is ignored.
+Behavioural options are set as data attributes on the `.tab-bar`.
 
 | Attribute | Description |
 |---|---|
 | `data-tab-wrap` | Wrap to multiple rows instead of scrolling when the tabs don't fit. |
+| `data-tab-vertical` | Run the bar down the side of its panels. Use a media query as the value to only do this when it matches. |
 | `data-tab-no-swipe` | Disable swipe-to-change on the content panel. |
 
 ```html
@@ -126,6 +128,19 @@ When there are more tabs than fit, the bar **scrolls** horizontally by default. 
 A soft fade appears on whichever edge has hidden tabs, and selecting a tab scrolls it into view. Wheel scrolling only kicks in when a gesture *starts* over the bar, so scrolling the page past it isn't hijacked.
 
 Add `data-tab-wrap` to wrap onto multiple rows instead of scrolling.
+
+## Vertical tabs
+
+Add `data-tab-vertical` and put the bar and its panels in a flex container:
+
+```html
+<div style="display: flex; flex-wrap: wrap">
+  <div class="tab-bar" data-tab-vertical="(min-width: 700px)"> … </div>
+  <div class="tab-contents"> … </div>
+</div>
+```
+
+With a media query as the value, the bar is horizontal whenever it doesn't match, and `flex-wrap` stacks the panels underneath it. Give the bar a `max-height` to make it scroll vertically. Up and down arrow keys replace left and right.
 
 ## Right-to-left
 
@@ -250,6 +265,7 @@ These are added by the library and can be targeted with CSS:
 | `active` | On the current `.tab-bar-button` and its `.tab-content`. |
 | `tab-bar-active` | The indicator element, appended inside each `.tab-bar`. |
 | `tab-bar-wrap` | When `data-tab-wrap` is set. |
+| `tab-bar-vertical` / `tab-contents-vertical` | On the bar and its panels while vertical. |
 | `tab-bar-dragging` | While the bar is being drag-scrolled. |
 | `tab-bar-fade-start` / `tab-bar-fade-end` | When there are hidden tabs off the start / end edge. |
 | `transitioning` | On `.tab-contents` while a panel change is animating. |

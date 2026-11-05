@@ -39,7 +39,8 @@
       const style = TAB_STYLES.find(c => tabBar.classList.contains(c)) ?? "tab-style-underline"
       const addedStyle = !tabBar.classList.contains(style)
       if (addedStyle) tabBar.classList.add(style)
-      if (tabBar.hasAttribute("data-tab-wrap")) tabBar.classList.add("tab-bar-wrap")
+      const verticalQuery = tabBar.dataset.tabVertical ? matchMedia(tabBar.dataset.tabVertical) : null
+      let vertical = tabBar.hasAttribute("data-tab-vertical") && (verticalQuery?.matches ?? true)
       if (tabBar.hasAttribute("data-tab-no-swipe")) tabBar.classList.add("tab-bar-no-swipe")
 
       const activeIndicator = document.createElement("div")
@@ -75,6 +76,15 @@
         return el.id
       }
 
+      function applyOrientation() {
+        tabBar.classList.toggle("tab-bar-vertical", vertical)
+        tabBar.classList.toggle("tab-bar-wrap", !vertical && tabBar.hasAttribute("data-tab-wrap"))
+        if (vertical) tabBar.setAttribute("aria-orientation", "vertical")
+        else tabBar.removeAttribute("aria-orientation")
+        for (const wrap of contentWraps) wrap.classList.toggle("tab-contents-vertical", vertical)
+      }
+
+      applyOrientation()
       addAttribute(tabBar, "role", "tablist")
       activeIndicator.setAttribute("role", "presentation")
       for (const button of buttons) {
@@ -118,7 +128,9 @@
             bottom: parentRect.bottom - sy
           },
           left: parentRect.left + parseFloat(style.paddingLeft),
-          right: parentRect.right - parseFloat(style.paddingRight)
+          right: parentRect.right - parseFloat(style.paddingRight),
+          top: parentRect.top + parseFloat(style.paddingTop),
+          bottom: parentRect.bottom - parseFloat(style.paddingBottom)
         }
       }
 
@@ -151,18 +163,28 @@
 
         const parentBox = getParentBox()
         const rect = active.getBoundingClientRect()
-        const activeX = getCenter(rect).x
-        const hoverX = getCenter(button.getBoundingClientRect()).x
-        const nearby = Math.abs(hoverX - activeX) <= 8
-        const stretchLeft = nearby ? teaseX / 2 : hoverX < activeX ? teaseX : 0
-        const stretchRight = nearby ? teaseX / 2 : hoverX > activeX ? teaseX : 0
+        const axis = vertical ? "y" : "x"
+        const activePos = getCenter(rect)[axis]
+        const hoverPos = getCenter(button.getBoundingClientRect())[axis]
+        const nearby = Math.abs(hoverPos - activePos) <= 8
+        const stretchStart = nearby ? teaseX / 2 : hoverPos < activePos ? teaseX : 0
+        const stretchEnd = nearby ? teaseX / 2 : hoverPos > activePos ? teaseX : 0
 
-        placeIndicator({
-          left: rect.left - (rect.left <= parentBox.left + 1 ? 0 : stretchLeft),
-          right: rect.right + (rect.right >= parentBox.right - 1 ? 0 : stretchRight),
-          top: rect.top,
-          bottom: rect.bottom
-        }, parentBox)
+        if (vertical) {
+          placeIndicator({
+            left: rect.left,
+            right: rect.right,
+            top: rect.top - (rect.top <= parentBox.top + 1 ? 0 : stretchStart),
+            bottom: rect.bottom + (rect.bottom >= parentBox.bottom - 1 ? 0 : stretchEnd)
+          }, parentBox)
+        } else {
+          placeIndicator({
+            left: rect.left - (rect.left <= parentBox.left + 1 ? 0 : stretchStart),
+            right: rect.right + (rect.right >= parentBox.right - 1 ? 0 : stretchEnd),
+            top: rect.top,
+            bottom: rect.bottom
+          }, parentBox)
+        }
       }
 
       function outerHeight(el) {
@@ -180,21 +202,44 @@
         return getComputedStyle(tabBar).direction === "rtl"
       }
 
+      function scrollRtl() {
+        return !vertical && isRtl()
+      }
+
+      function getMaxScroll() {
+        return vertical ? tabBar.scrollHeight - tabBar.clientHeight : tabBar.scrollWidth - tabBar.clientWidth
+      }
+
+      function getScroll() {
+        return vertical ? tabBar.scrollTop : tabBar.scrollLeft
+      }
+
+      function setScroll(value) {
+        if (vertical) tabBar.scrollTop = value
+        else tabBar.scrollLeft = value
+      }
+
       function updateFades() {
         if (tabBar.classList.contains("tab-bar-wrap")) {
           tabBar.classList.remove("tab-bar-fade-start", "tab-bar-fade-end")
           return
         }
         const buffer = 2
-        const maxScroll = tabBar.scrollWidth - tabBar.clientWidth
-        const scrolled = Math.abs(tabBar.scrollLeft)
+        const maxScroll = getMaxScroll()
+        const scrolled = Math.abs(getScroll())
+        tabBar.classList.toggle("tab-bar-scrollable", maxScroll > 0)
         tabBar.classList.toggle("tab-bar-fade-start", scrolled > buffer)
         tabBar.classList.toggle("tab-bar-fade-end", maxScroll > buffer && scrolled < maxScroll - buffer)
+      }
+
+      function updateMinHeight() {
+        for (const wrap of contentWraps) wrap.style.minHeight = vertical ? outerHeight(tabBar) + "px" : ""
       }
 
       tabBar.update = () => {
         updateIndicator()
         updateFades()
+        updateMinHeight()
       }
 
       tabBar.addEventListener("scroll", updateFades, { signal })
@@ -202,25 +247,26 @@
 
       function scrollActiveIntoView(smooth) {
         const active = tabBar.querySelector(".tab-bar-button.active")
-        const maxScroll = tabBar.scrollWidth - tabBar.clientWidth
-        if (!active || maxScroll <= 0) return
+        if (!active || getMaxScroll() <= 0) return
         const style = getComputedStyle(tabBar)
-        const rtl = isRtl()
-        const padStart = parseFloat(rtl ? style.paddingRight : style.paddingLeft) || 0
-        const padEnd = parseFloat(rtl ? style.paddingLeft : style.paddingRight) || 0
+        const rtl = scrollRtl()
+        const size = vertical ? tabBar.clientHeight : tabBar.clientWidth
+        const activeSize = vertical ? active.offsetHeight : active.offsetWidth
+        const padStart = parseFloat(vertical ? style.paddingTop : rtl ? style.paddingRight : style.paddingLeft) || 0
+        const padEnd = parseFloat(vertical ? style.paddingBottom : rtl ? style.paddingLeft : style.paddingRight) || 0
         const fade = parseFloat(style.getPropertyValue("--tab-fade")) || 0
-        const scrolled = Math.abs(tabBar.scrollLeft)
+        const scrolled = Math.abs(getScroll())
         const visibleStart = scrolled + padStart + fade
-        const visibleEnd = scrolled + tabBar.clientWidth - padEnd - fade
-        const activeStart = rtl ? tabBar.clientWidth - active.offsetLeft - active.offsetWidth : active.offsetLeft
-        const activeEnd = activeStart + active.offsetWidth
+        const visibleEnd = scrolled + size - padEnd - fade
+        const activeStart = vertical ? active.offsetTop : rtl ? size - active.offsetLeft - activeSize : active.offsetLeft
+        const activeEnd = activeStart + activeSize
         let next = scrolled
         if (activeStart < visibleStart) next = Math.max(0, activeStart - padStart - fade)
-        else if (activeEnd > visibleEnd) next = activeEnd - tabBar.clientWidth + padEnd + fade
+        else if (activeEnd > visibleEnd) next = activeEnd - size + padEnd + fade
         if (next === scrolled) return
-        const left = rtl ? -next : next
-        if (smooth) tabBar.scrollTo({ left, behavior: "smooth" })
-        else tabBar.scrollLeft = left
+        const target = rtl ? -next : next
+        if (smooth) tabBar.scrollTo({ [vertical ? "top" : "left"]: target, behavior: "smooth" })
+        else setScroll(target)
       }
 
       for (const button of buttons) {
@@ -296,7 +342,7 @@
         }, { signal })
       }
 
-      let dragStartX, dragStartScroll, dragLastScroll, dragLastAt, dragMoved, dragging, dragPointer, momentumRaf
+      let dragStart, dragStartScroll, dragLastScroll, dragLastAt, dragMoved, dragging, dragPointer, momentumRaf
       let dragVelocity = 0
 
       function stopMomentum() {
@@ -309,17 +355,17 @@
       function startMomentum() {
         stopMomentum()
         if (Math.abs(dragVelocity) < 0.01) return
-        const rtl = isRtl()
+        const rtl = scrollRtl()
         let lastAt = performance.now()
         function step(now) {
-          const maxScroll = tabBar.scrollWidth - tabBar.clientWidth
+          const maxScroll = getMaxScroll()
           if (maxScroll <= 0) return stopMomentum()
           const min = rtl ? -maxScroll : 0
           const max = rtl ? 0 : maxScroll
           const dt = Math.min(32, now - lastAt)
           lastAt = now
-          tabBar.scrollLeft = Math.max(min, Math.min(max, tabBar.scrollLeft + dragVelocity * dt))
-          if ((tabBar.scrollLeft <= min + 0.1 && dragVelocity < 0) || (tabBar.scrollLeft >= max - 0.1 && dragVelocity > 0)) return stopMomentum()
+          setScroll(Math.max(min, Math.min(max, getScroll() + dragVelocity * dt)))
+          if ((getScroll() <= min + 0.1 && dragVelocity < 0) || (getScroll() >= max - 0.1 && dragVelocity > 0)) return stopMomentum()
           dragVelocity *= Math.pow(0.8, dt / 16.67)
           if (Math.abs(dragVelocity) <= 0.002) return stopMomentum()
           momentumRaf = requestAnimationFrame(step)
@@ -329,14 +375,14 @@
 
       function onDragMove(e) {
         if (!dragging || e.pointerId !== dragPointer) return
-        const deltaX = e.clientX - dragStartX
-        if (Math.abs(deltaX) > 5) dragMoved = true
+        const delta = (vertical ? e.clientY : e.clientX) - dragStart
+        if (Math.abs(delta) > 5) dragMoved = true
         const now = performance.now()
         const dt = now - dragLastAt
-        tabBar.scrollLeft = dragStartScroll - deltaX
+        setScroll(dragStartScroll - delta)
         if (dt > 0) {
-          dragVelocity = dragVelocity * 0.65 + ((tabBar.scrollLeft - dragLastScroll) / dt) * 0.35
-          dragLastScroll = tabBar.scrollLeft
+          dragVelocity = dragVelocity * 0.65 + ((getScroll() - dragLastScroll) / dt) * 0.35
+          dragLastScroll = getScroll()
           dragLastAt = now
         }
       }
@@ -359,14 +405,14 @@
 
       tabBar.addEventListener("pointerdown", e => {
         if (e.button !== 0) return
-        if (tabBar.scrollWidth - tabBar.clientWidth <= 0) return
+        if (getMaxScroll() <= 0) return
         if (dragging && e.pointerId !== dragPointer) return
         stopMomentum()
         dragging = true
         dragPointer = e.pointerId
         dragMoved = false
-        dragStartX = e.clientX
-        dragStartScroll = dragLastScroll = tabBar.scrollLeft
+        dragStart = vertical ? e.clientY : e.clientX
+        dragStartScroll = dragLastScroll = getScroll()
         dragLastAt = performance.now()
         dragVelocity = 0
         tabBar.classList.add("tab-bar-dragging")
@@ -387,8 +433,10 @@
         const enabled = Array.from(buttons).filter(button => !button.disabled)
         const index = enabled.indexOf(e.target.closest(".tab-bar-button"))
         if (index < 0) return
-        const rtl = isRtl()
-        const steps = { [rtl ? "ArrowLeft" : "ArrowRight"]: index + 1, [rtl ? "ArrowRight" : "ArrowLeft"]: index - 1, Home: 0, End: enabled.length - 1 }
+        const rtl = scrollRtl()
+        const nextKey = vertical ? "ArrowDown" : rtl ? "ArrowLeft" : "ArrowRight"
+        const previousKey = vertical ? "ArrowUp" : rtl ? "ArrowRight" : "ArrowLeft"
+        const steps = { [nextKey]: index + 1, [previousKey]: index - 1, Home: 0, End: enabled.length - 1 }
         if (!(e.key in steps)) return
         e.preventDefault()
         const next = enabled[(steps[e.key] + enabled.length) % enabled.length]
@@ -398,16 +446,16 @@
 
       tabBar.addEventListener("wheel", e => {
         if (wheelOwner !== tabBar) return
-        const maxScroll = tabBar.scrollWidth - tabBar.clientWidth
+        const maxScroll = getMaxScroll()
         if (maxScroll <= 0) return
         e.preventDefault()
-        const rtl = isRtl()
-        const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : rtl ? -e.deltaY : e.deltaY
-        const atStart = tabBar.scrollLeft <= (rtl ? -maxScroll : 0) + 0.1
-        const atEnd = tabBar.scrollLeft >= (rtl ? 0 : maxScroll) - 0.1
+        const rtl = scrollRtl()
+        const delta = vertical ? e.deltaY : Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : rtl ? -e.deltaY : e.deltaY
+        const atStart = getScroll() <= (rtl ? -maxScroll : 0) + 0.1
+        const atEnd = getScroll() >= (rtl ? 0 : maxScroll) - 0.1
         if ((atStart && delta < 0) || (atEnd && delta > 0)) return
         if (reducedMotion.matches) {
-          tabBar.scrollLeft += delta
+          setScroll(getScroll() + delta)
           return
         }
         if (atStart && delta > 0 && dragVelocity < 0) dragVelocity = 0
@@ -462,11 +510,32 @@
       updateIndicator()
       scrollActiveIntoView(false)
       updateFades()
+      updateMinHeight()
 
-      const readyRaf = requestAnimationFrame(() => {
-        tabBar.classList.add("tab-bar-ready")
-        for (const wrap of contentWraps) wrap.classList.add("tab-bar-ready")
-      })
+      let readyRaf
+
+      function markReady() {
+        readyRaf = requestAnimationFrame(() => {
+          tabBar.classList.add("tab-bar-ready")
+          for (const wrap of contentWraps) wrap.classList.add("tab-bar-ready")
+        })
+      }
+
+      markReady()
+
+      verticalQuery?.addEventListener("change", () => {
+        vertical = verticalQuery.matches
+        stopDrag()
+        stopMomentum()
+        cancelAnimationFrame(readyRaf)
+        tabBar.classList.remove("tab-bar-ready")
+        for (const wrap of contentWraps) wrap.classList.remove("tab-bar-ready")
+        applyOrientation()
+        tabBar.scrollLeft = tabBar.scrollTop = 0
+        scrollActiveIntoView(false)
+        tabBar.update()
+        markReady()
+      }, { signal })
 
       tabBar.destroy = () => {
         stopDrag()
@@ -478,11 +547,13 @@
         for (const button of buttons) tabBarResizeObserver.unobserve(button)
         if (wheelOwner === tabBar) wheelOwner = null
         activeIndicator.remove()
-        tabBar.classList.remove("initialised", "tab-bar-ready", "tab-bar-wrap", "tab-bar-no-swipe", "tab-bar-dragging", "tab-bar-fade-start", "tab-bar-fade-end")
+        tabBar.classList.remove("initialised", "tab-bar-ready", "tab-bar-wrap", "tab-bar-vertical", "tab-bar-scrollable", "tab-bar-no-swipe", "tab-bar-dragging", "tab-bar-fade-start", "tab-bar-fade-end")
+        tabBar.removeAttribute("aria-orientation")
         if (addedStyle) tabBar.classList.remove(style)
         for (const wrap of contentWraps) {
-          wrap.classList.remove("tab-bar-ready", "transitioning")
+          wrap.classList.remove("tab-bar-ready", "transitioning", "tab-contents-vertical")
           wrap.style.height = ""
+          wrap.style.minHeight = ""
         }
         for (const wrap of styledWraps) wrap.classList.remove(style)
         for (const content of contents) content.inert = false

@@ -328,6 +328,91 @@
   border-radius: 6px;
 }
 
+/* Vertical - the bar runs down the side of its panels */
+
+.tab-bar.tab-bar-vertical {
+  flex-direction: column;
+  flex: none;
+  align-self: flex-start;
+  width: fit-content;
+  margin-bottom: 0;
+  margin-inline-end: 20px;
+  touch-action: auto;
+  mask-image: linear-gradient(to bottom, transparent, #000 var(--tab-fade-start), #000 calc(100% - var(--tab-fade-end)), transparent);
+}
+
+.tab-bar.tab-bar-vertical.tab-bar-scrollable {
+  touch-action: pan-x;
+}
+
+.tab-bar-vertical > .tab-bar-button {
+  flex: 0 0 auto;
+  justify-content: flex-start;
+}
+
+.tab-bar-vertical:dir(rtl) > .tab-bar-button:not(.active) {
+  --tab-button-x: -1;
+}
+
+.tab-bar-vertical:dir(rtl) > .tab-bar-button.active ~ .tab-bar-button {
+  --tab-button-x: 1;
+}
+
+.tab-contents-vertical {
+  flex: 1 1 0;
+  align-self: flex-start;
+  min-width: 0;
+}
+
+.tab-contents-vertical > .tab-content:not(.active) {
+  transform: translateY(calc(var(--tab-panel-x) * var(--tab-panel-distance)));
+}
+
+.tab-contents-vertical:dir(rtl) > .tab-content:not(.active) {
+  --tab-panel-x: -1;
+}
+
+.tab-contents-vertical:dir(rtl) > .tab-content.active ~ .tab-content {
+  --tab-panel-x: 1;
+}
+
+.tab-bar-vertical.tab-style-underline {
+  box-shadow: inset -1px 0 0 #d6d6d6;
+}
+
+.tab-bar-vertical.tab-style-underline:dir(rtl) {
+  box-shadow: inset 1px 0 0 #d6d6d6;
+}
+
+.tab-bar-vertical.tab-style-underline > .tab-bar-active {
+  border-bottom: 0;
+  border-inline-end: 2px solid #1c1c1c;
+}
+
+.tab-bar.tab-bar-vertical.tab-style-tabs {
+  margin-inline-end: 0;
+  padding-bottom: 10px;
+}
+
+.tab-bar-vertical.tab-style-tabs > .tab-bar-button {
+  border: 1px solid transparent;
+  border-inline-end: 0;
+  border-radius: 0;
+  border-start-start-radius: 10px;
+  border-end-start-radius: 10px;
+  margin-bottom: 0;
+  margin-inline-end: -1px;
+}
+
+.tab-bar-vertical.tab-style-tabs > .tab-bar-button.active {
+  border-color: #d6d6d6;
+}
+
+.tab-contents-vertical.tab-style-tabs {
+  border-radius: 10px;
+  border-start-start-radius: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tab-bar,
   .tab-bar-button,
