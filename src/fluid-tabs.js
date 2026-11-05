@@ -38,18 +38,14 @@
       const controller = new AbortController()
       const { signal } = controller
 
-      const style = TAB_STYLES.find(c => tabBar.classList.contains(c)) ?? "tab-style-underline"
-      const addedStyle = !tabBar.classList.contains(style)
-      if (addedStyle) tabBar.classList.add(style)
       const verticalQuery = tabBar.dataset.tabVertical ? matchMedia(tabBar.dataset.tabVertical) : null
       let vertical = tabBar.hasAttribute("data-tab-vertical") && (verticalQuery?.matches ?? true)
-      if (tabBar.hasAttribute("data-tab-no-swipe")) tabBar.classList.add("tab-bar-no-swipe")
 
       const activeIndicator = document.createElement("div")
       activeIndicator.className = "tab-bar-active"
       tabBar.appendChild(activeIndicator)
 
-      const buttons = tabBar.querySelectorAll(".tab-bar-button")
+      const buttons = Array.from(tabBar.querySelectorAll(".tab-bar-button"))
       const contentWraps = []
       if (tabBar.nextElementSibling?.classList.contains("tab-contents")) {
         contentWraps.push(tabBar.nextElementSibling)
@@ -59,8 +55,9 @@
           if (!contentWraps.includes(el)) contentWraps.push(el)
         })
       }
-      const styledWraps = contentWraps.filter(wrap => !TAB_STYLES.some(c => wrap.classList.contains(c)))
-      for (const wrap of styledWraps) wrap.classList.add(style)
+      const styleClass = TAB_STYLES.find(c => tabBar.classList.contains(c)) ?? "tab-style-underline"
+      const unstyled = [tabBar].concat(contentWraps).filter(el => !TAB_STYLES.some(c => el.classList.contains(c)))
+      for (const el of unstyled) el.classList.add(styleClass)
       const contents = contentWraps.flatMap(el => Array.from(el.querySelectorAll(".tab-content")).filter(c => c.closest(".tab-contents") === el))
       let lastSwitch = 0
 
@@ -98,6 +95,12 @@
         }
       }
 
+      function syncReveal(button, layer) {
+        layer.replaceChildren(...Array.from(button.childNodes).filter(node => node !== layer).map(node => node.cloneNode(true)))
+        for (const el of layer.querySelectorAll("[id]")) el.removeAttribute("id")
+        if (layer.parentNode !== button) button.append(layer)
+      }
+
       const reveals = []
       for (const button of buttons) {
         const layer = document.createElement("div")
@@ -121,12 +124,6 @@
         })
       }
 
-      function syncReveal(button, layer) {
-        layer.replaceChildren(...Array.from(button.childNodes).filter(node => node !== layer).map(node => node.cloneNode(true)))
-        for (const el of layer.querySelectorAll("[id]")) el.removeAttribute("id")
-        if (layer.parentNode !== button) button.append(layer)
-      }
-
       function softenReveal(from, to) {
         const style = getComputedStyle(activeIndicator)
         const soft = parseFloat(style.getPropertyValue("--tab-reveal-soft"))
@@ -148,8 +145,12 @@
         for (const { layer } of reveals) layer.style.transitionDelay = delay
       }
 
+      function getActive() {
+        return tabBar.querySelector(".tab-bar-button.active")
+      }
+
       function updateSelection() {
-        const active = tabBar.querySelector(".tab-bar-button.active") ?? buttons[0]
+        const active = getActive() ?? buttons[0]
         for (const button of buttons) {
           button.setAttribute("aria-selected", button.classList.contains("active"))
           button.tabIndex = button === active ? 0 : -1
@@ -197,23 +198,24 @@
         activeIndicator.style.right = parentBox.rect.right - rect.right + "px"
         activeIndicator.style.top = rect.top - parentBox.rect.top + "px"
         activeIndicator.style.bottom = parentBox.rect.bottom - rect.bottom + "px"
+        const radius = getComputedStyle(activeIndicator).borderRadius
         for (const { layer } of reveals) {
           const box = layer.getBoundingClientRect()
           layer.style.setProperty("--tab-reveal-left", rect.left - box.left + "px")
           layer.style.setProperty("--tab-reveal-right", box.right - rect.right + "px")
           layer.style.setProperty("--tab-reveal-top", rect.top - box.top + "px")
           layer.style.setProperty("--tab-reveal-bottom", box.bottom - rect.bottom + "px")
-          layer.style.setProperty("--tab-reveal-radius", getComputedStyle(activeIndicator).borderRadius)
+          layer.style.setProperty("--tab-reveal-radius", radius)
         }
       }
 
       function updateIndicator() {
-        const active = tabBar.querySelector(".tab-bar-button.active")
+        const active = getActive()
         if (active) placeIndicator(active.getBoundingClientRect(), getParentBox())
       }
 
       function tease(button) {
-        const active = tabBar.querySelector(".tab-bar-button.active")
+        const active = getActive()
         if (!active || button === active || reducedMotion.matches) return
 
         // a real hover should never inherit a click's elastic lag, or the
@@ -230,21 +232,15 @@
         const stretchStart = nearby ? teaseX / 2 : hoverPos < activePos ? teaseX : 0
         const stretchEnd = nearby ? teaseX / 2 : hoverPos > activePos ? teaseX : 0
 
-        if (vertical) {
-          placeIndicator({
-            left: rect.left,
-            right: rect.right,
-            top: rect.top - (rect.top <= parentBox.top + 1 ? 0 : stretchStart),
-            bottom: rect.bottom + (rect.bottom >= parentBox.bottom - 1 ? 0 : stretchEnd)
-          }, parentBox)
-        } else {
-          placeIndicator({
-            left: rect.left - (rect.left <= parentBox.left + 1 ? 0 : stretchStart),
-            right: rect.right + (rect.right >= parentBox.right - 1 ? 0 : stretchEnd),
-            top: rect.top,
-            bottom: rect.bottom
-          }, parentBox)
-        }
+        const [start, end] = vertical ? ["top", "bottom"] : ["left", "right"]
+        placeIndicator({
+          left: rect.left,
+          right: rect.right,
+          top: rect.top,
+          bottom: rect.bottom,
+          [start]: rect[start] - (rect[start] <= parentBox[start] + 1 ? 0 : stretchStart),
+          [end]: rect[end] + (rect[end] >= parentBox[end] - 1 ? 0 : stretchEnd)
+        }, parentBox)
       }
 
       function outerHeight(el) {
@@ -266,8 +262,12 @@
         return !vertical && isRtl()
       }
 
+      function getViewSize() {
+        return vertical ? tabBar.clientHeight : tabBar.clientWidth
+      }
+
       function getMaxScroll() {
-        return vertical ? tabBar.scrollHeight - tabBar.clientHeight : tabBar.scrollWidth - tabBar.clientWidth
+        return (vertical ? tabBar.scrollHeight : tabBar.scrollWidth) - getViewSize()
       }
 
       function getScroll() {
@@ -296,26 +296,15 @@
         for (const wrap of contentWraps) wrap.style.minHeight = vertical ? outerHeight(tabBar) + "px" : ""
       }
 
-      let visibleSize = 0
-
-      tabBar.update = () => {
-        const size = vertical ? tabBar.clientHeight : tabBar.clientWidth
-        if (size < visibleSize || !visibleSize) scrollActiveIntoView(visibleSize > 0 && !reducedMotion.matches)
-        visibleSize = size
-        updateIndicator()
-        updateFades()
-        updateMinHeight()
-      }
-
       tabBar.addEventListener("scroll", updateFades, { signal })
       activeIndicator.addEventListener("transitionend", updateFades)
 
       function scrollActiveIntoView(smooth) {
-        const active = tabBar.querySelector(".tab-bar-button.active")
+        const active = getActive()
         if (!active || getMaxScroll() <= 0) return
         const style = getComputedStyle(tabBar)
         const rtl = scrollRtl()
-        const size = vertical ? tabBar.clientHeight : tabBar.clientWidth
+        const size = getViewSize()
         const activeSize = vertical ? active.offsetHeight : active.offsetWidth
         const padStart = parseFloat(vertical ? style.paddingTop : rtl ? style.paddingRight : style.paddingLeft) || 0
         const padEnd = parseFloat(vertical ? style.paddingBottom : rtl ? style.paddingLeft : style.paddingRight) || 0
@@ -334,6 +323,17 @@
         else setScroll(target)
       }
 
+      let visibleSize = 0
+
+      tabBar.update = () => {
+        const size = getViewSize()
+        if (size < visibleSize || !visibleSize) scrollActiveIntoView(visibleSize > 0 && !reducedMotion.matches)
+        visibleSize = size
+        updateIndicator()
+        updateFades()
+        updateMinHeight()
+      }
+
       for (const button of buttons) {
         button.addEventListener("pointerenter", e => {
           if (e.pointerType !== "touch") tease(button)
@@ -345,7 +345,7 @@
 
         button.addEventListener("click", () => {
           if (button.classList.contains("active")) return
-          const currentActive = tabBar.querySelector(".tab-bar-button.active")
+          const currentActive = getActive()
 
           const alreadyRunning = new Set(runningAnimations())
 
@@ -361,17 +361,14 @@
           button.classList.add("active")
           updateSelection()
 
-          if (contentWraps.length) {
-            const target = button.dataset.tab
-            contents.forEach(c => c.classList.toggle("active", c.dataset.tab === target))
-            updateInert(button)
-            for (const wrap of contentWraps) {
-              wrap.classList.add("transitioning")
-              const activeContent = contents.find(c => c.classList.contains("active") && c.closest(".tab-contents") === wrap)
-              const wrapStyle = getComputedStyle(wrap)
-              const border = parseFloat(wrapStyle.borderTopWidth) + parseFloat(wrapStyle.borderBottomWidth)
-              wrap.style.height = (activeContent ? outerHeight(activeContent) : 0) + border + "px"
-            }
+          for (const content of contents) content.classList.toggle("active", content.dataset.tab === button.dataset.tab)
+          updateInert(button)
+          for (const wrap of contentWraps) {
+            wrap.classList.add("transitioning")
+            const activeContent = contents.find(c => c.classList.contains("active") && c.closest(".tab-contents") === wrap)
+            const wrapStyle = getComputedStyle(wrap)
+            const border = parseFloat(wrapStyle.borderTopWidth) + parseFloat(wrapStyle.borderBottomWidth)
+            wrap.style.height = (activeContent ? outerHeight(activeContent) : 0) + border + "px"
           }
 
           const fromCenter = getCenter(fromRect)
@@ -403,9 +400,7 @@
 
           scrollActiveIntoView(!reducedMotion.matches)
 
-          tabBar.dispatchEvent(new CustomEvent("tab-changed", {
-            detail: button.dataset.tab
-          }))
+          tabBar.dispatchEvent(new CustomEvent("tab-changed", { detail: button.dataset.tab }))
         }, { signal })
       }
 
@@ -497,7 +492,7 @@
 
       tabBar.addEventListener("keydown", e => {
         if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
-        const enabled = Array.from(buttons).filter(button => !button.disabled)
+        const enabled = buttons.filter(button => !button.disabled)
         const index = enabled.indexOf(e.target.closest(".tab-bar-button"))
         if (index < 0) return
         const rtl = scrollRtl()
@@ -531,7 +526,7 @@
         if (!momentumRaf) startMomentum()
       }, { passive: false, signal })
 
-      const swipeTargets = tabBar.classList.contains("tab-bar-no-swipe") ? [] : contentWraps
+      const swipeTargets = tabBar.hasAttribute("data-tab-no-swipe") ? [] : contentWraps
 
       let swipeStartX = 0
       let swipeStartY = 0
@@ -554,18 +549,8 @@
           if (Math.abs(dx) < 50) return
           if (Math.abs(dx) < Math.abs(dy)) return
 
-          const active = tabBar.querySelector(".tab-bar-button.active")
-          if (!active) return
-
-          const index = Array.from(buttons).indexOf(active)
-
-          if (dx < 0 !== isRtl()) {
-            const next = buttons[index + 1]
-            if (next) next.click()
-          } else {
-            const prev = buttons[index - 1]
-            if (prev) prev.click()
-          }
+          const active = getActive()
+          if (active) buttons[buttons.indexOf(active) + (dx < 0 !== isRtl() ? 1 : -1)]?.click()
         }, { signal })
       }
 
@@ -574,10 +559,7 @@
 
       updateSelection()
       updateInert()
-      updateIndicator()
-      scrollActiveIntoView(false)
-      updateFades()
-      updateMinHeight()
+      tabBar.update()
 
       let readyRaf
 
@@ -618,15 +600,14 @@
           observer.disconnect()
           layer.remove()
         }
-        tabBar.classList.remove("initialised", "tab-bar-ready", "tab-bar-wrap", "tab-bar-vertical", "tab-bar-scrollable", "tab-bar-no-swipe", "tab-bar-dragging", "tab-bar-fade-start", "tab-bar-fade-end")
+        tabBar.classList.remove("initialised", "tab-bar-ready", "tab-bar-wrap", "tab-bar-vertical", "tab-bar-scrollable", "tab-bar-dragging", "tab-bar-fade-start", "tab-bar-fade-end")
         tabBar.removeAttribute("aria-orientation")
-        if (addedStyle) tabBar.classList.remove(style)
+        for (const el of unstyled) el.classList.remove(styleClass)
         for (const wrap of contentWraps) {
           wrap.classList.remove("tab-bar-ready", "transitioning", "tab-contents-vertical")
           wrap.style.height = ""
           wrap.style.minHeight = ""
         }
-        for (const wrap of styledWraps) wrap.classList.remove(style)
         for (const content of contents) content.inert = false
         for (const button of buttons) {
           delete button.textContent
