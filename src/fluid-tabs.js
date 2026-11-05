@@ -87,6 +87,7 @@
       activeIndicator.setAttribute("role", "presentation")
       for (const button of buttons) {
         addAttribute(button, "role", "tab")
+        addAttribute(button, "tabindex", "0")
         const panels = contents.filter(c => c.dataset.tab === button.dataset.tab)
         if (panels.length) addAttribute(button, "aria-controls", panels.map(ensureId).join(" "))
         for (const panel of panels) {
@@ -150,11 +151,7 @@
       }
 
       function updateSelection() {
-        const active = getActive() ?? buttons[0]
-        for (const button of buttons) {
-          button.setAttribute("aria-selected", button.classList.contains("active"))
-          button.tabIndex = button === active ? 0 : -1
-        }
+        for (const button of buttons) button.setAttribute("aria-selected", button.classList.contains("active"))
       }
 
       function updateInert(focusFallback) {
@@ -299,24 +296,23 @@
       tabBar.addEventListener("scroll", updateFades, { signal })
       activeIndicator.addEventListener("transitionend", updateFades)
 
-      function scrollActiveIntoView(smooth) {
-        const active = getActive()
-        if (!active || getMaxScroll() <= 0) return
+      function scrollButtonIntoView(button, smooth) {
+        if (!button || getMaxScroll() <= 0) return
         const style = getComputedStyle(tabBar)
         const rtl = scrollRtl()
         const size = getViewSize()
-        const activeSize = vertical ? active.offsetHeight : active.offsetWidth
+        const buttonSize = vertical ? button.offsetHeight : button.offsetWidth
         const padStart = parseFloat(vertical ? style.paddingTop : rtl ? style.paddingRight : style.paddingLeft) || 0
         const padEnd = parseFloat(vertical ? style.paddingBottom : rtl ? style.paddingLeft : style.paddingRight) || 0
         const fade = parseFloat(style.getPropertyValue("--tab-fade")) || 0
         const scrolled = Math.abs(getScroll())
         const visibleStart = scrolled + padStart + fade
         const visibleEnd = scrolled + size - padEnd - fade
-        const activeStart = vertical ? active.offsetTop : rtl ? size - active.offsetLeft - activeSize : active.offsetLeft
-        const activeEnd = activeStart + activeSize
+        const buttonStart = vertical ? button.offsetTop : rtl ? size - button.offsetLeft - buttonSize : button.offsetLeft
+        const buttonEnd = buttonStart + buttonSize
         let next = scrolled
-        if (activeStart < visibleStart) next = Math.max(0, activeStart - padStart - fade)
-        else if (activeEnd > visibleEnd) next = activeEnd - size + padEnd + fade
+        if (buttonStart < visibleStart) next = Math.max(0, buttonStart - padStart - fade)
+        else if (buttonEnd > visibleEnd) next = buttonEnd - size + padEnd + fade
         if (next === scrolled) return
         const target = rtl ? -next : next
         if (smooth) tabBar.scrollTo({ [vertical ? "top" : "left"]: target, behavior: "smooth" })
@@ -327,7 +323,7 @@
 
       tabBar.update = () => {
         const size = getViewSize()
-        if (size < visibleSize || !visibleSize) scrollActiveIntoView(visibleSize > 0 && !reducedMotion.matches)
+        if (size < visibleSize || !visibleSize) scrollButtonIntoView(getActive(), visibleSize > 0 && !reducedMotion.matches)
         visibleSize = size
         updateIndicator()
         updateFades()
@@ -398,7 +394,7 @@
           if (animations.length) Promise.allSettled(animations.map(a => a.finished)).then(finish)
           else finish()
 
-          scrollActiveIntoView(!reducedMotion.matches)
+          scrollButtonIntoView(button, !reducedMotion.matches)
 
           tabBar.dispatchEvent(new CustomEvent("tab-changed", { detail: button.dataset.tab }))
         }, { signal })
@@ -490,11 +486,24 @@
         dragMoved = false
       }, { capture: true, signal })
 
+      tabBar.addEventListener("focusin", e => {
+        if (buttons.includes(e.target) && e.target.matches(":focus-visible")) scrollButtonIntoView(e.target, !reducedMotion.matches)
+      }, { signal })
+
       tabBar.addEventListener("keydown", e => {
-        if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return
+        if (e.altKey || e.ctrlKey || e.metaKey) return
         const enabled = buttons.filter(button => !button.disabled)
         const index = enabled.indexOf(e.target.closest(".tab-bar-button"))
         if (index < 0) return
+        if (e.key === "Tab") {
+          const next = enabled[index + (e.shiftKey ? -1 : 1)]
+          if (!next || next.tabIndex < 0) return
+          // native tabbing jumps the bar instantly and can leave the tab under an edge fade
+          e.preventDefault()
+          next.focus({ preventScroll: true })
+          return
+        }
+        if (e.shiftKey) return
         const rtl = scrollRtl()
         const nextKey = vertical ? "ArrowDown" : rtl ? "ArrowLeft" : "ArrowRight"
         const previousKey = vertical ? "ArrowUp" : rtl ? "ArrowRight" : "ArrowLeft"
@@ -581,7 +590,7 @@
         for (const wrap of contentWraps) wrap.classList.remove("tab-bar-ready")
         applyOrientation()
         tabBar.scrollLeft = tabBar.scrollTop = 0
-        scrollActiveIntoView(false)
+        scrollButtonIntoView(getActive(), false)
         tabBar.update()
         markReady()
       }, { signal })
@@ -612,7 +621,6 @@
         for (const button of buttons) {
           delete button.textContent
           button.removeAttribute("aria-selected")
-          button.removeAttribute("tabindex")
         }
         for (const [el, name] of addedAttributes) el.removeAttribute(name)
         delete tabBar.update
