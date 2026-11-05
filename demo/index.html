@@ -43,7 +43,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       line-height: 1.6;
       color: #333;
       background: #f5f5f5;
@@ -65,7 +65,7 @@
 
     header p {
       font-size: 1rem;
-      opacity: 0.9;
+      opacity: .9;
     }
 
     .header-links {
@@ -83,7 +83,7 @@
       padding: 8px 16px;
       border: 1px solid white;
       border-radius: 6px;
-      transition: all 0.2s ease;
+      transition: all .2s ease;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -130,23 +130,7 @@
     code {
       border: 1px solid #ccc;
       border-radius: 2px;
-      padding: 0.1em 0.3em;
-    }
-
-    .controls button {
-      background: #3498db;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.95rem;
-      font-weight: 500;
-      transition: background 0.2s ease;
-    }
-
-    .controls button:hover {
-      background: #2980b9;
+      padding: .1em .3em;
     }
 
     pre {
@@ -154,8 +138,8 @@
       color: #ecf0f1;
       padding: 15px;
       border-radius: 6px;
-      font-family: 'Courier New', monospace;
-      font-size: 0.85rem;
+      font-family: "Courier New", monospace;
+      font-size: .85rem;
       overflow-x: auto;
       line-height: 1.4;
       margin-top: 20px;
@@ -169,10 +153,30 @@
       margin-top: 16px;
     }
 
-    .status {
-      font-family: 'Courier New', monospace;
-      font-size: 0.85rem;
-      color: #2c3e50;
+    .controls.flush-top {
+      margin-top: 0;
+    }
+
+    .controls button {
+      background: #3498db;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      font-size: .95rem;
+      font-weight: 500;
+      transition: background .2s ease;
+    }
+
+    .controls button:hover {
+      background: #2980b9;
+    }
+
+    .controls button:disabled {
+      background: #bdc3c7;
+      cursor: not-allowed;
     }
 
     .feature-list {
@@ -221,14 +225,19 @@
       overflow: clip;
     }
 
-    .demo-grid {
+    .demo-grid,
+    .style-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
       gap: 16px;
     }
 
-    .demo-grid .demo + .demo {
+    .demo-grid > .demo + .demo,
+    .style-grid > .demo + .demo {
       margin-top: 0;
+    }
+
+    .demo-grid {
+      grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
     }
 
     .demo-grid .tab-bar {
@@ -236,13 +245,7 @@
     }
 
     .style-grid {
-      display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .style-grid > .demo + .demo {
-      margin-top: 0;
     }
 
     .style-grid .tab-style-card > .tab-bar-button {
@@ -261,20 +264,26 @@
       margin-bottom: 12px;
     }
 
-    .controls button {
-      user-select: none;
-    }
-
     .demo .flush {
       margin: 0;
       color: inherit;
+    }
+
+    .demo .nav-panel {
+      margin-bottom: 16px;
+    }
+
+    .vertical-layout {
+      display: flex;
+      flex-wrap: wrap;
     }
 
     .demo .tab-content {
       color: #444;
     }
 
-    .row {
+    .row,
+    .setting-row {
       display: flex;
       justify-content: space-between;
       gap: 16px;
@@ -282,7 +291,12 @@
       border-bottom: 1px solid #eee;
     }
 
-    .row:last-child {
+    .setting-row {
+      padding: 12px 0;
+    }
+
+    .row:last-child,
+    .setting-row:last-child {
       border-bottom: 0;
     }
 
@@ -290,13 +304,17 @@
       color: #2c3e50;
     }
 
-    label.row {
+    .demo .row span strong {
+      margin-inline-end: 8px;
+    }
+
+    label.row,
+    label.setting-row {
       cursor: pointer;
       user-select: none;
     }
 
-    .tab-style-tabs > .tab-content .row,
-    .tab-style-tabs > .tab-content .row:last-child {
+    .tab-style-tabs > .tab-content .row {
       border-color: #ddd;
     }
 
@@ -419,16 +437,6 @@
       border-top: 1px solid #eee;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .message {
-        transition: none;
-      }
-    }
-
-    .demo .row span strong {
-      margin-inline-end: 8px;
-    }
-
     .after-demo {
       margin-top: 20px;
     }
@@ -453,15 +461,6 @@
       color: #555;
       cursor: pointer;
       user-select: none;
-    }
-
-    .controls button:disabled {
-      background: #bdc3c7;
-      cursor: not-allowed;
-    }
-
-    .controls.flush-top {
-      margin-top: 0;
     }
 
     .dynamic-block {
@@ -546,135 +545,6 @@
       display: block;
     }
 
-    #code-modal {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: rgba(0, 0, 0, 0);
-      pointer-events: none;
-      transition: background-color 150ms, backdrop-filter 150ms;
-    }
-
-    #code-modal[hidden] {
-      display: none !important;
-    }
-
-    #code-modal.open {
-      background-color: rgba(15, 23, 42, .35);
-      backdrop-filter: blur(4px);
-      pointer-events: auto;
-    }
-
-    .code-modal-element {
-      display: flex;
-      flex-direction: column;
-      width: min(720px, 100svw - 32px);
-      max-height: calc(100svh - 64px);
-      margin: auto;
-      overflow: hidden;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 20px 60px rgba(15, 23, 42, .25);
-      color: #1f2937;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 150ms, transform 150ms;
-    }
-
-    #code-modal.open .code-modal-element {
-      opacity: 1;
-      transform: none;
-    }
-
-    .code-modal-header {
-      display: flex;
-      flex-shrink: 0;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 12px 16px;
-      background: #f8fafc;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
-    .code-modal-title {
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    .code-modal-close {
-      all: unset;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 32px;
-      height: 32px;
-      background: #fff;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      cursor: pointer;
-      user-select: none;
-      transition: background 120ms, border-color 120ms;
-    }
-
-    .code-modal-close:hover {
-      background: #f1f5f9;
-      border-color: #cbd5e1;
-    }
-
-    .code-modal-close svg {
-      width: 14px;
-      height: 14px;
-      fill: #475569;
-    }
-
-    .code-modal-contents {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      padding: 18px;
-      overflow: auto;
-    }
-
-    .code-modal-description {
-      margin: 0;
-      color: #475569;
-      font-size: .9rem;
-      line-height: 1.5;
-    }
-
-    .code-modal-description[hidden],
-    .code-modal-section[hidden] {
-      display: none;
-    }
-
-    .code-modal-section h4 {
-      margin: 0 0 6px;
-      color: #64748b;
-      font-size: .7rem;
-      font-weight: 600;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-
-    .code-modal-contents pre {
-      margin: 0;
-      padding: 12px 14px;
-      overflow: visible;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      color: #1e293b;
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-      font-size: .85rem;
-      line-height: 1.5;
-      overflow-wrap: anywhere;
-      white-space: pre-wrap;
-    }
-
     .demo-scene p {
       margin: 0;
       color: inherit;
@@ -697,23 +567,6 @@
       background: #fff;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
-    }
-
-    .setting-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 12px 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    label.setting-row {
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .setting-row:last-child {
-      border-bottom: 0;
     }
 
     .scene-browser {
@@ -852,6 +705,27 @@
       transform: translateY(calc(var(--tab-panel-x) * 28px));
     }
 
+    .price {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .price span {
+      font-size: 1rem;
+      font-weight: 400;
+      opacity: .7;
+    }
+
+    .price-list {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, .2);
+      list-style: none;
+      line-height: 1.8;
+    }
+
     .scene-delivery {
       background: #f3efe8;
       color: #2b2a27;
@@ -878,27 +752,6 @@
 
     .scene-delivery .tab-contents {
       --tab-panel-blend: plus-lighter;
-    }
-
-    .price {
-      font-size: 3.5rem;
-      font-weight: 700;
-      line-height: 1.1;
-      margin-bottom: 8px;
-    }
-
-    .price span {
-      font-size: 1rem;
-      font-weight: 400;
-      opacity: .7;
-    }
-
-    .price-list {
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255, 255, 255, .2);
-      list-style: none;
-      line-height: 1.8;
     }
 
     .scene-phone {
@@ -987,15 +840,6 @@
 
     .scene-phone .tab-style-nav > .tab-bar-active {
       border-top-color: #2563eb;
-    }
-
-    .vertical-layout {
-      display: flex;
-      flex-wrap: wrap;
-    }
-
-    .demo .nav-panel {
-      margin-bottom: 16px;
     }
 
     .scene-neon {
@@ -1425,6 +1269,10 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+      .message {
+        transition: none;
+      }
+
       .scene-glass .tab-content {
         transition: none;
       }
@@ -1447,12 +1295,140 @@
       }
     }
 
+    #code-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0);
+      pointer-events: none;
+      transition: background-color 150ms, backdrop-filter 150ms;
+    }
+
+    #code-modal[hidden] {
+      display: none !important;
+    }
+
+    #code-modal.open {
+      background-color: rgba(15, 23, 42, .35);
+      backdrop-filter: blur(4px);
+      pointer-events: auto;
+    }
+
+    .code-modal-element {
+      display: flex;
+      flex-direction: column;
+      width: min(720px, 100svw - 32px);
+      max-height: calc(100svh - 64px);
+      margin: auto;
+      overflow: hidden;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(15, 23, 42, .25);
+      color: #1f2937;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 150ms, transform 150ms;
+    }
+
+    #code-modal.open .code-modal-element {
+      opacity: 1;
+      transform: none;
+    }
+
+    .code-modal-header {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 16px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .code-modal-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .code-modal-close {
+      all: unset;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 120ms, border-color 120ms;
+    }
+
+    .code-modal-close:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    .code-modal-close svg {
+      width: 14px;
+      height: 14px;
+      fill: #475569;
+    }
+
+    .code-modal-contents {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 18px;
+      overflow: auto;
+    }
+
+    .code-modal-description {
+      margin: 0;
+      color: #475569;
+      font-size: .9rem;
+      line-height: 1.5;
+    }
+
+    .code-modal-section[hidden] {
+      display: none;
+    }
+
+    .code-modal-section h4 {
+      margin: 0 0 6px;
+      color: #64748b;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .code-modal-contents pre {
+      margin: 0;
+      padding: 12px 14px;
+      overflow: visible;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      color: #1e293b;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      font-size: .85rem;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+
     footer {
       background: #f0f0f0;
       padding: 20px 40px;
       text-align: center;
       color: #666;
-      font-size: 0.9rem;
+      font-size: .9rem;
       border-top: 1px solid #e0e0e0;
     }
 
@@ -1499,7 +1475,6 @@
       .browser-dots {
         display: none;
       }
-
     }
   </style>
 </head>
@@ -2290,7 +2265,7 @@
             <button type="button" class="tab-bar-button" data-tab="unread">Unread</button>
             <button type="button" class="tab-bar-button" data-tab="starred">Starred</button>
           </div>
-          <div class="message-list" id="message-list">
+          <div class="message-list">
             <div class="message" data-filter="all unread"><div><div class="row"><span><strong>Nina</strong> Design review notes</span><span>09:41</span></div></div></div>
             <div class="message" data-filter="all starred"><div><div class="row"><span><strong>Tom</strong> Lunch on Friday?</span><span>Yesterday</span></div></div></div>
             <div class="message" data-filter="all unread starred"><div><div class="row"><span><strong>Sam</strong> Flights are booked</span><span>Tuesday</span></div></div></div>
@@ -2422,7 +2397,7 @@ bar.destroy()</pre>
         </button>
       </div>
       <div class="code-modal-contents">
-        <p class="code-modal-description" id="code-modal-description" hidden></p>
+        <p class="code-modal-description" id="code-modal-description"></p>
         <div class="code-modal-section" id="code-modal-section-html" hidden>
           <h4>HTML</h4>
           <pre id="code-modal-html"></pre>
@@ -2444,7 +2419,7 @@ bar.destroy()</pre>
       FluidTabs.init(swipeBar.parentElement)
     })
 
-    const messages = Array.from(document.querySelectorAll("#message-list .message"))
+    const messages = Array.from(document.querySelectorAll(".message"))
     document.getElementById("filter-bar").addEventListener("tab-changed", e => {
       for (const message of messages) {
         message.inert = !message.dataset.filter.includes(e.detail)
@@ -2847,7 +2822,6 @@ bar.destroy()</pre>
     function openCodeModal(code) {
       codeModalTitle.textContent = code.title
       codeModalDescription.textContent = code.description
-      codeModalDescription.hidden = false
       setCodeSection("html", code.html)
       setCodeSection("style", code.style)
       codeModal.hidden = false
