@@ -597,6 +597,10 @@
   border-inline-start: 3px solid #1c1c1c;
 }
 
+.tab-bar-vertical.tab-style-pill > .tab-bar-active {
+  border-radius: calc(.5lh + 8px);
+}
+
 .tab-bar.tab-bar-vertical.tab-style-card {
   width: 220px;
 }
