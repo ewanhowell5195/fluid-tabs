@@ -214,8 +214,1172 @@
       margin-top: 16px;
     }
 
-    .demo.scroll {
-      max-width: 420px;
+    .demo,
+    .settings-card,
+    .glass,
+    .sketch {
+      overflow: clip;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+      gap: 16px;
+    }
+
+    .demo-grid .demo + .demo {
+      margin-top: 0;
+    }
+
+    .demo-grid .tab-bar {
+      margin-bottom: 0;
+    }
+
+    .demo h3 {
+      font-size: 1rem;
+      color: #2c3e50;
+      margin-bottom: 12px;
+    }
+
+    .controls button {
+      user-select: none;
+    }
+
+    .demo .flush {
+      margin: 0;
+      color: inherit;
+    }
+
+    .demo .tab-content {
+      color: #444;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .row:last-child {
+      border-bottom: 0;
+    }
+
+    .row strong {
+      color: #2c3e50;
+    }
+
+    label.row {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .tab-style-tabs > .tab-content .row,
+    .tab-style-tabs > .tab-content .row:last-child {
+      border-color: #ddd;
+    }
+
+    .sky-panels {
+      --tab-panel-blend: plus-lighter;
+    }
+
+    .demo .sky {
+      overflow: clip;
+      border-radius: 10px;
+      color: #2c3e50;
+    }
+
+    .sky-dawn {
+      background: #fbd9bd;
+    }
+
+    .sky-noon {
+      background: #c4e4f5;
+    }
+
+    .sky-dusk {
+      background: #d9d0f3;
+    }
+
+    .sky-copy {
+      padding: 28px 24px;
+    }
+
+    .demo .sky-copy h3 {
+      color: inherit;
+    }
+
+    .sky-fade > .tab-content {
+      transform: none;
+    }
+
+    .sky-fade .sky-copy {
+      transform: translateX(calc(var(--tab-panel-x) * 64px));
+      transition: transform var(--tab-transition-duration) var(--tab-transition-easing);
+    }
+
+    .report-range {
+      margin-bottom: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 4px 16px;
+      padding: 10px 14px;
+      background: #eef2f5;
+      border-radius: 6px;
+      font-size: .9rem;
+      color: #555;
+    }
+
+    .report-range strong {
+      color: #2c3e50;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      padding: 14px 16px;
+      background: #f5f7f9;
+      border-radius: 8px;
+      font-size: .85rem;
+      color: #666;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.5rem;
+      color: #2c3e50;
+    }
+
+    .metric-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 80px;
+      margin-top: 12px;
+    }
+
+    .metric-bars span {
+      flex: 1;
+      background: #3498db;
+      border-radius: 3px 3px 0 0;
+    }
+
+    .demo .metric-note {
+      margin: 12px 0 0;
+      color: #666;
+    }
+
+    .message {
+      display: grid;
+      grid-template-rows: 1fr;
+      transition: grid-template-rows var(--tab-transition-duration) var(--tab-transition-easing), opacity var(--tab-transition-duration) var(--tab-transition-easing);
+    }
+
+    .message > div {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .message[inert] {
+      grid-template-rows: 0fr;
+      opacity: 0;
+    }
+
+    .message-list .row {
+      border-bottom: 0;
+    }
+
+    .message:not([inert]) ~ .message:not([inert]) .row {
+      border-top: 1px solid #eee;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .message {
+        transition: none;
+      }
+    }
+
+    .demo .row span strong {
+      margin-inline-end: 8px;
+    }
+
+    .after-demo {
+      margin-top: 20px;
+    }
+
+    .swipe-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 160px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .swipe-toggle {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      color: #555;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .controls button:disabled {
+      background: #bdc3c7;
+      cursor: not-allowed;
+    }
+
+    .controls.flush-top {
+      margin-top: 0;
+    }
+
+    .dynamic-block {
+      margin-top: 16px;
+    }
+
+    .dynamic-panel {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px 16px;
+    }
+
+    .tab-contents.tab-style-tabs.scenes {
+      background: none;
+      --tab-panel-blend: plus-lighter;
+    }
+
+    .scenes > .tab-content {
+      padding: 0;
+      transform: none;
+    }
+
+    .demo-scene {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 40px 24px;
+    }
+
+    .demo-scene::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      transform-origin: 0 calc(100% - 1px);
+      transform: scaleY(-3);
+      pointer-events: none;
+    }
+
+    .demo-scene > * {
+      transform: translateX(calc(var(--tab-panel-x) * 64px));
+      transition: transform var(--tab-transition-duration) var(--tab-transition-easing);
+    }
+
+    .demo-scene > .demo-code-button {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 5;
+      width: 32px;
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      background: rgba(255, 255, 255, .85);
+      border: 1px solid rgba(0, 0, 0, .08);
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+      color: #1f2937;
+      cursor: pointer;
+      user-select: none;
+      transform: none;
+      transition: none;
+    }
+
+    .demo-scene > .demo-code-button:hover {
+      background: #fff;
+      border-color: rgba(0, 0, 0, .16);
+    }
+
+    .demo-code-button svg {
+      display: block;
+    }
+
+    #code-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 0, 0, 0);
+      pointer-events: none;
+      transition: background-color 150ms, backdrop-filter 150ms;
+    }
+
+    #code-modal[hidden] {
+      display: none !important;
+    }
+
+    #code-modal.open {
+      background-color: rgba(15, 23, 42, .35);
+      backdrop-filter: blur(4px);
+      pointer-events: auto;
+    }
+
+    .code-modal-element {
+      display: flex;
+      flex-direction: column;
+      width: min(720px, 100svw - 32px);
+      max-height: calc(100svh - 64px);
+      margin: auto;
+      overflow: hidden;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(15, 23, 42, .25);
+      color: #1f2937;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 150ms, transform 150ms;
+    }
+
+    #code-modal.open .code-modal-element {
+      opacity: 1;
+      transform: none;
+    }
+
+    .code-modal-header {
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 16px;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .code-modal-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .code-modal-close {
+      all: unset;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 120ms, border-color 120ms;
+    }
+
+    .code-modal-close:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    .code-modal-close svg {
+      width: 14px;
+      height: 14px;
+      fill: #475569;
+    }
+
+    .code-modal-contents {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 18px;
+      overflow: auto;
+    }
+
+    .code-modal-description {
+      margin: 0;
+      color: #475569;
+      font-size: .9rem;
+      line-height: 1.5;
+    }
+
+    .code-modal-description[hidden],
+    .code-modal-section[hidden] {
+      display: none;
+    }
+
+    .code-modal-section h4 {
+      margin: 0 0 6px;
+      color: #64748b;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .code-modal-contents pre {
+      margin: 0;
+      padding: 12px 14px;
+      overflow: visible;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      color: #1e293b;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+      font-size: .85rem;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+
+    .demo-scene p {
+      margin: 0;
+      color: inherit;
+      line-height: 1.5;
+    }
+
+    .demo-scene h3 {
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+    }
+
+    .scene-default {
+      background: #dde3ea;
+    }
+
+    .settings-card {
+      width: 100%;
+      max-width: 520px;
+      padding: 8px 24px 12px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+    }
+
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    label.setting-row {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .setting-row:last-child {
+      border-bottom: 0;
+    }
+
+    .scene-browser {
+      background: #d5dae0;
+    }
+
+    .browser {
+      width: 100%;
+      max-width: 640px;
+      overflow: hidden;
+      background: #202124;
+      border-radius: 10px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, .3);
+    }
+
+    .browser-top {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      padding: 10px 10px 0;
+    }
+
+    .browser-dots {
+      display: flex;
+      align-self: flex-start;
+      gap: 6px;
+      margin: 5px 5px 0 8px;
+    }
+
+    .browser-dots i {
+      width: 11px;
+      height: 11px;
+      background: #5f6368;
+      border-radius: 50%;
+    }
+
+    .scene-browser .tab-bar.tab-style-tabs {
+      flex: 1;
+      min-width: 0;
+      gap: 2px;
+    }
+
+    .scene-browser .tab-bar-button {
+      flex: 0 1 170px;
+      min-width: 110px;
+      justify-content: flex-start;
+      margin: 0;
+      padding: 8px 12px;
+      background: transparent;
+      border: 0;
+      border-radius: 8px 8px 0 0;
+      color: #bdc1c6;
+      font-size: .85rem;
+    }
+
+    .scene-browser .tab-bar-button i {
+      width: 10px;
+      height: 10px;
+      flex-shrink: 0;
+      border-radius: 50%;
+    }
+
+    .scene-browser .tab-bar-button:hover {
+      background: #2d2e31;
+    }
+
+    .scene-browser .tab-bar-button.active {
+      background: #fff;
+      color: #202124;
+    }
+
+    .browser-address {
+      padding: 8px 16px;
+      background: #fff;
+      border-bottom: 1px solid #e8eaed;
+      color: #5f6368;
+      font-size: .85rem;
+    }
+
+    .scene-browser .tab-contents.tab-style-tabs {
+      background: #fff;
+      border: 0;
+      border-radius: 0;
+      color: #333;
+    }
+
+    .scene-browser .tab-content {
+      padding: 0;
+      transform: none;
+    }
+
+    .browser-page {
+      padding: 24px;
+    }
+
+    .scene-browser .tab-content p + p {
+      margin-top: 8px;
+    }
+
+    .scene-pricing {
+      background: #1c1c1f;
+      color: #fff;
+    }
+
+    .pricing {
+      width: 100%;
+      max-width: 320px;
+      text-align: center;
+    }
+
+    .scene-pricing .tab-bar.tab-style-slide {
+      margin: 0 auto 24px;
+      background: rgba(255, 255, 255, .14);
+      border-radius: 999px;
+    }
+
+    .scene-pricing .tab-style-slide > .tab-bar-active {
+      background: #fff;
+      border-radius: 999px;
+    }
+
+    .scene-pricing .tab-style-slide > .tab-bar-button {
+      color: #d4d4d8;
+    }
+
+    .scene-pricing .tab-style-slide > .tab-bar-button.active {
+      color: #1c1c1f;
+    }
+
+    .scene-pricing .tab-style-slide > .tab-bar-button:focus-visible {
+      border-radius: 999px;
+    }
+
+    .scene-pricing .tab-content:not(.active) {
+      transform: translateY(calc(var(--tab-panel-x) * 28px));
+    }
+
+    .price {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .price span {
+      font-size: 1rem;
+      font-weight: 400;
+      opacity: .7;
+    }
+
+    .price-list {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, .2);
+      list-style: none;
+      line-height: 1.8;
+    }
+
+    .scene-phone {
+      background: #cfe0f5;
+    }
+
+    .phone {
+      display: flex;
+      flex-direction: column;
+      width: 280px;
+      height: 460px;
+      overflow: hidden;
+      background: #fff;
+      border: 8px solid #1f2937;
+      border-radius: 34px;
+      color: #1f2937;
+    }
+
+    .scene-phone .tab-contents {
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .scene-phone .tab-content {
+      padding: 24px 18px;
+    }
+
+    .phone-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: .85rem;
+    }
+
+    .phone-row:last-child {
+      border-bottom: 0;
+    }
+
+    .phone-row strong {
+      color: #2563eb;
+      white-space: nowrap;
+    }
+
+    .phone-search {
+      margin-bottom: 12px;
+      padding: 10px 14px;
+      background: #f1f5f9;
+      border-radius: 999px;
+      color: #64748b;
+      font-size: .9rem;
+    }
+
+    .phone-avatar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 72px;
+      height: 72px;
+      margin-bottom: 12px;
+      background: #2563eb;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    .scene-phone .tab-bar.tab-style-buttons {
+      flex-shrink: 0;
+      margin: 0;
+      padding-inline: 14px;
+      box-shadow: inset 0 1px 0 #e5e7eb;
+    }
+
+    .scene-phone .tab-style-buttons > .tab-bar-button {
+      flex: 1 1 0;
+      flex-direction: column;
+      gap: 2px;
+      padding: 8px 0;
+      color: #94a3b8;
+      font-size: .7rem;
+    }
+
+    .scene-phone .tab-style-buttons > .tab-bar-button.active {
+      color: #2563eb;
+    }
+
+    .scene-phone .tab-bar-button svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .scene-phone .tab-style-buttons > .tab-bar-active {
+      border-top: 3px solid #2563eb;
+      border-bottom: 0;
+    }
+
+    .scene-neon {
+      --tab-transition-easing: cubic-bezier(.3, 1.25, .5, 1);
+      --tab-tease-x: 4px;
+      background:
+        radial-gradient(ellipse 65% 75% at 50% 42%, rgba(34, 211, 238, .38), rgba(34, 211, 238, .12) 55%, transparent 80%),
+        radial-gradient(ellipse 70% 45% at 50% 100%, rgba(217, 70, 239, .3), transparent 75%),
+        #07060f;
+      color: #e0e7ff;
+    }
+
+    .neon {
+      width: 100%;
+      max-width: 460px;
+    }
+
+    .scene-neon .tab-bar.tab-style-buttons {
+      width: calc(100% + 32px);
+      margin-inline: -16px;
+      padding-inline: 16px;
+      background: linear-gradient(rgba(34, 211, 238, .3), rgba(34, 211, 238, .3)) bottom / 100% 1px no-repeat content-box;
+      box-shadow: none;
+    }
+
+    .scene-neon .tab-style-buttons > .tab-bar-button {
+      color: #94a3b8;
+    }
+
+    .scene-neon .tab-style-buttons > .tab-bar-button.active {
+      color: #22d3ee;
+      text-shadow: 0 0 12px #22d3ee;
+    }
+
+    .scene-neon .tab-style-buttons > .tab-bar-active {
+      border-bottom-color: #22d3ee;
+      box-shadow: 0 8px 12px -6px #22d3ee;
+    }
+
+    .scene-neon .tab-content {
+      transform: none;
+    }
+
+    .score {
+      display: grid;
+      grid-template-columns: 2em 1fr auto;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(34, 211, 238, .2);
+      font-family: "Courier New", monospace;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+
+    .score:last-child {
+      border-bottom: 0;
+    }
+
+    .score span:first-child {
+      color: #94a3b8;
+    }
+
+    .score strong {
+      color: #67e8f9;
+      text-shadow: 0 0 8px #22d3ee;
+    }
+
+    .scene-neon .tab-content.active .score strong {
+      animation: neon-on .6s ease-out backwards;
+    }
+
+    .scene-neon .tab-content.active .score:nth-child(2) strong {
+      animation-delay: .07s;
+    }
+
+    .scene-neon .tab-content.active .score:nth-child(3) strong {
+      animation-delay: .14s;
+    }
+
+    .scene-neon .tab-content.active .score:nth-child(4) strong {
+      animation-delay: .21s;
+    }
+
+    @keyframes neon-on {
+      from {
+        color: #fff;
+        text-shadow: 0 0 6px #fff, 0 0 18px #22d3ee, 0 0 36px #22d3ee;
+      }
+    }
+
+    .scene-glass {
+      background:
+        radial-gradient(circle at 72% 80%, rgba(255, 214, 150, .9), transparent 26%),
+        linear-gradient(#10243f, #37648a 58%, #e3a67c);
+      color: #fff;
+    }
+
+    .glass {
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      background: rgba(15, 23, 42, .42);
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 20px;
+      box-shadow: 0 20px 48px rgba(15, 23, 42, .45), inset 0 1px 0 rgba(255, 255, 255, .14);
+      backdrop-filter: blur(24px) saturate(160%);
+    }
+
+    .weather-now {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .weather-now strong {
+      display: block;
+      font-size: 1.05rem;
+    }
+
+    .weather-now span {
+      color: rgba(255, 255, 255, .7);
+      font-size: .85rem;
+    }
+
+    .weather-now b {
+      font-size: 2.6rem;
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    .scene-glass .tab-bar.tab-style-slide {
+      width: 100%;
+      margin-bottom: 12px;
+      background: rgba(255, 255, 255, .1);
+      border-radius: 12px;
+    }
+
+    .scene-glass .tab-style-slide > .tab-bar-active {
+      display: none;
+    }
+
+    .scene-glass .tab-style-slide > .tab-bar-button::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: rgba(255, 255, 255, .2);
+      border-radius: 9px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2);
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateX(calc(var(--tab-button-x) * -16px));
+      transition: opacity var(--tab-transition-duration) var(--tab-transition-easing), filter var(--tab-transition-duration) var(--tab-transition-easing), transform var(--tab-transition-duration) var(--tab-transition-easing);
+    }
+
+    .scene-glass .tab-style-slide > .tab-bar-button.active::before {
+      opacity: 1;
+      filter: none;
+    }
+
+    .scene-glass .tab-style-slide > .tab-bar-button {
+      padding: 8px 12px;
+      color: rgba(255, 255, 255, .65);
+    }
+
+    .scene-glass .tab-style-slide > .tab-bar-button.active {
+      color: #fff;
+    }
+
+    .scene-glass .tab-style-slide > .tab-bar-button:focus-visible {
+      border-radius: 9px;
+    }
+
+    .scene-glass .tab-bar,
+    .scene-glass .tab-contents {
+      --tab-transition-duration: .5s;
+    }
+
+    .scene-glass .tab-content {
+      transform: none;
+      transition: opacity var(--tab-transition-duration) var(--tab-transition-easing), filter var(--tab-transition-duration) var(--tab-transition-easing);
+    }
+
+    .scene-glass .tab-content:not(.active) {
+      filter: blur(10px);
+    }
+
+    .track {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 4px;
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .track:last-child {
+      border-bottom: 0;
+    }
+
+    .track span:last-child {
+      color: rgba(255, 255, 255, .6);
+    }
+
+    .scene-glitch {
+      background: repeating-linear-gradient(transparent 0 2px, rgba(255, 255, 255, .03) 2px 4px), #0a0a0f;
+      color: #e5e7eb;
+      font-family: "Courier New", monospace;
+    }
+
+    .glitch {
+      width: 100%;
+      max-width: 460px;
+    }
+
+    .scene-glitch .tab-bar.tab-style-slide {
+      width: 100%;
+      margin-bottom: 16px;
+      background: rgba(255, 255, 255, .08);
+      border-radius: 0;
+    }
+
+    .scene-glitch .tab-style-slide > .tab-bar-active {
+      display: none;
+    }
+
+    .scene-glitch .tab-style-slide > .tab-bar-button {
+      color: #a1a1aa;
+      font-weight: 700;
+      transition: none;
+    }
+
+    .scene-glitch .tab-style-slide > .tab-bar-button.active {
+      color: #0a0a0f;
+    }
+
+    .scene-glitch .tab-style-slide > .tab-bar-button::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: #e5e7eb;
+      opacity: 0;
+      animation: glitch-out .36s steps(1) both;
+    }
+
+    .scene-glitch .tab-style-slide > .tab-bar-button.active::before {
+      opacity: 1;
+      animation-name: glitch-in;
+    }
+
+    @keyframes glitch-in {
+      0% {
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 1;
+        transform: translateX(-7px);
+        clip-path: inset(0 -6px 65% -6px);
+        box-shadow: -3px 0 #f0f, 3px 0 #0ff;
+      }
+
+      35% {
+        opacity: 1;
+        transform: translateX(6px);
+        clip-path: inset(55% -6px 0 -6px);
+        box-shadow: 3px 0 #f0f, -3px 0 #0ff;
+      }
+
+      55% {
+        opacity: .5;
+        transform: translateX(-3px);
+        clip-path: inset(25% -6px 30% -6px);
+        box-shadow: -3px 0 #f0f, 3px 0 #0ff;
+      }
+
+      75% {
+        opacity: 1;
+        transform: translateX(2px);
+        clip-path: inset(0 -6px 20% -6px);
+        box-shadow: 2px 0 #f0f, -2px 0 #0ff;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes glitch-out {
+      0% {
+        opacity: 1;
+      }
+
+      20% {
+        opacity: 1;
+        transform: translateX(3px);
+        clip-path: inset(0 -6px 25% -6px);
+        box-shadow: 2px 0 #f0f, -2px 0 #0ff;
+      }
+
+      45% {
+        opacity: .5;
+        transform: translateX(-5px);
+        clip-path: inset(45% -6px 0 -6px);
+        box-shadow: -3px 0 #f0f, 3px 0 #0ff;
+      }
+
+      70% {
+        opacity: 1;
+        transform: translateX(7px);
+        clip-path: inset(15% -6px 60% -6px);
+        box-shadow: 3px 0 #f0f, -3px 0 #0ff;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    .scene-glitch .tab-content {
+      transform: none;
+      transition: none;
+    }
+
+    .scene-glitch .tab-content.active {
+      animation: glitch-panel .36s steps(1) both;
+    }
+
+    @keyframes glitch-panel {
+      0% {
+        opacity: 0;
+      }
+
+      20% {
+        opacity: 1;
+        transform: translateX(-6px);
+        clip-path: inset(0 -6px 60% -6px);
+        text-shadow: -2px 0 #f0f, 2px 0 #0ff;
+      }
+
+      45% {
+        opacity: .6;
+        transform: translateX(5px);
+        clip-path: inset(40% -6px 0 -6px);
+        text-shadow: 2px 0 #f0f, -2px 0 #0ff;
+      }
+
+      70% {
+        opacity: 1;
+        transform: translateX(-2px);
+        clip-path: inset(0 -6px 15% -6px);
+        text-shadow: -1px 0 #f0f, 1px 0 #0ff;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .glitch-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 2px;
+      border-bottom: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .glitch-line:last-child {
+      border-bottom: 0;
+    }
+
+    .scene-sketch {
+      --tab-transition-duration: .32s;
+      --tab-slide-lag: .4;
+      --tab-tease-x: 14px;
+      background: #faf6ea;
+      color: #2b2b2b;
+      font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+    }
+
+    .sketch {
+      width: 100%;
+      max-width: 460px;
+      padding: 20px;
+      background: #fff;
+      border: 2px solid #2b2b2b;
+      border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    }
+
+    .scene-sketch .tab-bar.tab-style-slide {
+      margin: 0 auto 16px;
+      background: transparent;
+    }
+
+    .scene-sketch .tab-style-slide > .tab-bar-active {
+      background: #ffe066;
+      border: 2px solid #2b2b2b;
+      border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    }
+
+    .scene-sketch .tab-style-slide > .tab-bar-button {
+      color: #555;
+      font-weight: 400;
+    }
+
+    .scene-sketch .tab-style-slide > .tab-bar-button.active {
+      color: #2b2b2b;
+    }
+
+    .scene-sketch .tab-content {
+      padding: 0 12px;
+      text-align: center;
+    }
+
+    .scene-sketch .tab-content:not(.active) {
+      transform: translateX(calc(var(--tab-panel-x) * 40px)) rotate(calc(var(--tab-panel-x) * 4deg));
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scene-glass .tab-content {
+        transition: none;
+      }
+
+      .scene-glass .tab-content:not(.active) {
+        filter: none;
+      }
+
+      .scene-glass .tab-style-slide > .tab-bar-button::before {
+        transition: none;
+      }
+
+      .scene-glitch .tab-style-slide > .tab-bar-button::before,
+      .scene-glitch .tab-content.active {
+        animation: none;
+      }
+
+      .scene-neon .tab-content.active .score strong {
+        animation: none;
+      }
     }
 
     footer {
@@ -256,6 +1420,21 @@
       .demo {
         padding: 16px;
       }
+
+      .demo-scene {
+        padding: 56px 16px 24px;
+      }
+
+      .settings-card,
+      .glass,
+      .sketch {
+        padding-inline: 16px;
+      }
+
+      .browser-dots {
+        display: none;
+      }
+
     }
   </style>
 </head>
@@ -290,77 +1469,286 @@
         <h2>Features</h2>
         <ul class="feature-list">
           <li>No dependencies</li>
-          <li>Three styles out of the box: underline, classic tabs, and a sliding segmented control</li>
-          <li>Animated indicator that slides between tabs with an elastic stretch, plus a spring tease on hover</li>
-          <li>Content panels cross-fade and the container resizes between tabs</li>
-          <li>Too many tabs? They scroll horizontally — drag, wheel, or swipe, with momentum and edge fades</li>
-          <li>Opt into wrapping onto multiple rows instead of scrolling</li>
-          <li>Swipe left/right on the content to change tabs on touch</li>
-          <li>Interruptible: click another tab mid-animation and the indicator redirects, no waiting</li>
-          <li>Detached tabs: the bar and its panels don't have to be siblings</li>
-          <li>Fires a <code>tab-changed</code> event, and works with a plain <code>.click()</code></li>
-          <li>Themeable with a handful of CSS variables</li>
+          <li>Works with mouse, touch, and keyboard</li>
+          <li>Underline, classic tab, and sliding styles</li>
+          <li>Animated indicator with an elastic stretch and hover tease</li>
+          <li>Panels cross-fade and resize between tabs</li>
+          <li>Overflowing tabs scroll with momentum, or wrap onto new rows</li>
+          <li>Swipe between tabs on touch</li>
+          <li>Screen reader support and right-to-left layouts</li>
+          <li>Customizable via CSS variables</li>
+          <li>Vue component available</li>
         </ul>
       </div>
 
       <div class="section">
+        <h2>Demos</h2>
+        <p>Tabs in little UI scenes. The first is the default look, and the rest restyle it with a few CSS variables and a little custom CSS, including their own panel transitions:</p>
+
+        <div class="tab-bar tab-style-tabs" id="scenes" data-tab-no-swipe>
+          <button type="button" class="tab-bar-button active" data-tab="default">Default</button>
+          <button type="button" class="tab-bar-button" data-tab="browser">Browser</button>
+          <button type="button" class="tab-bar-button" data-tab="pricing">Pricing</button>
+          <button type="button" class="tab-bar-button" data-tab="phone">Phone</button>
+          <button type="button" class="tab-bar-button" data-tab="neon">Neon</button>
+          <button type="button" class="tab-bar-button" data-tab="glass">Glass</button>
+          <button type="button" class="tab-bar-button" data-tab="glitch">Glitch</button>
+          <button type="button" class="tab-bar-button" data-tab="sketch">Sketch</button>
+        </div>
+        <div class="tab-contents tab-style-tabs scenes">
+          <div class="tab-content active" data-tab="default">
+            <div class="demo-scene scene-default">
+              <div class="settings-card">
+                <div class="tab-bar">
+                  <button type="button" class="tab-bar-button active" data-tab="account">Account</button>
+                  <button type="button" class="tab-bar-button" data-tab="alerts">Notifications</button>
+                  <button type="button" class="tab-bar-button" data-tab="security">Security</button>
+                </div>
+                <div class="tab-contents">
+                  <div class="tab-content active" data-tab="account">
+                    <div class="setting-row"><span>Display name</span><strong>Ewan Howell</strong></div>
+                    <div class="setting-row"><span>Email</span><strong>ewan@example.com</strong></div>
+                  </div>
+                  <div class="tab-content" data-tab="alerts">
+                    <label class="setting-row"><span>Product updates</span><input type="checkbox" checked></label>
+                    <label class="setting-row"><span>Weekly summary</span><input type="checkbox" checked></label>
+                    <label class="setting-row"><span>Mentions</span><input type="checkbox"></label>
+                    <label class="setting-row"><span>Sign-in alerts</span><input type="checkbox" checked></label>
+                  </div>
+                  <div class="tab-content" data-tab="security">
+                    <div class="setting-row"><span>Two-factor login</span><strong>On</strong></div>
+                    <div class="setting-row"><span>Last password change</span><strong>3 months ago</strong></div>
+                    <div class="setting-row"><span>Active sessions</span><strong>2</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" data-tab="browser">
+            <div class="demo-scene scene-browser">
+              <div class="browser">
+                <div class="browser-top">
+                  <div class="tab-bar tab-style-tabs" id="browser-bar">
+                    <button type="button" class="tab-bar-button active" data-tab="news"><i style="background: #ef4444;"></i>Daily News</button>
+                    <button type="button" class="tab-bar-button" data-tab="recipes"><i style="background: #22c55e;"></i>Recipes</button>
+                    <button type="button" class="tab-bar-button" data-tab="maps"><i style="background: #3b82f6;"></i>Maps</button>
+                  </div>
+                  <div class="browser-dots"><i></i><i></i><i></i></div>
+                </div>
+                <div class="tab-contents tab-style-tabs" data-tab-bar="browser-bar">
+                  <div class="tab-content active" data-tab="news"><div class="browser-address">news.example.com</div><div class="browser-page"><h3>Town library extends its opening hours</h3><p>The library will now stay open until 9pm on weekdays, starting next month.</p></div></div>
+                  <div class="tab-content" data-tab="recipes"><div class="browser-address">recipes.example.com</div><div class="browser-page"><h3>Three ingredient pancakes</h3><p>Mash a banana, whisk in two eggs, and fry small spoonfuls in butter until golden.</p><p>Serve with berries, or a spoonful of yoghurt.</p></div></div>
+                  <div class="tab-content" data-tab="maps"><div class="browser-address">maps.example.com</div><div class="browser-page"><h3>Route to the station</h3><p>12 minutes on foot, mostly downhill.</p></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" data-tab="pricing">
+            <div class="demo-scene scene-pricing">
+              <div class="pricing">
+                <h3>Pro plan</h3>
+                <div class="tab-bar tab-style-slide">
+                  <button type="button" class="tab-bar-button active" data-tab="monthly">Monthly</button>
+                  <button type="button" class="tab-bar-button" data-tab="yearly">Yearly</button>
+                </div>
+                <div class="tab-contents tab-style-slide">
+                  <div class="tab-content active" data-tab="monthly">
+                    <div class="price">$12<span>/mo</span></div>
+                    <p>Billed every month</p>
+                  </div>
+                  <div class="tab-content" data-tab="yearly">
+                    <div class="price">$9<span>/mo</span></div>
+                    <p>Billed yearly at $108</p>
+                  </div>
+                </div>
+                <ul class="price-list">
+                  <li>Unlimited projects</li>
+                  <li>10 GB of storage</li>
+                  <li>Email support</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" data-tab="phone">
+            <div class="demo-scene scene-phone">
+              <div class="phone">
+                <div class="tab-contents" data-tab-bar="phone-bar">
+                  <div class="tab-content active" data-tab="home"><h3>Next buses</h3><div class="phone-row"><span>12 to Harbour</span><strong>4 min</strong></div><div class="phone-row"><span>7 to Station</span><strong>9 min</strong></div><div class="phone-row"><span>12 to Harbour</span><strong>19 min</strong></div><div class="phone-row"><span>31 to Hospital</span><strong>26 min</strong></div></div>
+                  <div class="tab-content" data-tab="search"><h3>Search</h3><div class="phone-search">Stop or route</div><div class="phone-row"><span>Elm Street</span><strong>Stop</strong></div><div class="phone-row"><span>Market Square</span><strong>Stop</strong></div></div>
+                  <div class="tab-content" data-tab="saved"><h3>Saved</h3><div class="phone-row"><span>Home</span><strong>Elm Street</strong></div><div class="phone-row"><span>Work</span><strong>Station</strong></div></div>
+                  <div class="tab-content" data-tab="inbox"><h3>Alerts</h3><div class="phone-row"><span>12 diverted until Friday</span></div><div class="phone-row"><span>Market Square stop closed</span></div><div class="phone-row"><span>Your pass renews on 3 June</span></div></div>
+                  <div class="tab-content" data-tab="me"><h3>Profile</h3><div class="phone-avatar">E</div><div class="phone-row"><span>Name</span><strong>Ewan Howell</strong></div><div class="phone-row"><span>Pass</span><strong>Monthly</strong></div></div>
+                </div>
+                <div class="tab-bar" id="phone-bar">
+                  <button type="button" class="tab-bar-button active" data-tab="home"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</button>
+                  <button type="button" class="tab-bar-button" data-tab="search"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>Search</button>
+                  <button type="button" class="tab-bar-button" data-tab="saved"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>Saved</button>
+                  <button type="button" class="tab-bar-button" data-tab="inbox"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>Alerts</button>
+                  <button type="button" class="tab-bar-button" data-tab="me"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Profile</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" data-tab="neon">
+            <div class="demo-scene scene-neon">
+              <div class="neon">
+                <div class="tab-bar">
+                  <button type="button" class="tab-bar-button active" data-tab="today">Today</button>
+                  <button type="button" class="tab-bar-button" data-tab="week">This week</button>
+                  <button type="button" class="tab-bar-button" data-tab="all">All time</button>
+                </div>
+                <div class="tab-contents">
+                  <div class="tab-content active" data-tab="today"><div class="score"><span>1</span><span>KAT</span><strong>48,200</strong></div><div class="score"><span>2</span><span>DAN</span><strong>41,750</strong></div><div class="score"><span>3</span><span>MEG</span><strong>38,900</strong></div><div class="score"><span>4</span><span>ROB</span><strong>22,100</strong></div></div>
+                  <div class="tab-content" data-tab="week"><div class="score"><span>1</span><span>MEG</span><strong>96,450</strong></div><div class="score"><span>2</span><span>KAT</span><strong>88,300</strong></div><div class="score"><span>3</span><span>LEE</span><strong>74,600</strong></div><div class="score"><span>4</span><span>DAN</span><strong>61,250</strong></div></div>
+                  <div class="tab-content" data-tab="all"><div class="score"><span>1</span><span>LEE</span><strong>312,800</strong></div><div class="score"><span>2</span><span>MEG</span><strong>298,150</strong></div><div class="score"><span>3</span><span>TOM</span><strong>254,900</strong></div><div class="score"><span>4</span><span>KAT</span><strong>247,300</strong></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" data-tab="glass">
+            <div class="demo-scene scene-glass">
+              <div class="glass">
+                <div class="weather-now">
+                  <div><strong>Bristol</strong><span>Light rain</span></div>
+                  <b>14°</b>
+                </div>
+                <div class="tab-bar tab-style-slide">
+                  <button type="button" class="tab-bar-button active" data-tab="hourly">Hourly</button>
+                  <button type="button" class="tab-bar-button" data-tab="daily">Daily</button>
+                  <button type="button" class="tab-bar-button" data-tab="details">Details</button>
+                </div>
+                <div class="tab-contents tab-style-slide">
+                  <div class="tab-content active" data-tab="hourly"><div class="track"><span>15:00</span><span>Rain, 14°</span></div><div class="track"><span>16:00</span><span>Cloudy, 13°</span></div><div class="track"><span>17:00</span><span>Clear, 12°</span></div></div>
+                  <div class="tab-content" data-tab="daily"><div class="track"><span>Tuesday</span><span>Sunny, 17°</span></div><div class="track"><span>Wednesday</span><span>Cloudy, 15°</span></div><div class="track"><span>Thursday</span><span>Rain, 12°</span></div><div class="track"><span>Friday</span><span>Windy, 13°</span></div></div>
+                  <div class="tab-content" data-tab="details"><div class="track"><span>Wind</span><span>12 mph</span></div><div class="track"><span>Sunset</span><span>20:31</span></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" data-tab="glitch">
+            <div class="demo-scene scene-glitch">
+              <div class="glitch">
+                <div class="tab-bar tab-style-slide">
+                  <button type="button" class="tab-bar-button active" data-tab="system">System</button>
+                  <button type="button" class="tab-bar-button" data-tab="network">Network</button>
+                  <button type="button" class="tab-bar-button" data-tab="logs">Logs</button>
+                </div>
+                <div class="tab-contents tab-style-slide">
+                  <div class="tab-content active" data-tab="system"><div class="glitch-line"><span>CPU</span><span>41%</span></div><div class="glitch-line"><span>Memory</span><span>6.2 GB</span></div><div class="glitch-line"><span>Uptime</span><span>12 days</span></div></div>
+                  <div class="tab-content" data-tab="network"><div class="glitch-line"><span>Ping</span><span>18 ms</span></div><div class="glitch-line"><span>Down</span><span>84 Mb/s</span></div><div class="glitch-line"><span>Up</span><span>19 Mb/s</span></div></div>
+                  <div class="tab-content" data-tab="logs"><div class="glitch-line"><span>12:04</span><span>Backup finished</span></div><div class="glitch-line"><span>12:31</span><span>Disk check passed</span></div><div class="glitch-line"><span>13:02</span><span>Update installed</span></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-content" data-tab="sketch">
+            <div class="demo-scene scene-sketch">
+              <div class="sketch">
+                <div class="tab-bar tab-style-slide">
+                  <button type="button" class="tab-bar-button active" data-tab="shops">Shops</button>
+                  <button type="button" class="tab-bar-button" data-tab="jobs">Jobs</button>
+                  <button type="button" class="tab-bar-button" data-tab="ideas">Ideas</button>
+                </div>
+                <div class="tab-contents tab-style-slide">
+                  <div class="tab-content active" data-tab="shops"><p>Milk, eggs, bin bags</p><p>Light bulbs (the small ones)</p></div>
+                  <div class="tab-content" data-tab="jobs"><p>Fix the back gate</p><p>Book the van</p><p>Ring the dentist</p><p>Return the drill to Dave</p></div>
+                  <div class="tab-content" data-tab="ideas"><p>Paint the shed green?</p></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
         <h2>Basic Usage</h2>
-        <p>A <code>.tab-bar</code> of <code>.tab-bar-button</code>s, with a matching <code>.tab-contents</code> next to it. Buttons and panels pair up by <code>data-tab</code>; mark the starting pair with <code>active</code>:</p>
+        <p>A <code>.tab-bar</code> of <code>.tab-bar-button</code>s, followed by a <code>.tab-contents</code>. Buttons and panels pair up by <code>data-tab</code>, and <code>active</code> marks the starting tab:</p>
 
         <div class="demo">
           <div class="tab-bar">
             <button type="button" class="tab-bar-button active" data-tab="overview">Overview</button>
-            <button type="button" class="tab-bar-button" data-tab="details">Details</button>
+            <button type="button" class="tab-bar-button" data-tab="specs">Specs</button>
             <button type="button" class="tab-bar-button" data-tab="reviews">Reviews</button>
           </div>
           <div class="tab-contents">
-            <div class="tab-content active" data-tab="overview">The overview panel. Click a tab and the indicator slides across while the panel cross-fades and the container resizes to fit.</div>
-            <div class="tab-content" data-tab="details">The details panel — a little taller, so you can see the height animate.<br><br>Line two.<br>Line three.</div>
-            <div class="tab-content" data-tab="reviews">The reviews panel.</div>
+            <div class="tab-content active" data-tab="overview">
+              <h3>Trail Backpack</h3>
+              <p class="flush">A light 28 litre pack for day hikes, with a padded back panel and room for a full water bottle on each side.</p>
+            </div>
+            <div class="tab-content" data-tab="specs">
+              <div class="row"><span>Volume</span><strong>28 litres</strong></div>
+              <div class="row"><span>Weight</span><strong>780 g</strong></div>
+              <div class="row"><span>Material</span><strong>Recycled nylon</strong></div>
+              <div class="row"><span>Warranty</span><strong>5 years</strong></div>
+            </div>
+            <div class="tab-content" data-tab="reviews">
+              <p class="flush">"Comfortable all day, even when fully packed." <strong>Sam, 5 stars</strong></p>
+            </div>
           </div>
         </div>
 
         <pre>&lt;div class="tab-bar"&gt;
   &lt;button class="tab-bar-button active" data-tab="overview"&gt;Overview&lt;/button&gt;
-  &lt;button class="tab-bar-button" data-tab="details"&gt;Details&lt;/button&gt;
+  &lt;button class="tab-bar-button" data-tab="specs"&gt;Specs&lt;/button&gt;
   &lt;button class="tab-bar-button" data-tab="reviews"&gt;Reviews&lt;/button&gt;
 &lt;/div&gt;
 &lt;div class="tab-contents"&gt;
   &lt;div class="tab-content active" data-tab="overview"&gt;…&lt;/div&gt;
-  &lt;div class="tab-content" data-tab="details"&gt;…&lt;/div&gt;
+  &lt;div class="tab-content" data-tab="specs"&gt;…&lt;/div&gt;
   &lt;div class="tab-content" data-tab="reviews"&gt;…&lt;/div&gt;
 &lt;/div&gt;</pre>
       </div>
 
       <div class="section">
         <h2>Styles</h2>
-        <p>Add a <code>tab-style-*</code> class to the bar and its panels. Without one you get the underline style. Classic <code>tabs</code> connect into a filled panel; <code>slide</code> is a pill-shaped segmented control where the spring/tease is most visible.</p>
+        <p>Three styles are built in. Add a <code>tab-style-*</code> class to the bar and its panels, or leave it off for the underline:</p>
 
         <div class="demo">
-          <div class="tab-bar tab-style-tabs">
-            <button type="button" class="tab-bar-button active" data-tab="profile">Profile</button>
-            <button type="button" class="tab-bar-button" data-tab="settings">Settings</button>
-            <button type="button" class="tab-bar-button" data-tab="billing">Billing</button>
+          <h3>Underline</h3>
+          <div class="tab-bar">
+            <button type="button" class="tab-bar-button active" data-tab="latest">Latest</button>
+            <button type="button" class="tab-bar-button" data-tab="popular">Popular</button>
+            <button type="button" class="tab-bar-button" data-tab="saved">Saved</button>
           </div>
-          <div class="tab-contents tab-style-tabs">
-            <div class="tab-content active" data-tab="profile">Profile panel — the active tab joins onto this bordered panel.</div>
-            <div class="tab-content" data-tab="settings">Settings panel.</div>
-            <div class="tab-content" data-tab="billing">Billing panel.</div>
+          <div class="tab-contents">
+            <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
+            <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
+            <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
           </div>
         </div>
 
         <div class="demo">
+          <h3>Classic tabs</h3>
+          <div class="tab-bar tab-style-tabs">
+            <button type="button" class="tab-bar-button active" data-tab="latest">Latest</button>
+            <button type="button" class="tab-bar-button" data-tab="popular">Popular</button>
+            <button type="button" class="tab-bar-button" data-tab="saved">Saved</button>
+          </div>
+          <div class="tab-contents tab-style-tabs">
+            <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
+            <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
+            <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
+          </div>
+        </div>
+
+        <div class="demo">
+          <h3>Slide</h3>
           <div class="tab-bar tab-style-slide">
-            <button type="button" class="tab-bar-button active" data-tab="day">Day</button>
-            <button type="button" class="tab-bar-button" data-tab="week">Week</button>
-            <button type="button" class="tab-bar-button" data-tab="month">Month</button>
-            <button type="button" class="tab-bar-button" data-tab="year">Year</button>
+            <button type="button" class="tab-bar-button active" data-tab="latest">Latest</button>
+            <button type="button" class="tab-bar-button" data-tab="popular">Popular</button>
+            <button type="button" class="tab-bar-button" data-tab="saved">Saved</button>
           </div>
           <div class="tab-contents tab-style-slide">
-            <div class="tab-content active" data-tab="day">Day view. Hover an adjacent tab to feel the spring tease.</div>
-            <div class="tab-content" data-tab="week">Week view.</div>
-            <div class="tab-content" data-tab="month">Month view.</div>
-            <div class="tab-content" data-tab="year">Year view.</div>
+            <div class="tab-content active" data-tab="latest"><p class="flush">The newest articles, most recent first.</p></div>
+            <div class="tab-content" data-tab="popular"><p class="flush">The most read articles this week.</p></div>
+            <div class="tab-content" data-tab="saved"><p class="flush">Articles you have saved for later.</p></div>
           </div>
         </div>
 
@@ -372,96 +1760,269 @@
       </div>
 
       <div class="section">
-        <h2>Detached panels</h2>
-        <p>The bar and its panels don't have to be siblings. Give the bar an <code>id</code> and point the contents at it with <code>data-tab-bar</code>:</p>
+        <h2>Panel Transitions</h2>
+        <p>Panels slide and fade by default. Set <code>--tab-panel-distance</code> on the <code>.tab-contents</code> to change how far they slide, or <code>0</code> to just fade. Each panel also gets <code>--tab-panel-x</code>, which is <code>-1</code> before the active tab, <code>0</code> when active, and <code>1</code> after it, so anything inside it can move on its own:</p>
 
         <div class="demo">
-          <div class="tab-bar tab-style-slide" id="detached-bar">
-            <button type="button" class="tab-bar-button active" data-tab="alpha">Alpha</button>
-            <button type="button" class="tab-bar-button" data-tab="beta">Beta</button>
-            <button type="button" class="tab-bar-button" data-tab="gamma">Gamma</button>
+          <h3>Slide and fade</h3>
+          <div class="tab-bar">
+            <button type="button" class="tab-bar-button active" data-tab="dawn">Dawn</button>
+            <button type="button" class="tab-bar-button" data-tab="noon">Noon</button>
+            <button type="button" class="tab-bar-button" data-tab="dusk">Dusk</button>
           </div>
-
-          <p style="margin: 16px 0; color: #999;">— anything can sit between the bar and its panels —</p>
-
-          <div class="tab-contents" data-tab-bar="detached-bar">
-            <div class="tab-content active" data-tab="alpha">Alpha panel, linked by id.</div>
-            <div class="tab-content" data-tab="beta">Beta panel.</div>
-            <div class="tab-content" data-tab="gamma">Gamma panel.</div>
+          <div class="tab-contents sky-panels">
+            <div class="tab-content active sky sky-dawn" data-tab="dawn"><div class="sky-copy"><h3>Dawn</h3><p class="flush">Sunrise at 06:12</p></div></div>
+            <div class="tab-content sky sky-noon" data-tab="noon"><div class="sky-copy"><h3>Noon</h3><p class="flush">Sun at its highest at 13:04</p></div></div>
+            <div class="tab-content sky sky-dusk" data-tab="dusk"><div class="sky-copy"><h3>Dusk</h3><p class="flush">Sunset at 20:31</p></div></div>
           </div>
         </div>
 
-        <pre>&lt;div class="tab-bar" id="account"&gt;…&lt;/div&gt;
-&lt;p&gt;…anything in between…&lt;/p&gt;
-&lt;div class="tab-contents" data-tab-bar="account"&gt;…&lt;/div&gt;</pre>
+        <div class="demo">
+          <h3>Fade only</h3>
+          <div class="tab-bar">
+            <button type="button" class="tab-bar-button active" data-tab="dawn">Dawn</button>
+            <button type="button" class="tab-bar-button" data-tab="noon">Noon</button>
+            <button type="button" class="tab-bar-button" data-tab="dusk">Dusk</button>
+          </div>
+          <div class="tab-contents sky-panels" style="--tab-panel-distance: 0;">
+            <div class="tab-content active sky sky-dawn" data-tab="dawn"><div class="sky-copy"><h3>Dawn</h3><p class="flush">Sunrise at 06:12</p></div></div>
+            <div class="tab-content sky sky-noon" data-tab="noon"><div class="sky-copy"><h3>Noon</h3><p class="flush">Sun at its highest at 13:04</p></div></div>
+            <div class="tab-content sky sky-dusk" data-tab="dusk"><div class="sky-copy"><h3>Dusk</h3><p class="flush">Sunset at 20:31</p></div></div>
+          </div>
+        </div>
+
+        <div class="demo">
+          <h3>Background fades, content slides</h3>
+          <div class="tab-bar">
+            <button type="button" class="tab-bar-button active" data-tab="dawn">Dawn</button>
+            <button type="button" class="tab-bar-button" data-tab="noon">Noon</button>
+            <button type="button" class="tab-bar-button" data-tab="dusk">Dusk</button>
+          </div>
+          <div class="tab-contents sky-panels sky-fade">
+            <div class="tab-content active sky sky-dawn" data-tab="dawn"><div class="sky-copy"><h3>Dawn</h3><p class="flush">Sunrise at 06:12</p></div></div>
+            <div class="tab-content sky sky-noon" data-tab="noon"><div class="sky-copy"><h3>Noon</h3><p class="flush">Sun at its highest at 13:04</p></div></div>
+            <div class="tab-content sky sky-dusk" data-tab="dusk"><div class="sky-copy"><h3>Dusk</h3><p class="flush">Sunset at 20:31</p></div></div>
+          </div>
+        </div>
+
+        <p class="after-demo">Panels with their own backgrounds let the page show through as they cross-fade. Set <code>--tab-panel-blend: plus-lighter</code> on the <code>.tab-contents</code> to stop that, as all three cards do. The <code>.tab-contents</code> can't have a background of its own:</p>
+
+        <pre>.panels-with-backgrounds {
+  --tab-panel-blend: plus-lighter;
+}
+
+.fade-only {
+  --tab-panel-distance: 0;
+}
+
+.background-fades > .tab-content {
+  transform: none;
+}
+
+.background-fades .content {
+  transform: translateX(calc(var(--tab-panel-x) * 64px));
+  transition: transform var(--tab-transition-duration) var(--tab-transition-easing);
+}</pre>
       </div>
 
       <div class="section">
-        <h2>Scrolling &amp; wrapping</h2>
-        <p>When there are more tabs than fit, the bar scrolls horizontally by default — drag it, wheel over it, or swipe the content. A soft fade marks whichever edge has hidden tabs, and selecting a tab scrolls it into view.</p>
+        <h2>Detached Panels</h2>
+        <p>The bar and its panels don't have to be next to each other. Give the bar an <code>id</code> and point the panels at it with <code>data-tab-bar</code>. Here the date range sits between them, since it applies to every tab:</p>
 
-        <div class="demo scroll">
+        <div class="demo">
+          <div class="tab-bar" id="report-bar">
+            <button type="button" class="tab-bar-button active" data-tab="traffic">Traffic</button>
+            <button type="button" class="tab-bar-button" data-tab="sales">Sales</button>
+            <button type="button" class="tab-bar-button" data-tab="support">Support</button>
+          </div>
+
+          <div class="report-range"><strong>1 to 30 June</strong><span>Updated 5 minutes ago</span></div>
+
+          <div class="tab-contents" data-tab-bar="report-bar">
+            <div class="tab-content active" data-tab="traffic">
+              <div class="metrics">
+                <div class="metric"><strong>12.4k</strong><span>Visitors</span></div>
+                <div class="metric"><strong>38.1k</strong><span>Page views</span></div>
+                <div class="metric"><strong>41%</strong><span>Bounce rate</span></div>
+              </div>
+              <div class="metric-bars">
+                <span style="height: 45%;"></span>
+                <span style="height: 60%;"></span>
+                <span style="height: 52%;"></span>
+                <span style="height: 75%;"></span>
+                <span style="height: 68%;"></span>
+                <span style="height: 90%;"></span>
+                <span style="height: 100%;"></span>
+                <span style="height: 82%;"></span>
+              </div>
+            </div>
+            <div class="tab-content" data-tab="sales">
+              <div class="metrics">
+                <div class="metric"><strong>318</strong><span>Orders</span></div>
+                <div class="metric"><strong>$9,240</strong><span>Revenue</span></div>
+              </div>
+            </div>
+            <div class="tab-content" data-tab="support">
+              <div class="metrics">
+                <div class="metric"><strong>14</strong><span>Open tickets</span></div>
+                <div class="metric"><strong>2h</strong><span>First reply</span></div>
+                <div class="metric"><strong>96%</strong><span>Satisfaction</span></div>
+                <div class="metric"><strong>6</strong><span>Refunds</span></div>
+              </div>
+              <p class="metric-note">Most tickets this month were about delivery times.</p>
+            </div>
+          </div>
+        </div>
+
+        <pre>&lt;div class="tab-bar" id="reports"&gt;…&lt;/div&gt;
+&lt;div class="date-range"&gt;…&lt;/div&gt;
+&lt;div class="tab-contents" data-tab-bar="reports"&gt;…&lt;/div&gt;</pre>
+      </div>
+
+      <div class="section">
+        <h2>Nested Tabs</h2>
+        <p>Tabs can go inside another tab's panel. Each bar keeps its own selection and style:</p>
+
+        <div class="demo">
+          <div class="tab-bar tab-style-tabs">
+            <button type="button" class="tab-bar-button active" data-tab="notifications">Notifications</button>
+            <button type="button" class="tab-bar-button" data-tab="account">Account</button>
+          </div>
+          <div class="tab-contents tab-style-tabs">
+            <div class="tab-content active" data-tab="notifications">
+              <div class="tab-bar tab-style-slide">
+                <button type="button" class="tab-bar-button active" data-tab="email">Email</button>
+                <button type="button" class="tab-bar-button" data-tab="push">Push</button>
+                <button type="button" class="tab-bar-button" data-tab="sms">SMS</button>
+              </div>
+              <div class="tab-contents tab-style-slide">
+                <div class="tab-content active" data-tab="email">
+                  <label class="row"><span>Weekly summary</span><input type="checkbox" checked></label>
+                  <label class="row"><span>Product news</span><input type="checkbox"></label>
+                </div>
+                <div class="tab-content" data-tab="push">
+                  <label class="row"><span>Mentions</span><input type="checkbox" checked></label>
+                  <label class="row"><span>Direct messages</span><input type="checkbox" checked></label>
+                  <label class="row"><span>Reminders</span><input type="checkbox"></label>
+                </div>
+                <div class="tab-content" data-tab="sms">
+                  <label class="row"><span>Sign-in codes</span><input type="checkbox" checked></label>
+                </div>
+              </div>
+            </div>
+            <div class="tab-content" data-tab="account">
+              <div class="row"><span>Email</span><strong>ewan@example.com</strong></div>
+              <div class="row"><span>Plan</span><strong>Pro</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>Scrolling &amp; Wrapping</h2>
+        <p>When there are more tabs than fit, the bar scrolls. Drag it, use the wheel, or select a tab to bring it into view. A soft fade marks whichever edge has more tabs:</p>
+
+        <div class="demo">
           <div class="tab-bar">
-            <button type="button" class="tab-bar-button active" data-tab="s1">Overview</button>
-            <button type="button" class="tab-bar-button" data-tab="s2">Specs</button>
-            <button type="button" class="tab-bar-button" data-tab="s3">Compatibility</button>
-            <button type="button" class="tab-bar-button" data-tab="s4">Pricing</button>
-            <button type="button" class="tab-bar-button" data-tab="s5">FAQ</button>
-            <button type="button" class="tab-bar-button" data-tab="s6">Support</button>
+            <button type="button" class="tab-bar-button active" data-tab="overview">Overview</button>
+            <button type="button" class="tab-bar-button" data-tab="specs">Specs</button>
+            <button type="button" class="tab-bar-button" data-tab="compatibility">Compatibility</button>
+            <button type="button" class="tab-bar-button" data-tab="pricing">Pricing</button>
+            <button type="button" class="tab-bar-button" data-tab="faq">FAQ</button>
+            <button type="button" class="tab-bar-button" data-tab="support">Support</button>
+            <button type="button" class="tab-bar-button" data-tab="reviews">Reviews</button>
+            <button type="button" class="tab-bar-button" data-tab="downloads">Downloads</button>
+            <button type="button" class="tab-bar-button" data-tab="changelog">Changelog</button>
+            <button type="button" class="tab-bar-button" data-tab="documentation">Documentation</button>
+            <button type="button" class="tab-bar-button" data-tab="community">Community</button>
+            <button type="button" class="tab-bar-button" data-tab="roadmap">Roadmap</button>
+            <button type="button" class="tab-bar-button" data-tab="integrations">Integrations</button>
+            <button type="button" class="tab-bar-button" data-tab="security">Security</button>
+            <button type="button" class="tab-bar-button" data-tab="accessibility">Accessibility</button>
+            <button type="button" class="tab-bar-button" data-tab="contact">Contact</button>
           </div>
           <div class="tab-contents">
-            <div class="tab-content active" data-tab="s1">Overview panel.</div>
-            <div class="tab-content" data-tab="s2">Specs panel.</div>
-            <div class="tab-content" data-tab="s3">Compatibility panel.</div>
-            <div class="tab-content" data-tab="s4">Pricing panel.</div>
-            <div class="tab-content" data-tab="s5">FAQ panel.</div>
-            <div class="tab-content" data-tab="s6">Support panel.</div>
+            <div class="tab-content active" data-tab="overview">What the product does and who it is for.</div>
+            <div class="tab-content" data-tab="specs">Sizes, weights, and materials.</div>
+            <div class="tab-content" data-tab="compatibility">Which devices and versions are supported.</div>
+            <div class="tab-content" data-tab="pricing">Plans and what each one includes.</div>
+            <div class="tab-content" data-tab="faq">Answers to the most common questions.</div>
+            <div class="tab-content" data-tab="support">How to get help from the team.</div>
+            <div class="tab-content" data-tab="reviews">What customers are saying.</div>
+            <div class="tab-content" data-tab="downloads">Installers and past versions.</div>
+            <div class="tab-content" data-tab="changelog">Everything new in each release.</div>
+            <div class="tab-content" data-tab="documentation">Guides and the full reference.</div>
+            <div class="tab-content" data-tab="community">Forums, events, and meetups.</div>
+            <div class="tab-content" data-tab="roadmap">What is coming next.</div>
+            <div class="tab-content" data-tab="integrations">Connect it to the tools you already use.</div>
+            <div class="tab-content" data-tab="security">How your data is kept safe.</div>
+            <div class="tab-content" data-tab="accessibility">Keyboard and screen reader support.</div>
+            <div class="tab-content" data-tab="contact">Get in touch with the sales team.</div>
           </div>
         </div>
 
-        <p style="margin-top: 20px;">Prefer they wrap onto multiple rows instead? Add <code>data-tab-wrap</code>. The indicator follows the active tab across rows.</p>
+        <p class="after-demo">Add <code>data-tab-wrap</code> to wrap onto new rows instead. The indicator follows the active tab between rows:</p>
 
-        <div class="demo scroll">
-          <div class="tab-bar tab-style-slide" data-tab-wrap>
-            <button type="button" class="tab-bar-button active" data-tab="w1">Overview</button>
-            <button type="button" class="tab-bar-button" data-tab="w2">Specs</button>
-            <button type="button" class="tab-bar-button" data-tab="w3">Compatibility</button>
-            <button type="button" class="tab-bar-button" data-tab="w4">Pricing</button>
-            <button type="button" class="tab-bar-button" data-tab="w5">FAQ</button>
-            <button type="button" class="tab-bar-button" data-tab="w6">Support</button>
+        <div class="demo">
+          <div class="tab-bar" data-tab-wrap>
+            <button type="button" class="tab-bar-button active" data-tab="overview">Overview</button>
+            <button type="button" class="tab-bar-button" data-tab="specs">Specs</button>
+            <button type="button" class="tab-bar-button" data-tab="compatibility">Compatibility</button>
+            <button type="button" class="tab-bar-button" data-tab="pricing">Pricing</button>
+            <button type="button" class="tab-bar-button" data-tab="faq">FAQ</button>
+            <button type="button" class="tab-bar-button" data-tab="support">Support</button>
+            <button type="button" class="tab-bar-button" data-tab="reviews">Reviews</button>
+            <button type="button" class="tab-bar-button" data-tab="downloads">Downloads</button>
+            <button type="button" class="tab-bar-button" data-tab="changelog">Changelog</button>
+            <button type="button" class="tab-bar-button" data-tab="documentation">Documentation</button>
+            <button type="button" class="tab-bar-button" data-tab="community">Community</button>
+            <button type="button" class="tab-bar-button" data-tab="roadmap">Roadmap</button>
+            <button type="button" class="tab-bar-button" data-tab="integrations">Integrations</button>
+            <button type="button" class="tab-bar-button" data-tab="security">Security</button>
+            <button type="button" class="tab-bar-button" data-tab="accessibility">Accessibility</button>
+            <button type="button" class="tab-bar-button" data-tab="contact">Contact</button>
           </div>
-          <div class="tab-contents tab-style-slide">
-            <div class="tab-content active" data-tab="w1">Overview panel.</div>
-            <div class="tab-content" data-tab="w2">Specs panel.</div>
-            <div class="tab-content" data-tab="w3">Compatibility panel.</div>
-            <div class="tab-content" data-tab="w4">Pricing panel.</div>
-            <div class="tab-content" data-tab="w5">FAQ panel.</div>
-            <div class="tab-content" data-tab="w6">Support panel.</div>
+          <div class="tab-contents">
+            <div class="tab-content active" data-tab="overview">What the product does and who it is for.</div>
+            <div class="tab-content" data-tab="specs">Sizes, weights, and materials.</div>
+            <div class="tab-content" data-tab="compatibility">Which devices and versions are supported.</div>
+            <div class="tab-content" data-tab="pricing">Plans and what each one includes.</div>
+            <div class="tab-content" data-tab="faq">Answers to the most common questions.</div>
+            <div class="tab-content" data-tab="support">How to get help from the team.</div>
+            <div class="tab-content" data-tab="reviews">What customers are saying.</div>
+            <div class="tab-content" data-tab="downloads">Installers and past versions.</div>
+            <div class="tab-content" data-tab="changelog">Everything new in each release.</div>
+            <div class="tab-content" data-tab="documentation">Guides and the full reference.</div>
+            <div class="tab-content" data-tab="community">Forums, events, and meetups.</div>
+            <div class="tab-content" data-tab="roadmap">What is coming next.</div>
+            <div class="tab-content" data-tab="integrations">Connect it to the tools you already use.</div>
+            <div class="tab-content" data-tab="security">How your data is kept safe.</div>
+            <div class="tab-content" data-tab="accessibility">Keyboard and screen reader support.</div>
+            <div class="tab-content" data-tab="contact">Get in touch with the sales team.</div>
           </div>
         </div>
 
-        <pre>&lt;!-- scrolls (default) --&gt;
-&lt;div class="tab-bar"&gt;…&lt;/div&gt;
-
-&lt;!-- wraps to multiple rows --&gt;
+        <pre>&lt;div class="tab-bar"&gt;…&lt;/div&gt;
 &lt;div class="tab-bar" data-tab-wrap&gt;…&lt;/div&gt;</pre>
       </div>
 
       <div class="section">
-        <h2>Disable swipe</h2>
-        <p>On touch, swiping the content steps between tabs. Add <code>data-tab-no-swipe</code> to turn that off — handy when a panel holds its own swipeable carousel. The buttons still work.</p>
+        <h2>Swiping</h2>
+        <p>On a touch screen, swipe left or right across the panels to move between tabs. Swiping doesn't do anything with a mouse on desktop, so try this one on your phone. Add <code>data-tab-no-swipe</code> to turn it off, for example when a panel has its own carousel:</p>
 
         <div class="demo">
-          <div class="tab-bar tab-style-tabs" data-tab-no-swipe>
-            <button type="button" class="tab-bar-button active" data-tab="ns1">First</button>
-            <button type="button" class="tab-bar-button" data-tab="ns2">Second</button>
-            <button type="button" class="tab-bar-button" data-tab="ns3">Third</button>
+          <div class="tab-bar tab-style-slide" id="swipe-bar">
+            <button type="button" class="tab-bar-button active" data-tab="photos">Photos</button>
+            <button type="button" class="tab-bar-button" data-tab="videos">Videos</button>
+            <button type="button" class="tab-bar-button" data-tab="files">Files</button>
           </div>
-          <div class="tab-contents tab-style-tabs">
-            <div class="tab-content active" data-tab="ns1">Swipe this on a touch device and nothing happens — use the buttons.</div>
-            <div class="tab-content" data-tab="ns2">Second panel.</div>
-            <div class="tab-content" data-tab="ns3">Third panel.</div>
+          <div class="tab-contents tab-style-slide" style="--tab-panel-blend: plus-lighter;">
+            <div class="tab-content active" data-tab="photos"><div class="swipe-card" style="background: #0369a1;">128 photos</div></div>
+            <div class="tab-content" data-tab="videos"><div class="swipe-card" style="background: #15803d;">14 videos</div></div>
+            <div class="tab-content" data-tab="files"><div class="swipe-card" style="background: #9a3412;">36 files</div></div>
           </div>
+
+          <label class="swipe-toggle"><input type="checkbox" id="swipe-toggle"> Disable swipe with <code>data-tab-no-swipe</code></label>
         </div>
 
         <pre>&lt;div class="tab-bar" data-tab-no-swipe&gt;…&lt;/div&gt;</pre>
@@ -469,88 +2030,127 @@
 
       <div class="section">
         <h2>Events</h2>
-        <p>The bar dispatches a <code>tab-changed</code> event whenever the active tab changes. <code>event.detail</code> is the new tab's <code>data-tab</code>:</p>
+        <p>The bar fires a <code>tab-changed</code> event when the active tab changes, with the new tab's <code>data-tab</code> in <code>event.detail</code>. Panels are optional, so a bar on its own works as a filter. Here there are no panels, the event just hides the messages that don't match:</p>
 
         <div class="demo">
-          <div class="tab-bar" id="event-bar">
-            <button type="button" class="tab-bar-button active" data-tab="red">Red</button>
-            <button type="button" class="tab-bar-button" data-tab="green">Green</button>
-            <button type="button" class="tab-bar-button" data-tab="blue">Blue</button>
+          <div class="tab-bar tab-style-slide" id="filter-bar">
+            <button type="button" class="tab-bar-button active" data-tab="all">All</button>
+            <button type="button" class="tab-bar-button" data-tab="unread">Unread</button>
+            <button type="button" class="tab-bar-button" data-tab="starred">Starred</button>
           </div>
-          <div class="tab-contents">
-            <div class="tab-content active" data-tab="red">Red panel.</div>
-            <div class="tab-content" data-tab="green">Green panel.</div>
-            <div class="tab-content" data-tab="blue">Blue panel.</div>
+          <div class="message-list" id="message-list">
+            <div class="message" data-filter="all unread"><div><div class="row"><span><strong>Nina</strong> Design review notes</span><span>09:41</span></div></div></div>
+            <div class="message" data-filter="all starred"><div><div class="row"><span><strong>Tom</strong> Lunch on Friday?</span><span>Yesterday</span></div></div></div>
+            <div class="message" data-filter="all unread starred"><div><div class="row"><span><strong>Sam</strong> Flights are booked</span><span>Tuesday</span></div></div></div>
+            <div class="message" data-filter="all"><div><div class="row"><span><strong>Newsletter</strong> This week's top stories</span><span>Tuesday</span></div></div></div>
+            <div class="message" data-filter="all starred"><div><div class="row"><span><strong>Billing</strong> Your invoice is ready</span><span>Monday</span></div></div></div>
           </div>
-          <p class="status" id="event-status" style="margin: 16px 0 0;">tab-changed: (waiting)</p>
         </div>
 
         <pre>bar.addEventListener("tab-changed", e =&gt; {
-  console.log("switched to", e.detail)
+  for (const message of messages) {
+    message.inert = !message.dataset.filter.includes(e.detail)
+  }
 })</pre>
       </div>
 
       <div class="section">
-        <h2>Programmatic &amp; dynamic</h2>
-        <p>Switch tabs by calling <code>.click()</code> on a button — the library listens for normal clicks. Bars added after load are picked up with <code>FluidTabs.init()</code> (idempotent; pass a root element to scan just a subtree):</p>
+        <h2>Programmatic Control</h2>
+        <p>Switch tabs from your own code by calling <code>.click()</code> on a button. These Back and Next buttons drive the bar:</p>
 
         <div class="demo">
-          <div class="tab-bar" id="api-bar">
-            <button type="button" class="tab-bar-button active" data-tab="left">Left</button>
-            <button type="button" class="tab-bar-button" data-tab="middle">Middle</button>
-            <button type="button" class="tab-bar-button" data-tab="right">Right</button>
+          <div class="tab-bar tab-style-slide" id="wizard-bar">
+            <button type="button" class="tab-bar-button active" data-tab="cart">Cart</button>
+            <button type="button" class="tab-bar-button" data-tab="delivery">Delivery</button>
+            <button type="button" class="tab-bar-button" data-tab="payment">Payment</button>
           </div>
-          <div class="tab-contents">
-            <div class="tab-content active" data-tab="left">Left panel.</div>
-            <div class="tab-content" data-tab="middle">Middle panel.</div>
-            <div class="tab-content" data-tab="right">Right panel.</div>
+          <div class="tab-contents tab-style-slide">
+            <div class="tab-content active" data-tab="cart">
+              <div class="row"><span>Trail Backpack</span><strong>$89</strong></div>
+              <div class="row"><span>Water bottle</span><strong>$18</strong></div>
+            </div>
+            <div class="tab-content" data-tab="delivery">
+              <div class="row"><span>Standard, 3 to 5 days</span><strong>Free</strong></div>
+            </div>
+            <div class="tab-content" data-tab="payment">
+              <div class="row"><span>Total to pay</span><strong>$107</strong></div>
+            </div>
           </div>
 
           <div class="controls">
-            <button type="button" data-target="left">Left</button>
-            <button type="button" data-target="middle">Middle</button>
-            <button type="button" data-target="right">Right</button>
+            <button type="button" id="wizard-back">Back</button>
+            <button type="button" id="wizard-next">Next</button>
           </div>
         </div>
 
-        <div class="demo">
-          <div class="controls" style="margin-top: 0;">
-            <button type="button" id="add-bar">Add a tab bar</button>
-          </div>
-          <div id="dynamic-host" style="display: flex; flex-direction: column; gap: 16px; margin-top: 16px;"></div>
-        </div>
-
-        <pre>// jump to a tab
-bar.querySelector('[data-tab="reviews"]').click()
-
-// initialise bars added after load
-FluidTabs.init()          // whole document
-FluidTabs.init(sectionEl) // within an element</pre>
+        <pre>bar.querySelector('[data-tab="payment"]').click()</pre>
       </div>
 
       <div class="section">
-        <h2>Theming</h2>
-        <p>Tweak the feel with a handful of CSS variables, globally or per-bar: <code>--tab-transition-duration</code>, <code>--tab-transition-easing</code>, <code>--tab-slide-lag</code> (the elastic stretch), <code>--tab-tease-x</code> (hover tease), and <code>--tab-fade</code> (scroll edge fade). This bar is slowed down with an exaggerated spring:</p>
+        <h2>Adding &amp; Removing Bars</h2>
+        <p>Use <code>FluidTabs.init()</code> to set up bars added after the page loads, and <code>bar.destroy()</code> to clean one up before removing it:</p>
 
         <div class="demo">
-          <div class="tab-bar tab-style-slide" style="--tab-transition-duration: .55s; --tab-tease-x: 24px; --tab-slide-lag: .6;">
-            <button type="button" class="tab-bar-button active" data-tab="t1">Alpha</button>
-            <button type="button" class="tab-bar-button" data-tab="t2">Bravo</button>
-            <button type="button" class="tab-bar-button" data-tab="t3">Charlie</button>
-            <button type="button" class="tab-bar-button" data-tab="t4">Delta</button>
+          <div class="controls flush-top">
+            <button type="button" id="add-bar">Add a tab bar</button>
           </div>
-          <div class="tab-contents tab-style-slide">
-            <div class="tab-content active" data-tab="t1">Alpha panel.</div>
-            <div class="tab-content" data-tab="t2">Bravo panel.</div>
-            <div class="tab-content" data-tab="t3">Charlie panel.</div>
-            <div class="tab-content" data-tab="t4">Delta panel.</div>
+          <div id="dynamic-host"></div>
+        </div>
+
+        <pre>FluidTabs.init()          // whole document
+FluidTabs.init(sectionEl) // within an element
+
+bar.destroy()</pre>
+      </div>
+
+      <div class="section">
+        <h2>Customization Variables</h2>
+        <p>Fine-tune the feel with CSS variables, globally or per bar. Colours, radii, and spacing are plain CSS, as the scenes in Demos show:</p>
+
+        <div class="demo-grid">
+          <div class="demo">
+            <h3>Slow and springy</h3>
+            <div class="tab-bar tab-style-slide" style="--tab-transition-duration: .55s; --tab-tease-x: 24px; --tab-slide-lag: .6;">
+              <button type="button" class="tab-bar-button active" data-tab="one">One</button>
+              <button type="button" class="tab-bar-button" data-tab="two">Two</button>
+              <button type="button" class="tab-bar-button" data-tab="three">Three</button>
+            </div>
+          </div>
+
+          <div class="demo">
+            <h3>No elastic stretch</h3>
+            <div class="tab-bar tab-style-slide" style="--tab-slide-lag: 0;">
+              <button type="button" class="tab-bar-button active" data-tab="one">One</button>
+              <button type="button" class="tab-bar-button" data-tab="two">Two</button>
+              <button type="button" class="tab-bar-button" data-tab="three">Three</button>
+            </div>
+          </div>
+
+          <div class="demo">
+            <h3>No hover tease</h3>
+            <div class="tab-bar tab-style-slide" style="--tab-tease-x: 0px;">
+              <button type="button" class="tab-bar-button active" data-tab="one">One</button>
+              <button type="button" class="tab-bar-button" data-tab="two">Two</button>
+              <button type="button" class="tab-bar-button" data-tab="three">Three</button>
+            </div>
+          </div>
+
+          <div class="demo">
+            <h3>Bouncy easing</h3>
+            <div class="tab-bar tab-style-slide" style="--tab-transition-duration: .4s; --tab-transition-easing: cubic-bezier(.3, 1.25, .5, 1);">
+              <button type="button" class="tab-bar-button active" data-tab="one">One</button>
+              <button type="button" class="tab-bar-button" data-tab="two">Two</button>
+              <button type="button" class="tab-bar-button" data-tab="three">Three</button>
+            </div>
           </div>
         </div>
 
         <pre>.tab-bar {
-  --tab-transition-duration: .55s;
-  --tab-tease-x: 24px;
-  --tab-slide-lag: .6;
+  --tab-transition-duration: .25s;                     /* Duration of every transition */
+  --tab-transition-easing: cubic-bezier(.4, 0, .2, 1); /* Easing of every transition */
+  --tab-slide-lag: .333;                               /* Elastic stretch, as a fraction of the duration */
+  --tab-tease-x: 10px;                                 /* How far the indicator stretches on hover */
+  --tab-fade: 60px;                                    /* Width of the scroll edge fade */
 }</pre>
       </div>
     </div>
@@ -561,42 +2161,457 @@ FluidTabs.init(sectionEl) // within an element</pre>
     <p style="margin-top: 10px;">MPL-2.0 © <a href="https://ewanhowell.com/" target="_blank">Ewan Howell</a></p>
   </footer>
 
+  <div id="code-modal" hidden tabindex="-1">
+    <div class="code-modal-element">
+      <div class="code-modal-header">
+        <div class="code-modal-title" id="code-modal-title">Code</div>
+        <button class="code-modal-close" type="button" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.46,12L19,17.54V19H17.54L12,13.46L6.46,19H5V17.54L10.54,12L5,6.46V5H6.46L12,10.54L17.54,5H19V6.46L13.46,12Z"/></svg>
+        </button>
+      </div>
+      <div class="code-modal-contents">
+        <p class="code-modal-description" id="code-modal-description" hidden></p>
+        <div class="code-modal-section" id="code-modal-section-html" hidden>
+          <h4>HTML</h4>
+          <pre id="code-modal-html"></pre>
+        </div>
+        <div class="code-modal-section" id="code-modal-section-style" hidden>
+          <h4>CSS</h4>
+          <pre id="code-modal-style"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/fluid-tabs/dist/fluid-tabs.min.js"></script>
   <script>
-    // tab-changed event
-    const eventBar = document.getElementById("event-bar")
-    const eventStatus = document.getElementById("event-status")
-    eventBar.addEventListener("tab-changed", e => {
-      eventStatus.textContent = `tab-changed: ${e.detail}`
+    const swipeBar = document.getElementById("swipe-bar")
+    document.getElementById("swipe-toggle").addEventListener("change", e => {
+      swipeBar.destroy()
+      swipeBar.toggleAttribute("data-tab-no-swipe", e.target.checked)
+      FluidTabs.init(swipeBar.parentElement)
     })
 
-    // programmatic .click()
-    const apiBar = document.getElementById("api-bar")
-    for (const btn of document.querySelectorAll("[data-target]")) {
-      btn.addEventListener("click", () => {
-        apiBar.querySelector(`.tab-bar-button[data-tab="${btn.dataset.target}"]`)?.click()
-      })
+    const messages = Array.from(document.querySelectorAll("#message-list .message"))
+    document.getElementById("filter-bar").addEventListener("tab-changed", e => {
+      for (const message of messages) {
+        message.inert = !message.dataset.filter.includes(e.detail)
+      }
+    })
+
+    const wizardBar = document.getElementById("wizard-bar")
+    const wizardButtons = Array.from(wizardBar.querySelectorAll(".tab-bar-button"))
+    const wizardBack = document.getElementById("wizard-back")
+    const wizardNext = document.getElementById("wizard-next")
+
+    function wizardIndex() {
+      return wizardButtons.findIndex(button => button.classList.contains("active"))
     }
 
-    // dynamically added bars via FluidTabs.init()
+    function updateWizard() {
+      wizardBack.disabled = wizardIndex() === 0
+      wizardNext.disabled = wizardIndex() === wizardButtons.length - 1
+    }
+
+    wizardBack.addEventListener("click", () => wizardButtons[wizardIndex() - 1].click())
+    wizardNext.addEventListener("click", () => wizardButtons[wizardIndex() + 1].click())
+    wizardBar.addEventListener("tab-changed", updateWizard)
+    updateWizard()
+
     let dynamicCount = 0
     document.getElementById("add-bar").addEventListener("click", () => {
       dynamicCount++
       const block = document.createElement("div")
+      block.className = "dynamic-block"
       block.innerHTML = `
         <div class="tab-bar tab-style-tabs">
-          <button type="button" class="tab-bar-button active" data-tab="dyn${dynamicCount}a">Added ${dynamicCount} · A</button>
-          <button type="button" class="tab-bar-button" data-tab="dyn${dynamicCount}b">B</button>
-          <button type="button" class="tab-bar-button" data-tab="dyn${dynamicCount}c">C</button>
+          <button type="button" class="tab-bar-button active" data-tab="first">Bar ${dynamicCount}</button>
+          <button type="button" class="tab-bar-button" data-tab="second">Second</button>
+          <button type="button" class="tab-bar-button" data-tab="third">Third</button>
         </div>
         <div class="tab-contents tab-style-tabs">
-          <div class="tab-content active" data-tab="dyn${dynamicCount}a">Panel A of dynamically-added bar ${dynamicCount}.</div>
-          <div class="tab-content" data-tab="dyn${dynamicCount}b">Panel B.</div>
-          <div class="tab-content" data-tab="dyn${dynamicCount}c">Panel C.</div>
+          <div class="tab-content active" data-tab="first"><div class="dynamic-panel"><span>Added after the page loaded.</span><div class="controls flush-top"><button type="button">Remove</button></div></div></div>
+          <div class="tab-content" data-tab="second"><div class="dynamic-panel"><span>Works like any other bar.</span><div class="controls flush-top"><button type="button">Remove</button></div></div></div>
+          <div class="tab-content" data-tab="third"><div class="dynamic-panel"><span>Remove it when you are done.</span><div class="controls flush-top"><button type="button">Remove</button></div></div></div>
         </div>`
+      for (const button of block.querySelectorAll(".controls button")) {
+        button.addEventListener("click", () => {
+          block.querySelector(".tab-bar").destroy()
+          block.remove()
+        })
+      }
       document.getElementById("dynamic-host").append(block)
       FluidTabs.init(block)
     })
+
+    const demoCode = {
+      "scene-default": {
+        title: "Default",
+        description: "The default look. No style class and no custom CSS.",
+        html: `<div class="tab-bar">
+  <button class="tab-bar-button active" data-tab="account">Account</button>
+  <button class="tab-bar-button" data-tab="alerts">Notifications</button>
+  <button class="tab-bar-button" data-tab="security">Security</button>
+</div>
+<div class="tab-contents">
+  <div class="tab-content active" data-tab="account">…</div>
+  <div class="tab-content" data-tab="alerts">…</div>
+  <div class="tab-content" data-tab="security">…</div>
+</div>`
+      },
+      "scene-browser": {
+        title: "Browser",
+        description: "The classic tabs style with its panels detached, restyled as browser tabs. The panels only fade, and each one holds its own address so it fades too.",
+        html: `<div class="tab-bar tab-style-tabs" id="browser-tabs">
+  <button class="tab-bar-button active" data-tab="news">Daily News</button>
+  <button class="tab-bar-button" data-tab="recipes">Recipes</button>
+  <button class="tab-bar-button" data-tab="maps">Maps</button>
+</div>
+<div class="tab-contents tab-style-tabs" data-tab-bar="browser-tabs">
+  <div class="tab-content active" data-tab="news">
+    <div class="address">news.example.com</div>
+    <div class="page">…</div>
+  </div>
+  …
+</div>`,
+        style: `.browser .tab-bar-button {
+  flex: 0 1 170px;
+  justify-content: flex-start;
+  background: transparent;
+  border: 0;
+  border-radius: 8px 8px 0 0;
+  color: #bdc1c6;
+}
+
+.browser .tab-bar-button.active {
+  background: #fff;
+  color: #202124;
+}
+
+.browser .tab-content {
+  padding: 0;
+  transform: none;
+}`
+      },
+      "scene-pricing": {
+        title: "Pricing",
+        description: "The slide style as a rounded pill. The price moves vertically instead of sliding sideways.",
+        html: `<div class="tab-bar tab-style-slide">
+  <button class="tab-bar-button active" data-tab="monthly">Monthly</button>
+  <button class="tab-bar-button" data-tab="yearly">Yearly</button>
+</div>
+<div class="tab-contents tab-style-slide">
+  <div class="tab-content active" data-tab="monthly">…</div>
+  <div class="tab-content" data-tab="yearly">…</div>
+</div>`,
+        style: `.pricing .tab-bar {
+  background: rgba(255, 255, 255, .14);
+  border-radius: 999px;
+}
+
+.pricing .tab-bar-active {
+  background: #fff;
+  border-radius: 999px;
+}
+
+.pricing .tab-content:not(.active) {
+  transform: translateY(calc(var(--tab-panel-x) * 28px));
+}`
+      },
+      "scene-phone": {
+        title: "Phone",
+        description: "An app's bottom navigation. The panels are detached and sit above the bar, and the indicator is a line along the top of the active tab.",
+        html: `<div class="tab-contents" data-tab-bar="phone-tabs">
+  <div class="tab-content active" data-tab="home">…</div>
+  <div class="tab-content" data-tab="search">…</div>
+  …
+</div>
+<div class="tab-bar" id="phone-tabs">
+  <button class="tab-bar-button active" data-tab="home"><svg>…</svg>Home</button>
+  <button class="tab-bar-button" data-tab="search"><svg>…</svg>Search</button>
+  …
+</div>`,
+        style: `.phone .tab-bar {
+  margin: 0;
+  padding-inline: 14px;
+}
+
+.phone .tab-bar-button {
+  flex: 1 1 0;
+  flex-direction: column;
+  padding: 8px 0;
+  color: #94a3b8;
+}
+
+.phone .tab-bar-button.active {
+  color: #2563eb;
+}
+
+.phone .tab-bar-active {
+  border-top: 3px solid #2563eb;
+  border-bottom: 0;
+}`
+      },
+      "scene-neon": {
+        title: "Neon",
+        description: "A glowing indicator with a springy easing and a small hover stretch. Each new score starts white-hot and cools down, one row after another.",
+        html: `<div class="tab-bar">
+  <button class="tab-bar-button active" data-tab="today">Today</button>
+  <button class="tab-bar-button" data-tab="week">This week</button>
+  <button class="tab-bar-button" data-tab="all">All time</button>
+</div>
+<div class="tab-contents">
+  <div class="tab-content active" data-tab="today">
+    <div class="score">…<strong>48,200</strong></div>
+    …
+  </div>
+  …
+</div>`,
+        style: `.neon {
+  --tab-transition-easing: cubic-bezier(.3, 1.25, .5, 1);
+  --tab-tease-x: 4px;
+}
+
+.neon .tab-bar-button.active {
+  color: #22d3ee;
+  text-shadow: 0 0 12px #22d3ee;
+}
+
+.neon .tab-bar-active {
+  border-bottom-color: #22d3ee;
+  box-shadow: 0 8px 12px -6px #22d3ee;
+}
+
+.neon .tab-content {
+  transform: none;
+}
+
+.neon .tab-content.active strong {
+  animation: neon-on .6s ease-out backwards;
+}
+
+.neon .tab-content.active .score:nth-child(2) strong {
+  animation-delay: .07s;
+}
+
+@keyframes neon-on {
+  from {
+    color: #fff;
+    text-shadow: 0 0 6px #fff, 0 0 18px #22d3ee, 0 0 36px #22d3ee;
+  }
+}`
+      },
+      "scene-glass": {
+        title: "Glass",
+        description: "The sliding indicator is replaced with one on each button, using --tab-button-x. The old one blurs away towards the new tab while the new one blurs in. The panels blur between each other too.",
+        html: `<div class="tab-bar tab-style-slide">
+  <button class="tab-bar-button active" data-tab="hourly">Hourly</button>
+  <button class="tab-bar-button" data-tab="daily">Daily</button>
+  <button class="tab-bar-button" data-tab="details">Details</button>
+</div>
+<div class="tab-contents tab-style-slide">
+  <div class="tab-content active" data-tab="hourly">…</div>
+  …
+</div>`,
+        style: `.glass .tab-bar,
+.glass .tab-contents {
+  --tab-transition-duration: .5s;
+}
+
+.glass .tab-bar-active {
+  display: none;
+}
+
+.glass .tab-bar-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(255, 255, 255, .2);
+  border-radius: 9px;
+  opacity: 0;
+  filter: blur(8px);
+  transform: translateX(calc(var(--tab-button-x) * -16px));
+  transition: opacity .5s, filter .5s, transform .5s;
+}
+
+.glass .tab-bar-button.active::before {
+  opacity: 1;
+  filter: none;
+}
+
+.glass .tab-content {
+  transform: none;
+  transition: opacity .5s, filter .5s;
+}
+
+.glass .tab-content:not(.active) {
+  filter: blur(10px);
+}`
+      },
+      "scene-glitch": {
+        title: "Glitch",
+        description: "Keyframe animations instead of transitions. The indicator glitches out of the old tab and into the new one, and the panels glitch in the same way.",
+        html: `<div class="tab-bar tab-style-slide">
+  <button class="tab-bar-button active" data-tab="system">System</button>
+  <button class="tab-bar-button" data-tab="network">Network</button>
+  <button class="tab-bar-button" data-tab="logs">Logs</button>
+</div>
+<div class="tab-contents tab-style-slide">
+  <div class="tab-content active" data-tab="system">…</div>
+  …
+</div>`,
+        style: `.glitch .tab-bar-active {
+  display: none;
+}
+
+.glitch .tab-bar-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #e5e7eb;
+  opacity: 0;
+  animation: glitch-out .36s steps(1) both;
+}
+
+.glitch .tab-bar-button.active::before {
+  opacity: 1;
+  animation-name: glitch-in;
+}
+
+.glitch .tab-content {
+  transform: none;
+  transition: none;
+}
+
+.glitch .tab-content.active {
+  animation: glitch-in .36s steps(1) both;
+}
+
+@keyframes glitch-in {
+  0% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+    transform: translateX(-7px);
+    clip-path: inset(0 -6px 65% -6px);
+    box-shadow: -3px 0 #f0f, 3px 0 #0ff;
+  }
+  35% {
+    transform: translateX(6px);
+    clip-path: inset(55% -6px 0 -6px);
+    box-shadow: 3px 0 #f0f, -3px 0 #0ff;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes glitch-out {
+  /* the same frames, ending at opacity: 0 */
+}`
+      },
+      "scene-sketch": {
+        title: "Sketch",
+        description: "Uneven border radii give the hand-drawn look. A slower stretch and bigger hover tease match it, and the panels rotate like sheets of paper.",
+        html: `<div class="tab-bar tab-style-slide">
+  <button class="tab-bar-button active" data-tab="shops">Shops</button>
+  <button class="tab-bar-button" data-tab="jobs">Jobs</button>
+  <button class="tab-bar-button" data-tab="ideas">Ideas</button>
+</div>
+<div class="tab-contents tab-style-slide">
+  <div class="tab-content active" data-tab="shops">…</div>
+  …
+</div>`,
+        style: `.sketch {
+  --tab-transition-duration: .32s;
+  --tab-slide-lag: .4;
+  --tab-tease-x: 14px;
+}
+
+.sketch .tab-bar {
+  background: transparent;
+}
+
+.sketch .tab-bar-active {
+  background: #ffe066;
+  border: 2px solid #2b2b2b;
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+}
+
+.sketch .tab-content:not(.active) {
+  transform: translateX(calc(var(--tab-panel-x) * 40px)) rotate(calc(var(--tab-panel-x) * 4deg));
+}`
+      }
+    }
+
+    const codeModal = document.getElementById("code-modal")
+    const codeModalTitle = document.getElementById("code-modal-title")
+    const codeModalDescription = document.getElementById("code-modal-description")
+
+    function setCodeSection(key, text) {
+      document.getElementById(`code-modal-${key}`).textContent = text ?? ""
+      document.getElementById(`code-modal-section-${key}`).hidden = !text
+    }
+
+    function preventScroll(e) {
+      if (!e.target?.closest(".code-modal-contents")) e.preventDefault()
+    }
+
+    function blockScrollKeys(e) {
+      if (!e.target?.closest("#code-modal") && ["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(e.key)) e.preventDefault()
+    }
+
+    function openCodeModal(code) {
+      codeModalTitle.textContent = code.title
+      codeModalDescription.textContent = code.description
+      codeModalDescription.hidden = false
+      setCodeSection("html", code.html)
+      setCodeSection("style", code.style)
+      codeModal.hidden = false
+      addEventListener("wheel", preventScroll, { passive: false })
+      addEventListener("touchmove", preventScroll, { passive: false })
+      addEventListener("keydown", blockScrollKeys, true)
+      requestAnimationFrame(() => {
+        codeModal.classList.add("open")
+        codeModal.focus()
+      })
+    }
+
+    function closeCodeModal() {
+      if (codeModal.hidden) return
+      codeModal.classList.remove("open")
+      removeEventListener("wheel", preventScroll)
+      removeEventListener("touchmove", preventScroll)
+      removeEventListener("keydown", blockScrollKeys, true)
+      setTimeout(() => {
+        codeModal.hidden = true
+      }, 150)
+    }
+
+    codeModal.querySelector(".code-modal-close").addEventListener("click", closeCodeModal)
+    let codeModalDown
+    codeModal.addEventListener("mousedown", e => codeModalDown = e.target)
+    codeModal.addEventListener("mouseup", e => {
+      if (codeModalDown === e.target && e.target === codeModal) closeCodeModal()
+    })
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") closeCodeModal()
+    })
+
+    for (const scene of document.querySelectorAll(".demo-scene")) {
+      const code = demoCode[Array.from(scene.classList).find(c => c.startsWith("scene-"))]
+      const button = document.createElement("button")
+      button.className = "demo-code-button"
+      button.type = "button"
+      button.title = "View code"
+      button.setAttribute("aria-label", "View code")
+      button.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"/><path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/></svg>`
+      button.addEventListener("click", () => openCodeModal(code))
+      scene.append(button)
+    }
   </script>
 </body>
 </html>
