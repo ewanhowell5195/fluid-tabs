@@ -61,7 +61,6 @@
       const contents = contentWraps.flatMap(el => Array.from(el.querySelectorAll(".tab-content")).filter(c => c.closest(".tab-contents") === el))
       const teaseX = parseFloat(getComputedStyle(activeIndicator).getPropertyValue("--tab-tease-x")) || 0
       let endTransition = null
-      let lastPointerType
 
       const addedAttributes = []
 
@@ -142,19 +141,19 @@
         if (active) placeIndicator(active.getBoundingClientRect(), getParentBox())
       }
 
-      function tease(button, fromClick) {
+      function tease(button) {
         const active = tabBar.querySelector(".tab-bar-button.active")
-        if (!active || reducedMotion.matches) return
+        if (!active || button === active || reducedMotion.matches) return
 
         // a real hover should never inherit a click's elastic lag, or the
         // tease's two edges animate on different delays and look broken
-        if (!fromClick) activeIndicator.style.transitionDelay = ""
+        activeIndicator.style.transitionDelay = ""
 
         const parentBox = getParentBox()
         const rect = active.getBoundingClientRect()
         const activeX = getCenter(rect).x
         const hoverX = getCenter(button.getBoundingClientRect()).x
-        const nearby = button === active || Math.abs(hoverX - activeX) <= 8
+        const nearby = Math.abs(hoverX - activeX) <= 8
         const stretchLeft = nearby ? teaseX / 2 : hoverX < activeX ? teaseX : 0
         const stretchRight = nearby ? teaseX / 2 : hoverX > activeX ? teaseX : 0
 
@@ -215,7 +214,7 @@
 
       for (const button of buttons) {
         button.addEventListener("pointerenter", e => {
-          if (e.pointerType !== "touch") tease(button, false)
+          if (e.pointerType !== "touch") tease(button)
         }, { signal })
 
         button.addEventListener("pointerleave", e => {
@@ -281,8 +280,6 @@
           activeIndicator.addEventListener("transitionend", onEnd)
 
           placeIndicator(toRect, parentBox)
-
-          if (button.matches(":hover") && lastPointerType !== "touch") tease(button, true)
 
           if (!activeIndicator.getAnimations().length) finish()
 
@@ -356,7 +353,6 @@
       }
 
       tabBar.addEventListener("pointerdown", e => {
-        lastPointerType = e.pointerType
         if (e.button !== 0) return
         if (tabBar.scrollWidth - tabBar.clientWidth <= 0) return
         if (dragging && e.pointerId !== dragPointer) return
