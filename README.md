@@ -6,6 +6,8 @@ A lightweight, zero-dependency tabs library with a smooth animated indicator, dr
 [![jsDelivr](https://data.jsdelivr.com/v1/package/npm/fluid-tabs/badge)](https://www.jsdelivr.com/package/npm/fluid-tabs)
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
+[**Live Demo**](https://fluid-tabs.ewanhowell.com/)
+
 ## Features
 
 * No dependencies
