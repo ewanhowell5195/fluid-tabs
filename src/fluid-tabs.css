@@ -459,6 +459,7 @@
 .tab-bar.tab-style-card {
   --tab-reveal-soft: 80px;
   --tab-slide-lag: 0;
+  --tab-tease-x: 0;
   gap: 12px;
 }
 
